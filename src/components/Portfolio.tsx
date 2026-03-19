@@ -3,24 +3,67 @@
 import { useState } from 'react'
 import { categories } from '@/data/portfolioData'
 import type { PortfolioItem } from '@/data/portfolioData'
-import PortfolioCategory from './PortfolioCategory'
+import ThreeDCarousel from './ThreeDCarousel'
 import Lightbox from './Lightbox'
 
 export default function Portfolio() {
-  const [lightbox, setLightbox] = useState<PortfolioItem | null>(null)
+  const [activeItem, setActiveItem] = useState<PortfolioItem | null>(null)
 
   return (
-    <section id="portfolio" className="py-24 px-6 md:px-10 max-w-6xl mx-auto">
-      <div className="mb-16 text-center">
-        <p className="text-xs font-semibold tracking-[0.4em] uppercase mb-4" style={{ color: 'var(--color-accent)' }}>Selected Work</p>
-        <h2 className="text-4xl md:text-5xl font-light" style={{ fontFamily: 'Cormorant Garamond, serif', color: 'var(--color-text)' }}>Collections</h2>
-      </div>
-      {categories.map((cat, i) => (
-        <PortfolioCategory key={cat.id} number={String(i + 1).padStart(2, '0')}
-          label={cat.label} subtitle={cat.subtitle} items={cat.items}
-          onOpen={item => setLightbox(item)} />
+    <section id="portfolio" style={{ padding: '6rem 0', background: 'var(--color-bg)' }}>
+      {categories.map((category, i) => (
+        <div key={category.id} style={{ marginBottom: '6rem' }}>
+          {/* Category header */}
+          <div style={{ textAlign: 'center', marginBottom: '3rem', padding: '0 2rem' }}>
+            <p
+              style={{
+                fontFamily: 'Manrope, sans-serif',
+                fontSize: '0.7rem',
+                letterSpacing: '0.3em',
+                textTransform: 'uppercase',
+                color: 'var(--color-accent)',
+                marginBottom: '0.5rem',
+              }}
+            >
+              {String(i + 1).padStart(2, '0')}
+            </p>
+            <h2
+              style={{
+                fontFamily: 'Cormorant Garamond, serif',
+                fontStyle: 'italic',
+                fontWeight: 300,
+                fontSize: 'clamp(2rem, 6vw, 4rem)',
+                color: 'var(--color-text)',
+                margin: 0,
+              }}
+            >
+              {category.label}
+            </h2>
+            {category.subtitle && (
+              <p
+                style={{
+                  fontFamily: 'Manrope, sans-serif',
+                  fontSize: '0.75rem',
+                  letterSpacing: '0.2em',
+                  textTransform: 'uppercase',
+                  color: 'var(--color-muted)',
+                  marginTop: '0.5rem',
+                }}
+              >
+                {category.subtitle}
+              </p>
+            )}
+          </div>
+          {/* 3D Carousel */}
+          <ThreeDCarousel items={category.items} onOpen={setActiveItem} />
+        </div>
       ))}
-      <Lightbox src={lightbox?.src} title={lightbox?.title} alt={lightbox?.alt} onClose={() => setLightbox(null)} />
+      <Lightbox
+        src={activeItem?.src}
+        title={activeItem?.title}
+        alt={activeItem?.alt}
+        onClose={() => setActiveItem(null)}
+      />
     </section>
   )
 }
