@@ -12,14 +12,18 @@ export default function PullQuote() {
   useEffect(() => {
     if (!sectionRef.current) return
 
+    let cancelled = false
+    const triggers: ScrollTrigger[] = []
+
     const initGSAP = async () => {
       const { gsap } = await import('gsap')
       const { ScrollTrigger } = await import('gsap/ScrollTrigger')
+      if (cancelled) return  // component unmounted before import resolved
+
       gsap.registerPlugin(ScrollTrigger)
 
-      const triggers: ScrollTrigger[] = []
-
       words.forEach((_, i) => {
+        if (cancelled) return
         const el = wordRefs.current[i]
         if (!el) return
 
@@ -36,17 +40,16 @@ export default function PullQuote() {
             el.style.opacity = String(0.1 + wordProgress * 0.9)
           },
         })
-
         triggers.push(trigger)
       })
-
-      return () => triggers.forEach(t => t.kill())
     }
 
-    let cleanup: (() => void) | undefined
-    initGSAP().then(fn => { cleanup = fn })
+    initGSAP()
 
-    return () => cleanup?.()
+    return () => {
+      cancelled = true
+      triggers.forEach(t => t.kill())
+    }
   }, []) // words.length is stable (QUOTE is a const)
 
   return (
