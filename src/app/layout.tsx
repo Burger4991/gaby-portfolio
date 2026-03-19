@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import '../index.css'
+import './globals.css'
 
 export const metadata: Metadata = {
   title: 'Gabriela Gamargo — Fashion Portfolio',
