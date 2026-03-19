@@ -31,10 +31,16 @@ export default function PortfolioCard({ src, title, alt, category, onOpen, featu
     card.style.transform = 'rotateY(0deg) rotateX(0deg) scale3d(1,1,1)'
   }
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      onOpen()
+    }
+  }
+
   return (
     <div style={{ perspective: '800px' }} onMouseMove={handleMouseMove} onMouseLeave={handleMouseLeave}
-      onClick={onOpen} className="cursor-pointer">
-      <div ref={cardRef} role="figure" aria-label={category ? `${title} — ${category}` : title}
+      onClick={onOpen} onKeyDown={handleKeyDown} role="button" aria-label={category ? `${title} — ${category}` : title} tabIndex={0} className="cursor-pointer">
+      <div ref={cardRef}
         className={`relative overflow-hidden group ${featured ? 'aspect-[4/3]' : 'aspect-[3/4]'}`}
         style={{ backgroundColor: 'var(--color-card-bg)', willChange: 'transform' }}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
