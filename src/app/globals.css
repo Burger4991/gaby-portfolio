@@ -1,1 +1,111 @@
-/* Global styles will be added in Task 2 */
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Manrope:wght@300;400;500;600;700&display=swap');
+
+@import "tailwindcss";
+
+/* ─── Dark Luxury (default) ─── */
+html[data-theme="dark"],
+html:not([data-theme]) {
+  --color-bg:           #0C0C0E;
+  --color-surface:      #111116;
+  --color-border:       #1F1F25;
+  --color-text:         #EDE8DF;
+  --color-muted:        #5C5349;
+  --color-accent:       #B8965A;
+  --color-accent-hover: #CCA96A;
+  --color-card-bg:      #18181E;
+  --color-overlay:      #0C0C0E;
+}
+
+/* ─── Warm Ivory (light) ─── */
+html[data-theme="light"] {
+  --color-bg:           #F8F4EE;
+  --color-surface:      #F2EBE1;
+  --color-border:       #E5DDD3;
+  --color-text:         #1C1610;
+  --color-muted:        #9A8E84;
+  --color-accent:       #A0673A;
+  --color-accent-hover: #B5784A;
+  --color-card-bg:      #EDE7DF;
+  --color-overlay:      #F8F4EE;
+}
+
+/* ─── Base ─── */
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  font-family: 'Manrope', sans-serif;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ─── Film grain ─── */
+body::after {
+  content: '';
+  position: fixed;
+  inset: -50%;
+  width: 200%;
+  height: 200%;
+  pointer-events: none;
+  z-index: 9990;
+  opacity: 0.04;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  animation: grain 0.5s steps(1) infinite;
+}
+@keyframes grain {
+  0%  { transform: translate(0, 0); }
+  10% { transform: translate(-2%, -3%); }
+  20% { transform: translate(3%, 2%); }
+  30% { transform: translate(-1%, 4%); }
+  40% { transform: translate(4%, -1%); }
+  50% { transform: translate(-3%, 3%); }
+  60% { transform: translate(2%, -4%); }
+  70% { transform: translate(-4%, 1%); }
+  80% { transform: translate(1%, -2%); }
+  90% { transform: translate(3%, 4%); }
+}
+
+/* ─── Marquee ─── */
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+.animate-marquee {
+  animation: marquee 30s linear infinite;
+}
+.animate-marquee:hover {
+  animation-play-state: paused;
+}
+
+/* ─── Custom cursor (pointer devices only) ─── */
+@media (hover: hover) {
+  * { cursor: none !important; }
+  .cursor-dot {
+    position: fixed;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--color-accent);
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+  }
+  .cursor-ring {
+    position: fixed;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 1px solid var(--color-accent);
+    pointer-events: none;
+    z-index: 9998;
+    transform: translate(-50%, -50%);
+    transition: width 0.2s, height 0.2s, opacity 0.2s;
+    opacity: 0.5;
+  }
+  .cursor-ring.hovering {
+    width: 52px;
+    height: 52px;
+    opacity: 0.3;
+  }
+}
