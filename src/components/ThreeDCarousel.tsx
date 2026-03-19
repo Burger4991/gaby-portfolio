@@ -53,9 +53,19 @@ export default function ThreeDCarousel({ items, onOpen }: ThreeDCarouselProps) {
         {items.map((item, i) => {
           const cardAngle = (i / items.length) * 360
           return (
+            /* Outer: 3D positioning only — no overflow, no borderRadius */
             <motion.div
               key={item.id}
               onClick={() => onOpen(item)}
+              role="button"
+              tabIndex={0}
+              aria-label={`View ${item.title}`}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault()
+                  onOpen(item)
+                }
+              }}
               style={{
                 position: 'absolute',
                 left: '50%',
@@ -67,34 +77,35 @@ export default function ThreeDCarousel({ items, onOpen }: ThreeDCarouselProps) {
                 rotateY: cardAngle,
                 translateZ: radius,
                 cursor: 'pointer',
-                borderRadius: 4,
-                overflow: 'hidden',
               }}
               whileHover={{ scale: 1.05 }}
               transition={{ type: 'spring', stiffness: 400, damping: 30 }}
             >
-              <Image
-                src={item.src}
-                alt={item.alt}
-                fill
-                style={{ objectFit: 'cover' }}
-                sizes="220px"
-              />
-              <div
-                style={{
-                  position: 'absolute',
-                  bottom: 0,
-                  left: 0,
-                  right: 0,
-                  padding: '12px',
-                  background: 'linear-gradient(to top, rgba(0,0,0,0.7), transparent)',
-                  color: 'var(--color-text)',
-                  fontFamily: 'Cormorant Garamond, serif',
-                  fontStyle: 'italic',
-                  fontSize: '1rem',
-                }}
-              >
-                {item.title}
+              {/* Inner: visual clip wrapper */}
+              <div style={{ width: '100%', height: '100%', overflow: 'hidden', borderRadius: 4, position: 'relative' }}>
+                <Image
+                  src={item.src}
+                  alt={item.alt}
+                  fill
+                  style={{ objectFit: 'cover' }}
+                  sizes="220px"
+                />
+                <div
+                  style={{
+                    position: 'absolute',
+                    bottom: 0,
+                    left: 0,
+                    right: 0,
+                    padding: '12px',
+                    background: 'linear-gradient(to top, rgba(0,0,0,0.7), transparent)',
+                    color: 'var(--color-text)',
+                    fontFamily: 'Cormorant Garamond, serif',
+                    fontStyle: 'italic',
+                    fontSize: '1rem',
+                  }}
+                >
+                  {item.title}
+                </div>
               </div>
             </motion.div>
           )
