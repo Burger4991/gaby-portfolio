@@ -22,6 +22,7 @@ export default function About() {
   // Animation 1: Text column slide-in from left
   useEffect(() => {
     let cancelled = false
+    let anim: gsap.core.Tween | null = null
 
     async function animate() {
       const { gsap } = await import('gsap')
@@ -33,7 +34,7 @@ export default function About() {
       const el = textColRef.current
       if (!el) return
 
-      gsap.fromTo(
+      anim = gsap.fromTo(
         el,
         { opacity: 0, x: -24 },
         {
@@ -53,12 +54,16 @@ export default function About() {
     }
 
     animate()
-    return () => { cancelled = true }
+    return () => {
+      cancelled = true
+      anim?.kill()
+    }
   }, [])
 
   // Animation 2: Image column fade + scale
   useEffect(() => {
     let cancelled = false
+    let anim: gsap.core.Tween | null = null
 
     async function animate() {
       const { gsap } = await import('gsap')
@@ -70,7 +75,7 @@ export default function About() {
       const el = imageColRef.current
       if (!el) return
 
-      gsap.fromTo(
+      anim = gsap.fromTo(
         el,
         { opacity: 0, scale: 1.05 },
         {
@@ -90,12 +95,16 @@ export default function About() {
     }
 
     animate()
-    return () => { cancelled = true }
+    return () => {
+      cancelled = true
+      anim?.kill()
+    }
   }, [])
 
   // Animation 3: Bio intro word-by-word scrub reveal
   useEffect(() => {
     let cancelled = false
+    const anims: gsap.core.Tween[] = []
 
     async function animate() {
       const { gsap } = await import('gsap')
@@ -113,7 +122,7 @@ export default function About() {
         if (!span) return
         const progress = i / totalWords
 
-        gsap.fromTo(
+        const anim = gsap.fromTo(
           span,
           { opacity: 0.1 },
           {
@@ -135,11 +144,15 @@ export default function About() {
             },
           }
         )
+        anims.push(anim)
       })
     }
 
     animate()
-    return () => { cancelled = true }
+    return () => {
+      cancelled = true
+      anims.forEach(a => a.kill())
+    }
   }, [])
 
   return (

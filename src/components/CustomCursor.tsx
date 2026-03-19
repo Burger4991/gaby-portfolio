@@ -20,8 +20,8 @@ export default function CustomCursor() {
       }
     }
 
-    const onEnter = () => ringRef.current?.classList.add('cursor-hover')
-    const onLeave = () => ringRef.current?.classList.remove('cursor-hover')
+    const onEnter = () => ringRef.current?.classList.add('hovering')
+    const onLeave = () => ringRef.current?.classList.remove('hovering')
 
     const lerp = (a: number, b: number, t: number) => a + (b - a) * t
 

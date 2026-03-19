@@ -1296,12 +1296,26 @@ git commit -m "feat: GSAP provider, splitWords utility"
 
 ---
 
-## Task 8 — Hero GSAP Animations
+## Task 8 — Hero: Scroll Expansion (replaces GSAP animations)
+
+> **Design change approved 2026-03-19:** User chose a scroll-driven expansion hero (arunachalam0606 pattern) — media starts small, expands to full-screen as user scrolls. No GSAP needed for the hero. Preloader (Task 13) no longer needs to chain into a hero entrance timeline — it just exits and the expansion hero is ready.
 
 **Files:**
+- Create: `src/components/ScrollExpandHero.tsx`
 - Modify: `src/components/Hero.tsx`
 
-Replace the static Hero with GSAP entrance timeline + scroll parallax. All animation runs after the preloader exits (Task 13 chains it). For now, the entrance fires on mount.
+Adapt the cult-ui scroll expansion component for Gaby's portfolio. Create `ScrollExpandHero.tsx` as the generic reusable component (close to the original source), then rewrite `Hero.tsx` as a thin wrapper that passes Gaby-specific props and children (stats + CTA).
+
+**Adaptations from the original source:**
+- Remove `text-blue-200` → use `var(--color-text)` and `var(--color-accent)`
+- Title font: Cormorant Garamond, font-light, italic (not font-bold)
+- `date` prop slot → used for "Fashion Designer" eyebrow text
+- `scrollToExpand` → "↓ Scroll"
+- `bgImageSrc` → picsum placeholder (real photo when Gaby provides)
+- `mediaSrc` → picsum placeholder, `mediaType="image"`
+- `children` → tagline + stats bar + CTA (visible after full expansion)
+- Remove YouTube iframe branch (not needed; keep native video + image branches)
+- `mix-blend-difference` behavior kept as-is
 
 - [ ] **Step 1: Rewrite `Hero.tsx` with GSAP**
 
@@ -1463,12 +1477,15 @@ git commit -m "feat: Hero GSAP entrance timeline + scroll parallax"
 
 ---
 
-## Task 9 — Portfolio Horizontal Scroll (GSAP ScrollTrigger)
+## Task 9 — Portfolio 3D Carousel (replaces GSAP horizontal scroll)
+
+> **Design change approved 2026-03-19:** User chose a 3D cylindrical Framer Motion carousel (cult-ui pattern) — one carousel per category — instead of GSAP horizontal scroll pinning. No GSAP needed for the portfolio section.
 
 **Files:**
+- Create: `src/components/ThreeDCarousel.tsx`
 - Modify: `src/components/Portfolio.tsx`
 
-Replace the static vertical layout with a GSAP-pinned horizontal scroll on desktop. Mobile keeps the vertical PortfolioCategory stack.
+Replace the static vertical grid with a 3D draggable carousel per category. On mobile the cylinder is narrower (handled by the component's `useMediaQuery` hook). The existing Lightbox is used for click-to-expand.
 
 - [ ] **Step 1: Rewrite `Portfolio.tsx`**
 

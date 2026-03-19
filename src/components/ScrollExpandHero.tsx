@@ -46,8 +46,17 @@ export default function ScrollExpandHero({
 
   // Scroll interception
   useEffect(() => {
+    const removeAll = () => {
+      window.removeEventListener('wheel', handleWheel)
+      window.removeEventListener('touchstart', handleTouchStart)
+      window.removeEventListener('touchmove', handleTouchMove)
+    }
+
     const handleWheel = (e: WheelEvent) => {
-      if (scrollProgressRef.current >= 1) return
+      if (scrollProgressRef.current >= 1) {
+        removeAll()
+        return
+      }
       e.preventDefault()
       const newProgress = Math.min(1, Math.max(0, scrollProgressRef.current + e.deltaY / 800))
       scrollProgressRef.current = newProgress
@@ -59,7 +68,10 @@ export default function ScrollExpandHero({
       touchStartY = e.touches[0].clientY
     }
     const handleTouchMove = (e: TouchEvent) => {
-      if (scrollProgressRef.current >= 1) return
+      if (scrollProgressRef.current >= 1) {
+        removeAll()
+        return
+      }
       e.preventDefault()
       const delta = touchStartY - e.touches[0].clientY
       touchStartY = e.touches[0].clientY
@@ -72,9 +84,7 @@ export default function ScrollExpandHero({
     window.addEventListener('touchstart', handleTouchStart, { passive: true })
     window.addEventListener('touchmove', handleTouchMove, { passive: false })
     return () => {
-      window.removeEventListener('wheel', handleWheel)
-      window.removeEventListener('touchstart', handleTouchStart)
-      window.removeEventListener('touchmove', handleTouchMove)
+      removeAll()
     }
   }, [])
 
