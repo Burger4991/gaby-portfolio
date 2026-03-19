@@ -77,7 +77,7 @@ export default function Hero() {
           animate="visible"
           custom={0.3}
         >
-          Resort wear, hand-drawn sketches, and everything in between.
+          Design & Direction — Bridging Creativity + Execution
         </motion.p>
 
         <motion.a

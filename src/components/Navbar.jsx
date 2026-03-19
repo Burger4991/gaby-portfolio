@@ -15,9 +15,9 @@ export default function Navbar() {
         href="#hero"
         className="text-xl font-semibold tracking-[0.2em] transition-opacity duration-200 hover:opacity-70 cursor-pointer"
         style={{ fontFamily: 'Cormorant Garamond, serif', color: 'var(--color-text)' }}
-        aria-label="Gaby — back to top"
+        aria-label="Gabriela Gamargo — back to top"
       >
-        GABY
+        G. GAMARGO
       </a>
 
       {/* Nav links + theme selector */}

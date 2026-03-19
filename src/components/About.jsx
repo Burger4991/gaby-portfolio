@@ -29,33 +29,43 @@ export default function About() {
             About
           </p>
           <h2
-            className="text-4xl md:text-5xl font-light mb-6 leading-tight"
+            className="text-4xl md:text-5xl font-light italic mb-6 leading-tight"
             style={{ fontFamily: 'Cormorant Garamond, serif', color: 'var(--color-text)' }}
           >
-            Gaby
+            Gabriela Gamargo
           </h2>
           <p
             className="leading-relaxed text-base md:text-lg mb-6"
             style={{ color: 'var(--color-muted)' }}
           >
-            {/* Replace with real bio */}
-            Gaby is a fashion designer with experience in resort and beach wear,
-            bringing a warm, intentional aesthetic to every collection. Her work
-            spans hand-drawn concept sketches to finished garments, always rooted
-            in wearability and craft.
+            I'm Gabriela (Gaby) Gamargo, a fashion designer with 5 years of
+            experience guiding women's collections from concept through creation
+            & 10+ years working in the apparel industry. Since high school, fashion
+            design has been my way of blending creativity with structure.
           </p>
           <p
-            className="leading-relaxed text-base md:text-lg mb-8"
+            className="leading-relaxed text-base md:text-lg mb-6"
             style={{ color: 'var(--color-muted)' }}
           >
-            {/* Replace with real philosophy */}
-            She believes fashion should feel as good as it looks — and that the
-            best designs start with a pencil and a blank page.
+            At 18, I moved across the country to study in L.A. at FIDM, where I
+            learned everything from illustration and pattern-making to draping and
+            concept development — a leap of faith that became the foundation for my
+            career in design and leadership.
+          </p>
+          <p
+            className="leading-relaxed text-sm italic mb-8"
+            style={{ color: 'var(--color-accent)', fontFamily: 'Cormorant Garamond, serif' }}
+          >
+            "Design lives in the balance of opposites — freedom and structure,
+            originality and wearability, creativity and execution."
           </p>
 
-          {/* Skills — update with real tools/skills */}
           <div className="flex flex-wrap gap-2">
-            {['Adobe Illustrator', 'Photoshop', 'Hand-Drawing', 'Pattern Making', 'Resort Wear', 'Trend Research', 'Sustainable Design'].map((skill) => (
+            {[
+              'Creative Direction', 'Trend Forecasting', 'Technical Design',
+              'Pattern Making', 'Adobe Illustrator', 'CLO 3D', 'PROMEAI',
+              'Global Vendor Mgmt', 'Bilingual EN/ES',
+            ].map((skill) => (
               <span
                 key={skill}
                 className="px-3 py-1 text-xs tracking-[0.12em] uppercase"

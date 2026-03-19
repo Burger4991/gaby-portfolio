@@ -1,43 +1,43 @@
 // src/data/portfolioData.js
 // Image srcs use picsum.photos as dev placeholders — replace with real photos when ready.
-// Format: https://picsum.photos/seed/{seed}/800/1000
 
 export const categories = [
   {
     id: 'resort',
-    label: 'Resort & Beach',
-    subtitle: 'Warm weather collections from her last position',
+    label: 'Resort & Activewear',
+    subtitle: 'RTW women\'s resort and activewear collections',
     items: [
-      { id: 'r1', src: 'https://picsum.photos/seed/resort1/800/1000', title: 'Linen Co-ord Set', alt: 'White linen co-ordinate set on model at beach' },
-      { id: 'r2', src: 'https://picsum.photos/seed/resort2/800/1000', title: 'Halter Maxi Dress', alt: 'Terracotta halter maxi dress styled for resort' },
+      { id: 'r1', src: 'https://picsum.photos/seed/resort1/800/1000', title: 'Linen Co-ord Set', alt: 'Linen co-ordinate set — resort collection' },
+      { id: 'r2', src: 'https://picsum.photos/seed/resort2/800/1000', title: 'Halter Maxi Dress', alt: 'Halter maxi dress styled for resort' },
       { id: 'r3', src: 'https://picsum.photos/seed/resort3/800/1000', title: 'Wrap Coverup', alt: 'Sheer wrap coverup over swimwear' },
     ],
   },
   {
-    id: 'sketches',
-    label: 'Sketches',
-    subtitle: 'Hand-drawn fashion illustrations and design flats',
+    id: 'cutsew',
+    label: 'Cut & Sew Knits',
+    subtitle: 'RTW — cut & sew knits, crochet, and soft wovens',
     items: [
-      { id: 's1', src: 'https://picsum.photos/seed/sketch1/800/1000', title: 'Evening Gown Study', alt: 'Hand-drawn sketch of an evening gown with draping detail' },
-      { id: 's2', src: 'https://picsum.photos/seed/sketch2/800/1000', title: 'Structured Blazer Flat', alt: 'Design flat of structured double-breasted blazer' },
+      { id: 'cs1', src: 'https://picsum.photos/seed/knit1/800/1000', title: 'Crochet Top', alt: 'Hand-crocheted top — knit collection' },
+      { id: 'cs2', src: 'https://picsum.photos/seed/knit2/800/1000', title: 'Soft Woven Set', alt: 'Soft woven co-ordinate set' },
     ],
   },
   {
-    id: 'streetwear',
-    label: 'Streetwear',
-    subtitle: 'Urban-influenced everyday pieces',
+    id: 'bridal',
+    label: 'Bridal & Eveningwear',
+    subtitle: 'Custom bespoke bridal and evening collections',
     items: [
-      { id: 'sw1', src: 'https://picsum.photos/seed/street1/800/1000', title: 'Cargo Trousers', alt: 'Wide-leg cargo trousers in olive green' },
-      { id: 'sw2', src: 'https://picsum.photos/seed/street2/800/1000', title: 'Oversized Bomber', alt: 'Quilted oversized bomber jacket' },
+      { id: 'b1', src: 'https://picsum.photos/seed/bridal1/800/1000', title: 'Evening Gown', alt: 'Custom evening gown — bridal collection' },
+      { id: 'b2', src: 'https://picsum.photos/seed/bridal2/800/1000', title: 'Bespoke Bridal', alt: 'Custom bespoke bridal look' },
     ],
   },
   {
-    id: 'sustainable',
-    label: 'Sustainable',
-    subtitle: 'Ethically made, consciously designed',
+    id: 'illustrations',
+    label: 'Hand Illustrations',
+    subtitle: 'Fashion illustrations — Procreate, markers, and colored pencils',
     items: [
-      { id: 'su1', src: 'https://picsum.photos/seed/sustain1/800/1000', title: 'Deadstock Linen Shirt', alt: 'Boxy linen shirt made from deadstock fabric' },
-      { id: 'su2', src: 'https://picsum.photos/seed/sustain2/800/1000', title: 'Upcycled Denim Set', alt: 'Two-piece set constructed from upcycled denim' },
+      { id: 'i1', src: 'https://picsum.photos/seed/sketch1/800/1000', title: 'Evening Gown Study', alt: 'Hand-drawn fashion illustration — evening gown' },
+      { id: 'i2', src: 'https://picsum.photos/seed/sketch2/800/1000', title: 'Resort Silhouettes', alt: 'Fashion illustration — resort silhouettes' },
+      { id: 'i3', src: 'https://picsum.photos/seed/sketch3/800/1000', title: 'Technical Flat', alt: 'Technical design flat — spec sheet illustration' },
     ],
   },
 ]
