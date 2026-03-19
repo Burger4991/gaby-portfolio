@@ -5,19 +5,51 @@ export default function Navbar() {
   return (
     <nav
       className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 md:px-10 py-5 backdrop-blur-sm border-b"
-      style={{ backgroundColor: 'var(--color-bg)', borderColor: 'var(--color-border)' }}
+      style={{
+        backgroundColor: 'color-mix(in srgb, var(--color-bg) 90%, transparent)',
+        borderColor: 'var(--color-border)',
+      }}
     >
-      <span
-        className="text-xl font-semibold tracking-[0.2em]"
+      {/* Logo */}
+      <a
+        href="#hero"
+        className="text-xl font-semibold tracking-[0.2em] transition-opacity duration-200 hover:opacity-70 cursor-pointer"
         style={{ fontFamily: 'Cormorant Garamond, serif', color: 'var(--color-text)' }}
+        aria-label="Gaby — back to top"
       >
         GABY
-      </span>
-      <div className="flex items-center gap-8">
-        <div className="flex gap-6 md:gap-10 text-xs font-semibold tracking-[0.15em] uppercase" style={{ color: 'var(--color-muted)' }}>
-          <a href="#portfolio" className="hover:opacity-80 transition-opacity duration-200 cursor-pointer">Work</a>
-          <a href="#about"     className="hover:opacity-80 transition-opacity duration-200 cursor-pointer">About</a>
-          <a href="#contact"   className="hover:opacity-80 transition-opacity duration-200 cursor-pointer">Contact</a>
+      </a>
+
+      {/* Nav links + theme selector */}
+      <div className="flex items-center gap-6 md:gap-8">
+        <div className="flex gap-5 md:gap-8 text-xs font-semibold tracking-[0.15em] uppercase" style={{ color: 'var(--color-muted)' }}>
+          <a
+            href="#portfolio"
+            className="transition-colors duration-200 cursor-pointer hover:opacity-100"
+            style={{ color: 'var(--color-muted)' }}
+            onMouseEnter={e => e.target.style.color = 'var(--color-accent)'}
+            onMouseLeave={e => e.target.style.color = 'var(--color-muted)'}
+          >
+            Work
+          </a>
+          <a
+            href="#about"
+            className="transition-colors duration-200 cursor-pointer"
+            style={{ color: 'var(--color-muted)' }}
+            onMouseEnter={e => e.target.style.color = 'var(--color-accent)'}
+            onMouseLeave={e => e.target.style.color = 'var(--color-muted)'}
+          >
+            About
+          </a>
+          <a
+            href="#contact"
+            className="transition-colors duration-200 cursor-pointer"
+            style={{ color: 'var(--color-muted)' }}
+            onMouseEnter={e => e.target.style.color = 'var(--color-accent)'}
+            onMouseLeave={e => e.target.style.color = 'var(--color-muted)'}
+          >
+            Contact
+          </a>
         </div>
         <ThemeSelector />
       </div>
