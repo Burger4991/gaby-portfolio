@@ -27,8 +27,8 @@ export default function ScrollExpandHero({
   const [scrollProgress, setScrollProgress] = useState(0)
   const [isMobile, setIsMobile] = useState(false)
   const containerRef = useRef<HTMLDivElement>(null)
+  const scrollProgressRef = useRef(0)
 
-  const mediaFullyExpanded = scrollProgress >= 1
   const showContent = scrollProgress >= 0.75
 
   // Split title on first space
@@ -47,9 +47,11 @@ export default function ScrollExpandHero({
   // Scroll interception
   useEffect(() => {
     const handleWheel = (e: WheelEvent) => {
-      if (mediaFullyExpanded) return
+      if (scrollProgressRef.current >= 1) return
       e.preventDefault()
-      setScrollProgress(prev => Math.min(1, Math.max(0, prev + e.deltaY / 800)))
+      const newProgress = Math.min(1, Math.max(0, scrollProgressRef.current + e.deltaY / 800))
+      scrollProgressRef.current = newProgress
+      setScrollProgress(newProgress)
     }
 
     let touchStartY = 0
@@ -57,11 +59,13 @@ export default function ScrollExpandHero({
       touchStartY = e.touches[0].clientY
     }
     const handleTouchMove = (e: TouchEvent) => {
-      if (mediaFullyExpanded) return
+      if (scrollProgressRef.current >= 1) return
       e.preventDefault()
       const delta = touchStartY - e.touches[0].clientY
       touchStartY = e.touches[0].clientY
-      setScrollProgress(prev => Math.min(1, Math.max(0, prev + delta / 400)))
+      const newProgress = Math.min(1, Math.max(0, scrollProgressRef.current + delta / 400))
+      scrollProgressRef.current = newProgress
+      setScrollProgress(newProgress)
     }
 
     window.addEventListener('wheel', handleWheel, { passive: false })
@@ -72,12 +76,13 @@ export default function ScrollExpandHero({
       window.removeEventListener('touchstart', handleTouchStart)
       window.removeEventListener('touchmove', handleTouchMove)
     }
-  }, [mediaFullyExpanded])
+  }, [])
 
   // Derived dimensions
   const mediaWidth = 300 + scrollProgress * (isMobile ? 650 : 1250)
   const mediaHeight = 400 + scrollProgress * (isMobile ? 200 : 400)
-  const textTranslateX = scrollProgress * (isMobile ? 180 : 150)
+  const hasTwoWords = spaceIndex !== -1 && restOfTitle.length > 0
+  const effectiveTranslate = hasTwoWords ? scrollProgress * (isMobile ? 180 : 150) : 0
 
   return (
     <div
@@ -172,7 +177,7 @@ export default function ScrollExpandHero({
                 fontSize: 'clamp(3rem, 10vw, 8rem)',
                 color: 'var(--color-text)',
                 display: 'block',
-                translateX: -textTranslateX,
+                translateX: -effectiveTranslate,
                 lineHeight: 1,
               }}
             >
@@ -187,7 +192,7 @@ export default function ScrollExpandHero({
                   fontSize: 'clamp(3rem, 10vw, 8rem)',
                   color: 'var(--color-text)',
                   display: 'block',
-                  translateX: textTranslateX,
+                  translateX: effectiveTranslate,
                   lineHeight: 1,
                 }}
               >
