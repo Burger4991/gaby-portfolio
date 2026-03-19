@@ -22,9 +22,10 @@ export default function Portfolio() {
       </div>
 
       {/* Render all categories */}
-      {categories.map((cat) => (
+      {categories.map((cat, i) => (
         <PortfolioCategory
           key={cat.id}
+          number={String(i + 1).padStart(2, '0')}
           label={cat.label}
           subtitle={cat.subtitle}
           items={cat.items}

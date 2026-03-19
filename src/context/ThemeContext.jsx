@@ -2,7 +2,7 @@
 import { createContext, useContext, useEffect, useState } from 'react'
 
 const THEMES = ['latte', 'frappe', 'macchiato', 'mocha']
-const DEFAULT_THEME = 'latte'
+const DEFAULT_THEME = 'mocha'
 const STORAGE_KEY = 'gaby-portfolio-theme'
 
 const ThemeContext = createContext(null)

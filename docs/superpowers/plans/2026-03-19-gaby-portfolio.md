@@ -15,7 +15,10 @@
 | File | Action | Responsibility |
 |------|--------|----------------|
 | `src/data/portfolioData.js` | Create | All portfolio content — categories, items, metadata |
-| `src/components/Navbar.jsx` | Replace | Sticky nav, logo, links, backdrop blur |
+| `src/context/ThemeContext.jsx` | Create | Active theme state + localStorage persistence |
+| `src/components/ThemeSelector.jsx` | Create | 4-dot theme switcher rendered inside Navbar |
+| `src/index.css` | Modify | Add all 4 Catppuccin palettes as CSS custom properties |
+| `src/components/Navbar.jsx` | Replace | Sticky nav, logo, links, backdrop blur, ThemeSelector |
 | `src/components/Hero.jsx` | Replace | Full-screen intro, name, tagline, CTA |
 | `src/components/PortfolioCard.jsx` | Create | Single image card with hover overlay |
 | `src/components/PortfolioCategory.jsx` | Create | Section label + responsive grid of cards |

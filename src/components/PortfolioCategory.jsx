@@ -2,7 +2,7 @@ import { motion, useInView, useReducedMotion } from 'framer-motion'
 import { useRef } from 'react'
 import PortfolioCard from './PortfolioCard'
 
-export default function PortfolioCategory({ label, subtitle, items }) {
+export default function PortfolioCategory({ number, label, subtitle, items }) {
   const ref = useRef(null)
   const inView = useInView(ref, { once: true, margin: '-80px' })
   const prefersReduced = useReducedMotion()
@@ -16,12 +16,22 @@ export default function PortfolioCategory({ label, subtitle, items }) {
         animate={inView ? { opacity: 1, y: 0 } : {}}
         transition={{ duration: prefersReduced ? 0 : 0.6, ease: 'easeOut' }}
       >
-        <h3
-          className="text-3xl md:text-4xl font-light mb-2"
-          style={{ fontFamily: 'Cormorant Garamond, serif', color: 'var(--color-text)' }}
-        >
-          {label}
-        </h3>
+        <div className="flex items-baseline gap-4 mb-2">
+          {number && (
+            <span
+              className="text-xs font-semibold tracking-[0.3em]"
+              style={{ color: 'var(--color-accent)' }}
+            >
+              {number}
+            </span>
+          )}
+          <h3
+            className="text-3xl md:text-4xl font-light"
+            style={{ fontFamily: 'Cormorant Garamond, serif', color: 'var(--color-text)' }}
+          >
+            {label}
+          </h3>
+        </div>
         {subtitle && (
           <p className="text-sm tracking-wide" style={{ color: 'var(--color-muted)' }}>
             {subtitle}
@@ -31,7 +41,7 @@ export default function PortfolioCategory({ label, subtitle, items }) {
       </motion.div>
 
       {/* Responsive grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
         {items.map((item, i) => (
           <motion.div
             key={item.id}

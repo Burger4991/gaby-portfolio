@@ -55,7 +55,7 @@ export default function Hero() {
         </motion.p>
 
         <motion.h1
-          className="text-8xl md:text-[10rem] font-light leading-none mb-6"
+          className="text-8xl md:text-[10rem] font-light italic leading-none mb-6"
           style={{
             fontFamily: 'Cormorant Garamond, serif',
             color: heroImg ? 'white' : 'var(--color-text)',
