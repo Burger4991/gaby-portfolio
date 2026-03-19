@@ -2,7 +2,7 @@ import { motion, useInView, useReducedMotion } from 'framer-motion'
 import { useRef } from 'react'
 import PortfolioCard from './PortfolioCard'
 
-export default function PortfolioCategory({ number, label, subtitle, items }) {
+export default function PortfolioCategory({ number, label, subtitle, items, onOpen }) {
   const ref = useRef(null)
   const inView = useInView(ref, { once: true, margin: '-80px' })
   const prefersReduced = useReducedMotion()
@@ -58,6 +58,7 @@ export default function PortfolioCategory({ number, label, subtitle, items }) {
               title={item.title}
               alt={item.alt}
               category={label}
+              onOpen={() => onOpen({ src: item.src, title: item.title, alt: item.alt })}
             />
           </motion.div>
         ))}

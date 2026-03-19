@@ -1,11 +1,14 @@
 // src/components/Portfolio.jsx
+import { useState } from 'react'
 import { categories } from '../data/portfolioData'
 import PortfolioCategory from './PortfolioCategory'
+import Lightbox from './Lightbox'
 
 export default function Portfolio() {
+  const [lightbox, setLightbox] = useState(null) // { src, title, alt }
+
   return (
     <section id="portfolio" className="py-24 px-6 md:px-10 max-w-6xl mx-auto">
-      {/* Section header */}
       <div className="mb-16 text-center">
         <p
           className="text-xs font-semibold tracking-[0.4em] uppercase mb-4"
@@ -21,7 +24,6 @@ export default function Portfolio() {
         </h2>
       </div>
 
-      {/* Render all categories */}
       {categories.map((cat, i) => (
         <PortfolioCategory
           key={cat.id}
@@ -29,8 +31,16 @@ export default function Portfolio() {
           label={cat.label}
           subtitle={cat.subtitle}
           items={cat.items}
+          onOpen={(item) => setLightbox(item)}
         />
       ))}
+
+      <Lightbox
+        src={lightbox?.src}
+        title={lightbox?.title}
+        alt={lightbox?.alt}
+        onClose={() => setLightbox(null)}
+      />
     </section>
   )
 }
