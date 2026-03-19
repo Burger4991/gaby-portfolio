@@ -45,13 +45,26 @@ export default function About() {
             in wearability and craft.
           </p>
           <p
-            className="leading-relaxed text-base md:text-lg"
+            className="leading-relaxed text-base md:text-lg mb-8"
             style={{ color: 'var(--color-muted)' }}
           >
             {/* Replace with real philosophy */}
             She believes fashion should feel as good as it looks — and that the
             best designs start with a pencil and a blank page.
           </p>
+
+          {/* Skills — update with real tools/skills */}
+          <div className="flex flex-wrap gap-2">
+            {['Adobe Illustrator', 'Photoshop', 'Hand-Drawing', 'Pattern Making', 'Resort Wear', 'Trend Research', 'Sustainable Design'].map((skill) => (
+              <span
+                key={skill}
+                className="px-3 py-1 text-xs tracking-[0.12em] uppercase"
+                style={{ border: '1px solid var(--color-border)', color: 'var(--color-muted)' }}
+              >
+                {skill}
+              </span>
+            ))}
+          </div>
         </motion.div>
 
         {/* Image column */}

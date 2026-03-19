@@ -1,4 +1,5 @@
 import { motion, useReducedMotion } from 'framer-motion'
+import { ChevronDown } from 'lucide-react'
 
 export default function Hero() {
   const prefersReduced = useReducedMotion()
@@ -102,6 +103,18 @@ export default function Hero() {
           View Work
         </motion.a>
       </div>
+
+      {/* Scroll indicator */}
+      {!prefersReduced && (
+        <motion.div
+          className="absolute bottom-10 left-1/2 -translate-x-1/2"
+          animate={{ y: [0, 8, 0] }}
+          transition={{ repeat: Infinity, duration: 1.6, ease: 'easeInOut' }}
+          aria-hidden="true"
+        >
+          <ChevronDown size={22} style={{ color: 'var(--color-muted)', opacity: 0.6 }} />
+        </motion.div>
+      )}
     </section>
   )
 }
