@@ -80,6 +80,37 @@ export default function Hero() {
           Design & Direction — Bridging Creativity + Execution
         </motion.p>
 
+        {/* Stats */}
+        <motion.div
+          className="flex justify-center gap-8 md:gap-14 mb-12"
+          variants={fadeUp}
+          initial="hidden"
+          animate="visible"
+          custom={0.35}
+        >
+          {[
+            { value: '5 yrs', label: 'directing collections' },
+            { value: '10+ yrs', label: 'in apparel' },
+            { value: 'FIDM', label: 'Los Angeles' },
+            { value: 'Miami', label: 'based' },
+          ].map(({ value, label }) => (
+            <div key={value} className="text-center">
+              <div
+                className="text-sm font-semibold tracking-[0.1em] uppercase"
+                style={{ color: 'var(--color-text)' }}
+              >
+                {value}
+              </div>
+              <div
+                className="text-xs tracking-wide mt-0.5"
+                style={{ color: 'var(--color-muted)' }}
+              >
+                {label}
+              </div>
+            </div>
+          ))}
+        </motion.div>
+
         <motion.a
           href="#portfolio"
           className="inline-block px-10 py-3.5 text-xs font-semibold tracking-[0.25em] uppercase border transition-colors duration-300 cursor-pointer"
@@ -98,7 +129,7 @@ export default function Hero() {
           variants={fadeUp}
           initial="hidden"
           animate="visible"
-          custom={0.45}
+          custom={0.55}
         >
           View Work
         </motion.a>
