@@ -1,9 +1,10 @@
 export default function PortfolioCard({ src, title, alt, category }) {
   return (
     <div
-      className="relative overflow-hidden aspect-[3/4] cursor-pointer group"
-      style={{ backgroundColor: 'var(--color-card-bg)' }}
+      role="figure"
       aria-label={category ? `${title} — ${category}` : title}
+      className="relative overflow-hidden aspect-[3/4] group"
+      style={{ backgroundColor: 'var(--color-card-bg)' }}
     >
       <img
         src={src}

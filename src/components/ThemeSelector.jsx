@@ -27,7 +27,7 @@ export default function ThemeSelector() {
           onClick={() => setTheme(t)}
           aria-label={`Switch to ${FLAVOR_LABELS[t]}`}
           aria-pressed={theme === t}
-          className="w-4 h-4 rounded-full cursor-pointer transition-transform duration-150 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)] focus:ring-offset-2"
+          className="w-4 h-4 rounded-full cursor-pointer transition-transform duration-150 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)] focus:ring-offset-2 focus:ring-offset-[var(--color-bg)]"
           style={{
             backgroundColor: FLAVOR_COLORS[t],
             boxShadow: theme === t ? `0 0 0 2px var(--color-bg), 0 0 0 3.5px ${FLAVOR_COLORS[t]}` : 'none',
