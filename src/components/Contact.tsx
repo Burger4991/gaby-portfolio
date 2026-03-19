@@ -1,8 +1,39 @@
 'use client'
 
+import { useState } from 'react'
 import { Linkedin, Instagram } from 'lucide-react'
+import { sendEmail } from '@/app/actions/sendEmail'
+
+type Status = 'idle' | 'loading' | 'success' | 'error'
 
 export default function Contact() {
+  const [name, setName] = useState('')
+  const [email, setEmail] = useState('')
+  const [message, setMessage] = useState('')
+  const [status, setStatus] = useState<Status>('idle')
+  const [errorMessage, setErrorMessage] = useState<string | null>(null)
+
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault()
+    setStatus('loading')
+    setErrorMessage(null)
+
+    const result = await sendEmail({ name, email, message })
+
+    if (result.success) {
+      setStatus('success')
+      setName('')
+      setEmail('')
+      setMessage('')
+    } else {
+      setStatus('error')
+      setErrorMessage(result.error ?? 'Something went wrong.')
+    }
+  }
+
+  const buttonLabel =
+    status === 'loading' ? 'Sending...' : status === 'success' ? 'Sent!' : 'Send'
+
   return (
     <section id="contact" className="py-24 px-6 md:px-10" style={{ backgroundColor: 'var(--color-bg)' }}>
       <div className="max-w-2xl mx-auto text-center">
@@ -42,29 +73,65 @@ export default function Contact() {
             </a>
           ))}
         </div>
-        {/* Form — wired to Server Action in Task 12 */}
-        <form className="text-left space-y-6">
-          {[
-            { id: 'name', label: 'Name', type: 'text', placeholder: 'Your name' },
-            { id: 'email', label: 'Email', type: 'email', placeholder: 'your@email.com' },
-          ].map(({ id, label, type, placeholder }) => (
-            <div key={id}>
-              <label htmlFor={id} className="block text-xs font-semibold tracking-[0.15em] uppercase mb-2" style={{ color: 'var(--color-muted)' }}>{label}</label>
-              <input id={id} type={type} name={id} required placeholder={placeholder}
-                className="w-full px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)] transition-shadow duration-200"
-                style={{ backgroundColor: 'var(--color-surface)', border: '1px solid var(--color-border)', color: 'var(--color-text)' }} />
-            </div>
-          ))}
+        <form className="text-left space-y-6" onSubmit={handleSubmit}>
+          <div>
+            <label htmlFor="name" className="block text-xs font-semibold tracking-[0.15em] uppercase mb-2" style={{ color: 'var(--color-muted)' }}>Name</label>
+            <input
+              id="name"
+              type="text"
+              name="name"
+              required
+              placeholder="Your name"
+              value={name}
+              onChange={e => setName(e.target.value)}
+              className="w-full px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)] transition-shadow duration-200"
+              style={{ backgroundColor: 'var(--color-surface)', border: '1px solid var(--color-border)', color: 'var(--color-text)' }}
+            />
+          </div>
+          <div>
+            <label htmlFor="email" className="block text-xs font-semibold tracking-[0.15em] uppercase mb-2" style={{ color: 'var(--color-muted)' }}>Email</label>
+            <input
+              id="email"
+              type="email"
+              name="email"
+              required
+              placeholder="your@email.com"
+              value={email}
+              onChange={e => setEmail(e.target.value)}
+              className="w-full px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)] transition-shadow duration-200"
+              style={{ backgroundColor: 'var(--color-surface)', border: '1px solid var(--color-border)', color: 'var(--color-text)' }}
+            />
+          </div>
           <div>
             <label htmlFor="message" className="block text-xs font-semibold tracking-[0.15em] uppercase mb-2" style={{ color: 'var(--color-muted)' }}>Message</label>
-            <textarea id="message" name="message" required rows={5} placeholder="Tell me about your project..."
+            <textarea
+              id="message"
+              name="message"
+              required
+              rows={5}
+              placeholder="Tell me about your project..."
+              value={message}
+              onChange={e => setMessage(e.target.value)}
               className="w-full px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)] transition-shadow duration-200 resize-none"
-              style={{ backgroundColor: 'var(--color-surface)', border: '1px solid var(--color-border)', color: 'var(--color-text)' }} />
+              style={{ backgroundColor: 'var(--color-surface)', border: '1px solid var(--color-border)', color: 'var(--color-text)' }}
+            />
           </div>
-          <button type="submit"
-            className="w-full py-4 text-xs font-semibold tracking-[0.25em] uppercase transition-colors duration-300 cursor-pointer"
+          {status === 'success' && (
+            <p className="text-sm font-medium" style={{ color: 'var(--color-accent)' }}>
+              Message sent! I'll be in touch soon.
+            </p>
+          )}
+          {status === 'error' && errorMessage && (
+            <p className="text-sm font-medium" style={{ color: '#e53e3e' }}>
+              {errorMessage}
+            </p>
+          )}
+          <button
+            type="submit"
+            disabled={status === 'loading'}
+            className="w-full py-4 text-xs font-semibold tracking-[0.25em] uppercase transition-colors duration-300 cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
             style={{ backgroundColor: 'var(--color-accent)', color: 'var(--color-bg)' }}>
-            Send Message
+            {buttonLabel}
           </button>
         </form>
         <p className="mt-16 text-xs tracking-wide" style={{ color: 'var(--color-muted)', opacity: 0.6 }}>
