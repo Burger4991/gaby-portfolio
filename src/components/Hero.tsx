@@ -1,46 +1,39 @@
 'use client'
-
-import { ChevronDown } from 'lucide-react'
+import ScrollExpandHero from './ScrollExpandHero'
 
 export default function Hero() {
   return (
-    <section id="hero" className="relative min-h-screen flex items-center justify-center pt-20 px-6"
-      style={{ backgroundColor: 'var(--color-bg)' }}>
-      <div className="relative text-center max-w-2xl mx-auto">
-        <p className="text-xs font-semibold tracking-[0.4em] uppercase mb-6" style={{ color: 'var(--color-accent)' }}>
-          Fashion Designer
-        </p>
-        <h1 className="text-8xl md:text-[10rem] font-light italic leading-none mb-6"
-          style={{ fontFamily: 'Cormorant Garamond, serif', color: 'var(--color-text)' }}>
-          Gaby
-        </h1>
-        <p className="text-lg md:text-xl leading-relaxed mb-10" style={{ color: 'var(--color-muted)' }}>
-          Design & Direction — Bridging Creativity + Execution
-        </p>
-        <div className="flex justify-center gap-8 md:gap-14 mb-12">
-          {[
-            { value: '5 yrs', label: 'directing collections' },
-            { value: '10+ yrs', label: 'in apparel' },
-            { value: 'FIDM', label: 'Los Angeles' },
-            { value: 'Miami', label: 'based' },
-          ].map(({ value, label }) => (
-            <div key={value} className="text-center">
-              <div className="text-sm font-semibold tracking-[0.1em] uppercase" style={{ color: 'var(--color-text)' }}>{value}</div>
-              <div className="text-xs tracking-wide mt-0.5" style={{ color: 'var(--color-muted)' }}>{label}</div>
-            </div>
-          ))}
+    <ScrollExpandHero
+      mediaSrc="https://picsum.photos/seed/hero-main/1200/800"
+      bgImageSrc="https://picsum.photos/seed/hero-bg/1920/1080"
+      title="GABRIELA GAMARGO"
+      eyebrow="Fashion Designer"
+      scrollToExpand="↓ Scroll"
+    >
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '2rem', paddingTop: '2rem' }}>
+        <div style={{ display: 'flex', gap: '3rem', fontFamily: 'Manrope, sans-serif', fontSize: '0.75rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--color-muted)' }}>
+          <div><div style={{ fontSize: '1.5rem', color: 'var(--color-text)', fontFamily: 'Cormorant Garamond, serif', fontStyle: 'italic' }}>6+</div>Years Experience</div>
+          <div><div style={{ fontSize: '1.5rem', color: 'var(--color-text)', fontFamily: 'Cormorant Garamond, serif', fontStyle: 'italic' }}>12+</div>Collections</div>
+          <div><div style={{ fontSize: '1.5rem', color: 'var(--color-text)', fontFamily: 'Cormorant Garamond, serif', fontStyle: 'italic' }}>3</div>Countries</div>
+          <div><div style={{ fontSize: '1.5rem', color: 'var(--color-text)', fontFamily: 'Cormorant Garamond, serif', fontStyle: 'italic' }}>∞</div>Details</div>
         </div>
-        <a href="#portfolio"
-          className="inline-block px-10 py-3.5 text-xs font-semibold tracking-[0.25em] uppercase border transition-colors duration-300 cursor-pointer"
-          style={{ borderColor: 'var(--color-accent)', color: 'var(--color-accent)' }}
-          onMouseEnter={e => { const el = e.currentTarget as HTMLElement; el.style.backgroundColor = 'var(--color-accent)'; el.style.color = 'var(--color-bg)' }}
-          onMouseLeave={e => { const el = e.currentTarget as HTMLElement; el.style.backgroundColor = 'transparent'; el.style.color = 'var(--color-accent)' }}>
+        <a
+          href="#portfolio"
+          style={{
+            display: 'inline-block',
+            padding: '0.75rem 2.5rem',
+            border: '1px solid var(--color-accent)',
+            color: 'var(--color-accent)',
+            fontFamily: 'Manrope, sans-serif',
+            fontSize: '0.7rem',
+            letterSpacing: '0.3em',
+            textTransform: 'uppercase',
+            textDecoration: 'none',
+          }}
+        >
           View Work
         </a>
       </div>
-      <div className="absolute bottom-10 left-1/2 -translate-x-1/2" aria-hidden="true">
-        <ChevronDown size={22} style={{ color: 'var(--color-muted)', opacity: 0.6 }} />
-      </div>
-    </section>
+    </ScrollExpandHero>
   )
 }
