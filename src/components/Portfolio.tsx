@@ -1,14 +1,9 @@
 'use client'
 
-import { useState } from 'react'
 import { categories } from '@/data/portfolioData'
-import type { PortfolioItem } from '@/data/portfolioData'
 import ThreeDCarousel from './ThreeDCarousel'
-import Lightbox from './Lightbox'
 
 export default function Portfolio() {
-  const [activeItem, setActiveItem] = useState<PortfolioItem | null>(null)
-
   return (
     <section id="portfolio" style={{ padding: '6rem 0', background: 'var(--color-bg)' }}>
       {categories.map((category, i) => (
@@ -55,15 +50,9 @@ export default function Portfolio() {
             )}
           </div>
           {/* 3D Carousel */}
-          <ThreeDCarousel items={category.items} onOpen={setActiveItem} />
+          <ThreeDCarousel items={category.items} />
         </div>
       ))}
-      <Lightbox
-        src={activeItem?.src}
-        title={activeItem?.title}
-        alt={activeItem?.alt}
-        onClose={() => setActiveItem(null)}
-      />
     </section>
   )
 }

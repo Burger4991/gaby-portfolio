@@ -53,10 +53,10 @@ export default function PullQuote() {
   }, []) // words.length is stable (QUOTE is a const)
 
   return (
-    <section ref={sectionRef} className="py-20 md:py-32 px-6 md:px-10" style={{ backgroundColor: 'var(--color-bg)' }}>
+    <section ref={sectionRef} className="py-20 md:py-32 px-6 md:px-10" style={{ backgroundColor: 'var(--color-bg)', overflow: 'hidden' }}>
       <blockquote className="max-w-4xl mx-auto text-center">
         <p className="text-3xl md:text-4xl lg:text-5xl font-light italic leading-snug mb-8"
-          style={{ fontFamily: 'Cormorant Garamond, serif', color: 'var(--color-text)' }}>
+          style={{ fontFamily: 'Cormorant Garamond, serif', color: 'var(--color-text)', overflowWrap: 'break-word', wordBreak: 'break-word' }}>
           {words.map((word, i) => (
             <span
               key={i}

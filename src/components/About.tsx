@@ -131,7 +131,7 @@ export default function About() {
             scrollTrigger: {
               trigger: textColRef.current,
               start: 'top 70%',
-              end: 'bottom 40%',
+              end: 'bottom 80%',
               scrub: true,
               onUpdate(self) {
                 const segStart = progress

@@ -16,7 +16,7 @@ export default function CustomCursor() {
     const onMove = (e: MouseEvent) => {
       pos.current = { x: e.clientX, y: e.clientY }
       if (dotRef.current) {
-        dotRef.current.style.transform = `translate(${e.clientX}px, ${e.clientY}px)`
+        dotRef.current.style.transform = `translate(${e.clientX - 4}px, ${e.clientY - 4}px)`
       }
     }
 
@@ -29,7 +29,7 @@ export default function CustomCursor() {
       ring.current.x = lerp(ring.current.x, pos.current.x, 0.12)
       ring.current.y = lerp(ring.current.y, pos.current.y, 0.12)
       if (ringRef.current) {
-        ringRef.current.style.transform = `translate(${ring.current.x}px, ${ring.current.y}px)`
+        ringRef.current.style.transform = `translate(${ring.current.x - 18}px, ${ring.current.y - 18}px)`
       }
       raf.current = requestAnimationFrame(animate)
     }
