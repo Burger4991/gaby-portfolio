@@ -49,6 +49,7 @@ export default function Navbar() {
             <ThemeToggle />
           </div>
           <button
+            type="button"
             onClick={() => setOpen(o => !o)}
             aria-label={open ? 'Close menu' : 'Open menu'}
             aria-expanded={open}
@@ -74,6 +75,7 @@ export default function Navbar() {
         {open && (
           <motion.div
             className="fixed inset-0 z-40 flex flex-col items-center justify-center"
+            data-theme="dark"
             style={{ backgroundColor: 'rgba(17,17,27,0.97)' }}
             initial={{ opacity: 0, y: '-100%' }} animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: '-100%' }}
