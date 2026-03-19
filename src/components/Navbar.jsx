@@ -25,28 +25,22 @@ export default function Navbar() {
         <div className="flex gap-5 md:gap-8 text-xs font-semibold tracking-[0.15em] uppercase" style={{ color: 'var(--color-muted)' }}>
           <a
             href="#portfolio"
-            className="transition-colors duration-200 cursor-pointer hover:opacity-100"
+            className="transition-colors duration-200 cursor-pointer hover:text-[var(--color-accent)]"
             style={{ color: 'var(--color-muted)' }}
-            onMouseEnter={e => e.target.style.color = 'var(--color-accent)'}
-            onMouseLeave={e => e.target.style.color = 'var(--color-muted)'}
           >
             Work
           </a>
           <a
             href="#about"
-            className="transition-colors duration-200 cursor-pointer"
+            className="transition-colors duration-200 cursor-pointer hover:text-[var(--color-accent)]"
             style={{ color: 'var(--color-muted)' }}
-            onMouseEnter={e => e.target.style.color = 'var(--color-accent)'}
-            onMouseLeave={e => e.target.style.color = 'var(--color-muted)'}
           >
             About
           </a>
           <a
             href="#contact"
-            className="transition-colors duration-200 cursor-pointer"
+            className="transition-colors duration-200 cursor-pointer hover:text-[var(--color-accent)]"
             style={{ color: 'var(--color-muted)' }}
-            onMouseEnter={e => e.target.style.color = 'var(--color-accent)'}
-            onMouseLeave={e => e.target.style.color = 'var(--color-muted)'}
           >
             Contact
           </a>
