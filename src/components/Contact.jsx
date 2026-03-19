@@ -119,12 +119,11 @@ export default function Contact() {
                 name={id}
                 required
                 placeholder={placeholder}
-                className="w-full px-4 py-3 focus:outline-none focus:ring-2 transition-shadow duration-200"
+                className="w-full px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)] transition-shadow duration-200"
                 style={{
                   backgroundColor: 'var(--color-surface)',
                   border: '1px solid var(--color-border)',
                   color: 'var(--color-text)',
-                  '--tw-ring-color': 'var(--color-accent)',
                 }}
               />
             </div>
@@ -144,12 +143,11 @@ export default function Contact() {
               required
               rows={5}
               placeholder="Tell me about your project..."
-              className="w-full px-4 py-3 focus:outline-none focus:ring-2 transition-shadow duration-200 resize-none"
+              className="w-full px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)] transition-shadow duration-200 resize-none"
               style={{
                 backgroundColor: 'var(--color-surface)',
                 border: '1px solid var(--color-border)',
                 color: 'var(--color-text)',
-                '--tw-ring-color': 'var(--color-accent)',
               }}
             />
           </div>
