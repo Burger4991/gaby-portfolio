@@ -8,13 +8,13 @@ export default function PortfolioCategory({ number, label, subtitle, items, onOp
   const prefersReduced = useReducedMotion()
 
   return (
-    <div ref={ref} className="mb-20">
-      {/* Section header */}
+    <div ref={ref} className="mb-24">
+      {/* Section header — horizontal wipe reveal */}
       <motion.div
-        className="mb-8"
-        initial={{ opacity: 0, y: prefersReduced ? 0 : 20 }}
-        animate={inView ? { opacity: 1, y: 0 } : {}}
-        transition={{ duration: prefersReduced ? 0 : 0.6, ease: 'easeOut' }}
+        className="mb-8 overflow-hidden"
+        initial={{ clipPath: prefersReduced ? 'inset(0 0% 0 0)' : 'inset(0 100% 0 0)' }}
+        animate={inView ? { clipPath: 'inset(0 0% 0 0)' } : {}}
+        transition={{ duration: prefersReduced ? 0 : 0.7, ease: [0.25, 0.46, 0.45, 0.94] }}
       >
         <div className="flex items-baseline gap-4 mb-2">
           {number && (
@@ -40,17 +40,18 @@ export default function PortfolioCategory({ number, label, subtitle, items, onOp
         <div className="mt-4 w-12 h-px" style={{ backgroundColor: 'var(--color-accent)' }} />
       </motion.div>
 
-      {/* Responsive grid */}
+      {/* Asymmetric grid — first card spans 2 cols */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
         {items.map((item, i) => (
           <motion.div
             key={item.id}
-            initial={{ opacity: 0, y: prefersReduced ? 0 : 24 }}
-            animate={inView ? { opacity: 1, y: 0 } : {}}
+            className={i === 0 ? 'sm:col-span-2 lg:col-span-2' : ''}
+            initial={{ clipPath: prefersReduced ? 'inset(0% 0 0 0)' : 'inset(100% 0 0 0)' }}
+            animate={inView ? { clipPath: 'inset(0% 0 0 0)' } : {}}
             transition={{
-              duration: prefersReduced ? 0 : 0.5,
-              ease: 'easeOut',
-              delay: prefersReduced ? 0 : i * 0.1,
+              duration: prefersReduced ? 0 : 0.7,
+              ease: [0.25, 0.46, 0.45, 0.94],
+              delay: prefersReduced ? 0 : i * 0.12,
             }}
           >
             <PortfolioCard
@@ -59,6 +60,7 @@ export default function PortfolioCategory({ number, label, subtitle, items, onOp
               alt={item.alt}
               category={label}
               onOpen={() => onOpen({ src: item.src, title: item.title, alt: item.alt })}
+              featured={i === 0}
             />
           </motion.div>
         ))}
