@@ -9,7 +9,7 @@ const ThemeContext = createContext(null)
 
 export function ThemeProvider({ children }) {
   const [theme, setTheme] = useState(() => {
-    const saved = localStorage.getItem(STORAGE_KEY)
+    const saved = typeof localStorage !== 'undefined' ? localStorage.getItem(STORAGE_KEY) : null
     return THEMES.includes(saved) ? saved : DEFAULT_THEME
   })
 

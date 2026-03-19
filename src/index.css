@@ -41,7 +41,7 @@ html:not([data-theme]) {
   --color-accent:  var(--ctp-peach);
   --color-accent-hover: var(--ctp-maroon);
   --color-card-bg: var(--ctp-surface0);
-  --color-overlay: var(--ctp-text);
+  --color-overlay: var(--ctp-crust);
 }
 
 /* ─── Catppuccin Frappé (medium dark) ─── */
