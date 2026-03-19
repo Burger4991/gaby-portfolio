@@ -1,14 +1,9 @@
-import { useState } from 'react'
-
 export default function PortfolioCard({ src, title, alt, category }) {
-  const [hovered, setHovered] = useState(false)
-
   return (
     <div
       className="relative overflow-hidden aspect-[3/4] cursor-pointer group"
       style={{ backgroundColor: 'var(--color-card-bg)' }}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
+      aria-label={category ? `${title} — ${category}` : title}
     >
       <img
         src={src}
@@ -19,16 +14,13 @@ export default function PortfolioCard({ src, title, alt, category }) {
 
       {/* Hover overlay */}
       <div
-        className="absolute inset-0 flex flex-col items-center justify-center transition-opacity duration-300"
-        style={{
-          backgroundColor: 'var(--color-overlay)',
-          opacity: hovered ? 0.85 : 0,
-        }}
+        className="absolute inset-0 flex flex-col items-center justify-center transition-opacity duration-300 opacity-0 group-hover:opacity-[0.85]"
+        style={{ backgroundColor: 'var(--color-overlay)' }}
         aria-hidden="true"
       >
         <p
           className="text-xl font-light tracking-wide text-center px-4"
-          style={{ fontFamily: 'Cormorant Garamond, serif', color: 'var(--color-bg)' }}
+          style={{ fontFamily: 'Cormorant Garamond, serif', color: 'var(--color-text)' }}
         >
           {title}
         </p>
