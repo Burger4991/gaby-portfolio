@@ -1,14 +1,50 @@
-import { motion, useInView, useReducedMotion } from 'framer-motion'
+import { motion, useInView, useScroll, useTransform, useReducedMotion } from 'framer-motion'
 import { useRef } from 'react'
+
+function Word({ children, progress, range }) {
+  const opacity = useTransform(progress, range, [0.1, 1])
+  return (
+    <motion.span style={{ opacity }} className="inline-block mr-[0.25em]">
+      {children}
+    </motion.span>
+  )
+}
+
+function WordReveal({ text, progress, className, style }) {
+  const words = text.split(' ')
+  return (
+    <span className={className} style={style}>
+      {words.map((word, i) => (
+        <Word
+          key={i}
+          progress={progress}
+          range={[i / words.length, Math.min((i + 1) / words.length, 1)]}
+        >
+          {word}
+        </Word>
+      ))}
+    </span>
+  )
+}
+
+const BIO_P1 =
+  "I'm Gabriela (Gaby) Gamargo, a fashion designer with 5 years of experience guiding women's collections from concept through creation & 10+ years working in the apparel industry. Since high school, fashion design has been my way of blending creativity with structure."
 
 export default function About() {
   const ref = useRef(null)
+  const sectionRef = useRef(null)
   const inView = useInView(ref, { once: true, margin: '-80px' })
   const prefersReduced = useReducedMotion()
+
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ['start 0.6', 'end 0.4'],
+  })
 
   return (
     <section
       id="about"
+      ref={sectionRef}
       className="py-24 px-6 md:px-10"
       style={{ backgroundColor: 'var(--color-surface)' }}
     >
@@ -38,10 +74,11 @@ export default function About() {
             className="leading-relaxed text-base md:text-lg mb-6"
             style={{ color: 'var(--color-muted)' }}
           >
-            I'm Gabriela (Gaby) Gamargo, a fashion designer with 5 years of
-            experience guiding women's collections from concept through creation
-            & 10+ years working in the apparel industry. Since high school, fashion
-            design has been my way of blending creativity with structure.
+            {prefersReduced ? (
+              BIO_P1
+            ) : (
+              <WordReveal text={BIO_P1} progress={scrollYProgress} />
+            )}
           </p>
           <p
             className="leading-relaxed text-base md:text-lg mb-6"
@@ -85,7 +122,6 @@ export default function About() {
           animate={inView ? { opacity: 1, x: 0 } : {}}
           transition={{ duration: prefersReduced ? 0 : 0.7, ease: 'easeOut', delay: prefersReduced ? 0 : 0.15 }}
         >
-          {/* Replace src with a real process shot or portrait */}
           <img
             src="/images/about-placeholder.jpg"
             alt="Gaby at work — process shot"

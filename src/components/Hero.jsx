@@ -1,8 +1,15 @@
-import { motion, useReducedMotion } from 'framer-motion'
+import { motion, useReducedMotion, useScroll, useTransform } from 'framer-motion'
 import { ChevronDown } from 'lucide-react'
 
 export default function Hero() {
   const prefersReduced = useReducedMotion()
+
+  const { scrollY } = useScroll()
+
+  // Parallax transforms — name lingers, label/tagline/stats/CTA move faster
+  const nameY = useTransform(scrollY, [0, 500], [0, -80])
+  const contentY = useTransform(scrollY, [0, 500], [0, -140])
+  const opacity = useTransform(scrollY, [0, 400], [1, 0])
 
   const fadeUp = {
     hidden: { opacity: 0, y: prefersReduced ? 0 : 24 },
@@ -44,9 +51,14 @@ export default function Hero() {
       )}
 
       <div className="relative text-center max-w-2xl mx-auto">
+        {/* Label — faster parallax layer */}
         <motion.p
           className="text-xs font-semibold tracking-[0.4em] uppercase mb-6"
-          style={{ color: 'var(--color-accent)' }}
+          style={{
+            color: 'var(--color-accent)',
+            y: prefersReduced ? 0 : contentY,
+            opacity: prefersReduced ? 1 : opacity,
+          }}
           variants={fadeUp}
           initial="hidden"
           animate="visible"
@@ -55,11 +67,13 @@ export default function Hero() {
           Fashion Designer
         </motion.p>
 
+        {/* Name — slow/lingering parallax layer */}
         <motion.h1
           className="text-8xl md:text-[10rem] font-light italic leading-none mb-6"
           style={{
             fontFamily: 'Cormorant Garamond, serif',
             color: heroImg ? 'white' : 'var(--color-text)',
+            y: prefersReduced ? 0 : nameY,
           }}
           variants={fadeUp}
           initial="hidden"
@@ -69,9 +83,14 @@ export default function Hero() {
           Gaby
         </motion.h1>
 
+        {/* Tagline — faster parallax layer */}
         <motion.p
           className="text-lg md:text-xl leading-relaxed mb-10"
-          style={{ color: heroImg ? 'rgba(255,255,255,0.8)' : 'var(--color-muted)' }}
+          style={{
+            color: heroImg ? 'rgba(255,255,255,0.8)' : 'var(--color-muted)',
+            y: prefersReduced ? 0 : contentY,
+            opacity: prefersReduced ? 1 : opacity,
+          }}
           variants={fadeUp}
           initial="hidden"
           animate="visible"
@@ -80,9 +99,13 @@ export default function Hero() {
           Design & Direction — Bridging Creativity + Execution
         </motion.p>
 
-        {/* Stats */}
+        {/* Stats — faster parallax layer */}
         <motion.div
           className="flex justify-center gap-8 md:gap-14 mb-12"
+          style={{
+            y: prefersReduced ? 0 : contentY,
+            opacity: prefersReduced ? 1 : opacity,
+          }}
           variants={fadeUp}
           initial="hidden"
           animate="visible"
@@ -111,12 +134,15 @@ export default function Hero() {
           ))}
         </motion.div>
 
+        {/* CTA — faster parallax layer */}
         <motion.a
           href="#portfolio"
           className="inline-block px-10 py-3.5 text-xs font-semibold tracking-[0.25em] uppercase border transition-colors duration-300 cursor-pointer"
           style={{
             borderColor: 'var(--color-accent)',
             color: 'var(--color-accent)',
+            y: prefersReduced ? 0 : contentY,
+            opacity: prefersReduced ? 1 : opacity,
           }}
           onMouseEnter={e => {
             e.currentTarget.style.backgroundColor = 'var(--color-accent)'
