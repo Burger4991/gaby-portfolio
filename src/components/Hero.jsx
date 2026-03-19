@@ -1,17 +1,106 @@
+import { motion, useReducedMotion } from 'framer-motion'
+
 export default function Hero() {
+  const prefersReduced = useReducedMotion()
+
+  const fadeUp = {
+    hidden: { opacity: 0, y: prefersReduced ? 0 : 24 },
+    visible: (delay = 0) => ({
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: prefersReduced ? 0 : 0.8,
+        ease: 'easeOut',
+        delay: prefersReduced ? 0 : delay,
+      },
+    }),
+  }
+
+  // Set heroImg to a root-relative path like '/images/hero.jpg' when available.
+  // null = cream/bg fallback (the default shipped state).
+  const heroImg = null
+
   return (
-    <section id="hero" className="min-h-screen flex items-center justify-center pt-20 px-8">
-      <div className="text-center">
-        <p className="text-sm font-medium tracking-[0.3em] text-[#C4704A] uppercase mb-4">Fashion Designer</p>
-        <h1 style={{ fontFamily: 'Cormorant Garamond, serif' }} className="text-7xl md:text-9xl font-light text-[#1C1917] leading-none mb-6">
+    <section
+      id="hero"
+      className="relative min-h-screen flex items-center justify-center pt-20 px-6"
+      style={{
+        backgroundColor: 'var(--color-bg)',
+        ...(heroImg && {
+          backgroundImage: `url(${heroImg})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+        }),
+      }}
+    >
+      {/* Dark overlay — only when hero image is present */}
+      {heroImg && (
+        <div
+          className="absolute inset-0"
+          style={{ backgroundColor: 'var(--color-overlay)', opacity: 0.5 }}
+          aria-hidden="true"
+        />
+      )}
+
+      <div className="relative text-center max-w-2xl mx-auto">
+        <motion.p
+          className="text-xs font-semibold tracking-[0.4em] uppercase mb-6"
+          style={{ color: 'var(--color-accent)' }}
+          variants={fadeUp}
+          initial="hidden"
+          animate="visible"
+          custom={0}
+        >
+          Fashion Designer
+        </motion.p>
+
+        <motion.h1
+          className="text-8xl md:text-[10rem] font-light leading-none mb-6"
+          style={{
+            fontFamily: 'Cormorant Garamond, serif',
+            color: heroImg ? 'white' : 'var(--color-text)',
+          }}
+          variants={fadeUp}
+          initial="hidden"
+          animate="visible"
+          custom={0.15}
+        >
           Gaby
-        </h1>
-        <p className="text-[#78716C] text-lg max-w-md mx-auto leading-relaxed">
-          Resort wear, sketches, and everything in between.
-        </p>
-        <a href="#portfolio" className="inline-block mt-10 px-8 py-3 border border-[#C4704A] text-[#C4704A] text-sm tracking-widest uppercase hover:bg-[#C4704A] hover:text-white transition-colors duration-300 cursor-pointer">
+        </motion.h1>
+
+        <motion.p
+          className="text-lg md:text-xl leading-relaxed mb-10"
+          style={{ color: heroImg ? 'rgba(255,255,255,0.8)' : 'var(--color-muted)' }}
+          variants={fadeUp}
+          initial="hidden"
+          animate="visible"
+          custom={0.3}
+        >
+          Resort wear, hand-drawn sketches, and everything in between.
+        </motion.p>
+
+        <motion.a
+          href="#portfolio"
+          className="inline-block px-10 py-3.5 text-xs font-semibold tracking-[0.25em] uppercase border transition-colors duration-300 cursor-pointer"
+          style={{
+            borderColor: 'var(--color-accent)',
+            color: 'var(--color-accent)',
+          }}
+          onMouseEnter={e => {
+            e.currentTarget.style.backgroundColor = 'var(--color-accent)'
+            e.currentTarget.style.color = 'var(--color-bg)'
+          }}
+          onMouseLeave={e => {
+            e.currentTarget.style.backgroundColor = 'transparent'
+            e.currentTarget.style.color = 'var(--color-accent)'
+          }}
+          variants={fadeUp}
+          initial="hidden"
+          animate="visible"
+          custom={0.45}
+        >
           View Work
-        </a>
+        </motion.a>
       </div>
     </section>
   )
