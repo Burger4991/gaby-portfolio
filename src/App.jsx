@@ -9,22 +9,18 @@ import About from './components/About'
 import Contact from './components/Contact'
 import BackToTop from './components/BackToTop'
 import CustomCursor from './components/CustomCursor'
-import ScrollSkew from './components/ScrollSkew'
-
 export default function App() {
   return (
     <ThemeProvider>
       <Navbar />
-      <ScrollSkew>
-        <main>
-          <Hero />
-          <Marquee />
-          <Portfolio />
-          <PullQuote />
-          <About />
-          <Contact />
-        </main>
-      </ScrollSkew>
+      <main>
+        <Hero />
+        <Marquee />
+        <Portfolio />
+        <PullQuote />
+        <About />
+        <Contact />
+      </main>
       <BackToTop />
       <CustomCursor />
     </ThemeProvider>

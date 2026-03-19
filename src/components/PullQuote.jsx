@@ -37,7 +37,7 @@ export default function PullQuote() {
 
   const { scrollYProgress } = useScroll({
     target: sectionRef,
-    offset: ['start 0.8', 'end 0.2'],
+    offset: ['start 0.9', 'start 0.1'],
   })
 
   return (

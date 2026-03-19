@@ -38,7 +38,7 @@ export default function About() {
 
   const { scrollYProgress } = useScroll({
     target: sectionRef,
-    offset: ['start 0.6', 'end 0.4'],
+    offset: ['start 0.8', 'start 0.2'],
   })
 
   return (
