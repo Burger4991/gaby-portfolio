@@ -1,0 +1,246 @@
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Manrope:wght@300;400;500;600&display=swap');
+
+  .pair-wrap {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    border-radius: 6px;
+    overflow: hidden;
+    margin: 20px 0 12px;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.25);
+  }
+
+  /* ── DARK SIDE (A) ── */
+  .side-dark {
+    background: #0C0C0E;
+    padding: 28px 24px 32px;
+    position: relative;
+    overflow: hidden;
+  }
+  .side-dark::after {
+    content: '';
+    position: absolute; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)' opacity='0.035'/%3E%3C/svg%3E");
+    pointer-events: none;
+  }
+
+  /* ── LIGHT SIDE (B) ── */
+  .side-light {
+    background: #F8F4EE;
+    padding: 28px 24px 32px;
+    border-left: 1px solid rgba(0,0,0,0.06);
+  }
+
+  /* shared layout */
+  .side-label {
+    font-family: 'Manrope', sans-serif;
+    font-size: 8px;
+    font-weight: 600;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .side-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+  }
+  .side-dark .side-label { color: #B8965A; }
+  .side-dark .side-label::after { background: #1f1f25; }
+  .side-light .side-label { color: #A0673A; }
+  .side-light .side-label::after { background: #E5DDD3; }
+
+  .s-eyebrow {
+    font-family: 'Manrope', sans-serif;
+    font-size: 8px;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .side-dark .s-eyebrow { color: #B8965A; }
+  .side-light .s-eyebrow { color: #A0673A; }
+
+  .s-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 52px;
+    font-style: italic;
+    font-weight: 300;
+    line-height: 0.95;
+    margin-bottom: 10px;
+  }
+  .side-dark .s-name { color: #EDE8DF; }
+  .side-light .s-name { color: #1C1610; }
+
+  .s-sub {
+    font-family: 'Manrope', sans-serif;
+    font-size: 8px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+  .side-dark .s-sub { color: #5C5349; }
+  .side-light .s-sub { color: #9A8E84; }
+
+  /* card previews */
+  .card-row {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 6px;
+    margin-top: 20px;
+  }
+  .card-preview {
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .card-img {
+    width: 100%;
+    aspect-ratio: 4/3;
+    display: block;
+    object-fit: cover;
+  }
+  .card-img-tall {
+    width: 100%;
+    aspect-ratio: 3/4;
+    display: block;
+    object-fit: cover;
+  }
+  .side-dark .card-preview { background: #1A1A20; }
+  .side-light .card-preview { background: #EDE7DF; }
+
+  .card-inner {
+    height: 80px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 8px;
+  }
+  .card-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 11px;
+    font-style: italic;
+    font-weight: 300;
+  }
+  .side-dark .card-title { color: #EDE8DF; }
+  .side-light .card-title { color: #1C1610; }
+
+  .card-cat {
+    font-family: 'Manrope', sans-serif;
+    font-size: 7px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-top: 2px;
+  }
+  .side-dark .card-cat { color: #5C5349; }
+  .side-light .card-cat { color: #9A8E84; }
+
+  /* accent line */
+  .accent-line {
+    width: 32px;
+    height: 1px;
+    margin-bottom: 20px;
+  }
+  .side-dark .accent-line { background: #B8965A; }
+  .side-light .accent-line { background: #A0673A; }
+
+  /* toggle indicator */
+  .toggle-area {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 16px;
+    font-family: 'Manrope', sans-serif;
+    font-size: 10px;
+    color: #6c7086;
+    letter-spacing: 0.1em;
+  }
+  .toggle-icon {
+    width: 32px; height: 16px;
+    border-radius: 8px;
+    background: linear-gradient(to right, #0C0C0E 50%, #F8F4EE 50%);
+    border: 1px solid #414559;
+    display: inline-block;
+  }
+
+  .option-cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin: 16px 0;
+  }
+  .option {
+    border-radius: 4px;
+    padding: 14px 16px;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: border-color 0.15s;
+    background: #1e1e2e;
+  }
+  .option:hover, .option.selected { border-color: #a78bfa; }
+  .option h3 { font-size: 12px; color: #cdd6f4; margin: 0 0 4px; }
+  .option p { font-size: 11px; color: #6c7086; margin: 0; line-height: 1.5; }
+
+  @media (max-width: 640px) {
+    .pair-wrap { grid-template-columns: 1fr; }
+    .option-cards { grid-template-columns: 1fr; }
+  }
+</style>
+
+<h2>A + B as a theme pair</h2>
+<p class="subtitle">Dark Luxury and Warm Ivory work perfectly as two sides of the same brand — one dark, one light. The same typography, spacing, and components; just the palette switches.</p>
+
+<div class="pair-wrap">
+  <div class="side-dark">
+    <div class="side-label">Dark · Evening</div>
+    <div class="s-eyebrow">Fashion Designer</div>
+    <div class="s-name">Gaby</div>
+    <div class="s-sub">Design &amp; Direction</div>
+    <div class="accent-line"></div>
+    <div class="card-row">
+      <div class="card-preview">
+        <img class="card-img" src="https://picsum.photos/seed/resort2/400/300" alt="" />
+      </div>
+      <div class="card-preview">
+        <img class="card-img-tall" src="https://picsum.photos/seed/bridal1/200/267" alt="" />
+      </div>
+    </div>
+  </div>
+  <div class="side-light">
+    <div class="side-label">Light · Studio</div>
+    <div class="s-eyebrow">Fashion Designer</div>
+    <div class="s-name">Gaby</div>
+    <div class="s-sub">Design &amp; Direction</div>
+    <div class="accent-line"></div>
+    <div class="card-row">
+      <div class="card-preview">
+        <img class="card-img" src="https://picsum.photos/seed/resort2/400/300" alt="" />
+      </div>
+      <div class="card-preview">
+        <img class="card-img-tall" src="https://picsum.photos/seed/bridal1/200/267" alt="" />
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toggle-area">
+  <span>Dark default</span>
+  <span class="toggle-icon"></span>
+  <span>Light default</span>
+</div>
+
+<p class="subtitle" style="margin-top: 20px;">Which should be the <strong style="color:#cdd6f4">default</strong> when someone visits the site for the first time?</p>
+
+<div class="option-cards">
+  <div class="option" data-choice="dark-default" onclick="toggleSelect(this)">
+    <h3>Dark default</h3>
+    <p>Most visitors land on the dark version. Feels more cinematic and editorial. Better at night, better on OLED screens. Sets a strong first impression.</p>
+  </div>
+  <div class="option" data-choice="light-default" onclick="toggleSelect(this)">
+    <h3>Light default</h3>
+    <p>Most visitors land on the warm ivory. Feels more approachable and tactile. Fashion work pops on light backgrounds. Better for daytime viewing and print.</p>
+  </div>
+</div>

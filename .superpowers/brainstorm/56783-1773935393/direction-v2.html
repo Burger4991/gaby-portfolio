@@ -1,0 +1,235 @@
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Manrope:wght@300;400;500&display=swap');
+
+  .dir-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin: 20px 0;
+  }
+  .dir-card {
+    border-radius: 3px;
+    overflow: hidden;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: border-color 0.15s, transform 0.15s;
+  }
+  .dir-card:hover { transform: translateY(-3px); }
+  .dir-card.selected { border-color: #a78bfa; }
+
+  /* ── PREVIEW PANELS ── */
+  .preview {
+    height: 300px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 32px 20px 20px;
+    text-align: center;
+    overflow: hidden;
+  }
+
+  /* fake nav */
+  .p-nav {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 14px;
+    font-size: 9px;
+    letter-spacing: 0.18em;
+    font-family: 'Manrope', sans-serif;
+    font-weight: 500;
+  }
+  .p-burger { display: flex; flex-direction: column; gap: 3px; }
+  .p-burger span { display: block; width: 14px; height: 1px; }
+
+  .p-eyebrow {
+    font-family: 'Manrope', sans-serif;
+    font-size: 8px;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  .p-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 62px;
+    font-style: italic;
+    font-weight: 300;
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+  .p-sub {
+    font-family: 'Manrope', sans-serif;
+    font-size: 8px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    margin-bottom: 18px;
+  }
+  .p-btn {
+    font-family: 'Manrope', sans-serif;
+    font-size: 7px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    padding: 5px 16px;
+    display: inline-block;
+  }
+  .p-divider {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 2px;
+  }
+
+  /* ── A: DARK LUXURY ── */
+  .a .preview   { background: #0C0C0E; }
+  .a .p-nav     { background: rgba(12,12,14,0.92); border-bottom: 1px solid #1f1f25; color: #EDE8DF; }
+  .a .p-burger span { background: #EDE8DF; }
+  .a .p-eyebrow { color: #B8965A; }
+  .a .p-name    { color: #EDE8DF; }
+  .a .p-sub     { color: #6B6358; }
+  .a .p-btn     { border: 1px solid #B8965A; color: #B8965A; }
+  .a .p-divider { background: #B8965A; }
+  /* grain overlay */
+  .a .preview::after {
+    content: '';
+    position: absolute; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)' opacity='0.05'/%3E%3C/svg%3E");
+    pointer-events: none;
+    opacity: 0.5;
+  }
+
+  /* ── B: WARM IVORY ── */
+  .b .preview   { background: #F8F4EE; }
+  .b .p-nav     { background: rgba(248,244,238,0.92); border-bottom: 1px solid #E5DDD3; color: #1C1610; }
+  .b .p-burger span { background: #1C1610; }
+  .b .p-eyebrow { color: #A0673A; }
+  .b .p-name    { color: #1C1610; }
+  .b .p-sub     { color: #9A8E84; }
+  .b .p-btn     { border: 1px solid #A0673A; color: #A0673A; }
+  .b .p-divider { background: #A0673A; }
+
+  /* ── C: COOL STUDIO ── */
+  .c .preview   { background: #F2F2F0; }
+  .c .p-nav     { background: rgba(242,242,240,0.92); border-bottom: 1px solid #DDDDD9; color: #0D0D0D; }
+  .c .p-burger span { background: #0D0D0D; }
+  .c .p-eyebrow { color: #C63B30; }
+  .c .p-name    { color: #0D0D0D; }
+  .c .p-sub     { color: #7A7A7A; }
+  .c .p-btn     { border: 1px solid #0D0D0D; color: #0D0D0D; }
+  .c .p-divider { background: #C63B30; }
+
+  /* ── LABEL ── */
+  .label-block {
+    padding: 14px 16px;
+  }
+  .a .label-block { background: #121218; }
+  .b .label-block { background: #F0EBE3; }
+  .c .label-block { background: #EAEAE7; }
+
+  .label-title {
+    font-family: 'Manrope', sans-serif;
+    font-weight: 500;
+    font-size: 12px;
+    margin: 0 0 5px;
+  }
+  .a .label-title { color: #EDE8DF; }
+  .b .label-title { color: #1C1610; }
+  .c .label-title { color: #0D0D0D; }
+
+  .label-desc {
+    font-family: 'Manrope', sans-serif;
+    font-size: 10.5px;
+    line-height: 1.55;
+    margin: 0;
+  }
+  .a .label-desc { color: #6B6358; }
+  .b .label-desc { color: #9A8E84; }
+  .c .label-desc { color: #7A7A7A; }
+
+  .inspo {
+    font-size: 9.5px;
+    font-style: italic;
+    margin-top: 5px;
+    display: block;
+  }
+  .a .inspo { color: #B8965A; }
+  .b .inspo { color: #A0673A; }
+  .c .inspo { color: #C63B30; }
+
+  @media (max-width: 680px) {
+    .dir-grid { grid-template-columns: 1fr; }
+  }
+</style>
+
+<h2>Design direction</h2>
+<p class="subtitle">Pick the aesthetic that fits Gaby's brand. Each direction covers color, mood, and the redesign with GSAP + Next.js.</p>
+
+<div class="dir-grid">
+
+  <!-- A -->
+  <div class="dir-card a" data-choice="a" onclick="toggleSelect(this)">
+    <div class="preview">
+      <div class="p-nav">
+        G. GAMARGO
+        <div class="p-burger"><span></span><span></span><span></span></div>
+      </div>
+      <div class="p-eyebrow">Fashion Designer</div>
+      <div class="p-name">Gaby</div>
+      <div class="p-sub">Design &amp; Direction</div>
+      <div class="p-btn">View Work</div>
+      <div class="p-divider"></div>
+    </div>
+    <div class="label-block">
+      <p class="label-title">A — Dark Luxury</p>
+      <p class="label-desc">Near-black + warm cream + gold accent. Cinematic, weighty, editorial. Film grain stays. Most similar to current direction, but fully refined.
+        <span class="inspo">Bottega Veneta · Maison Margiela · The Row</span>
+      </p>
+    </div>
+  </div>
+
+  <!-- B -->
+  <div class="dir-card b" data-choice="b" onclick="toggleSelect(this)">
+    <div class="preview">
+      <div class="p-nav">
+        G. GAMARGO
+        <div class="p-burger"><span></span><span></span><span></span></div>
+      </div>
+      <div class="p-eyebrow">Fashion Designer</div>
+      <div class="p-name">Gaby</div>
+      <div class="p-sub">Design &amp; Direction</div>
+      <div class="p-btn">View Work</div>
+      <div class="p-divider"></div>
+    </div>
+    <div class="label-block">
+      <p class="label-title">B — Warm Ivory</p>
+      <p class="label-desc">Warm off-white + rich dark brown + terracotta. Sun-lit, tactile, elegant. Feels handcrafted and refined. Very flattering for resort and bridal work.
+        <span class="inspo">TOTEME · COS · Celine · Jacquemus</span>
+      </p>
+    </div>
+  </div>
+
+  <!-- C -->
+  <div class="dir-card c" data-choice="c" onclick="toggleSelect(this)">
+    <div class="preview">
+      <div class="p-nav">
+        G. GAMARGO
+        <div class="p-burger"><span></span><span></span><span></span></div>
+      </div>
+      <div class="p-eyebrow">Fashion Designer</div>
+      <div class="p-name">Gaby</div>
+      <div class="p-sub">Design &amp; Direction</div>
+      <div class="p-btn">View Work</div>
+      <div class="p-divider"></div>
+    </div>
+    <div class="label-block">
+      <p class="label-title">C — Cool Studio</p>
+      <p class="label-desc">Cool off-white + near-black + editorial red accent. High contrast, graphic, magazine-grade. Photos pop on a neutral ground. Feels like a fashion publication.
+        <span class="inspo">AnOther Mag · Vogue Italia · A.P.C.</span>
+      </p>
+    </div>
+  </div>
+
+</div>
