@@ -3,16 +3,23 @@
 
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import Link from 'next/link'
 import ThemeToggle from './ThemeToggle'
+import { categories } from '@/data/portfolioData'
 
 const links = [
-  { label: 'Work', href: '#portfolio' },
-  { label: 'About', href: '#about' },
-  { label: 'Contact', href: '#contact' },
+  { label: 'Work', href: '/#portfolio' },
+  { label: 'About', href: '/#about' },
+  { label: 'Contact', href: '/#contact' },
 ]
 
 export default function Navbar() {
   const [open, setOpen] = useState(false)
+
+  const collectionLinks = categories.map((c) => ({
+    label: c.label,
+    href: `/work/${c.id}`,
+  }))
 
   useEffect(() => {
     const handler = (e: KeyboardEvent) => { if (e.key === 'Escape') setOpen(false) }
@@ -35,11 +42,11 @@ export default function Navbar() {
         }}
       >
         <a
-          href="#hero"
+          href="/"
           onClick={() => setOpen(false)}
           className="text-xl font-semibold tracking-[0.2em] transition-opacity duration-200 hover:opacity-70 cursor-pointer"
           style={{ fontFamily: 'Cormorant Garamond, serif', color: open ? 'white' : 'var(--color-text)', position: 'relative', zIndex: 60 }}
-          aria-label="Gabriela Gamargo — back to top"
+          aria-label="Gabriela Gamargo — home"
         >
           G. GAMARGO
         </a>
@@ -82,7 +89,53 @@ export default function Navbar() {
             transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
           >
             <nav className="flex flex-col items-center gap-2 mb-16">
-              {links.map(({ label, href }, i) => (
+              <motion.a
+                key="Work" href="/#portfolio" onClick={() => setOpen(false)}
+                className="block cursor-pointer"
+                style={{ fontFamily: 'Cormorant Garamond, serif', color: 'rgba(255,255,255,0.85)', fontSize: 'clamp(3rem, 10vw, 6rem)', fontWeight: 300, fontStyle: 'italic', lineHeight: 1.1 }}
+                onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color = 'var(--color-accent)' }}
+                onMouseLeave={e => { (e.currentTarget as HTMLElement).style.color = 'rgba(255,255,255,0.85)' }}
+                initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4, delay: 0.2, ease: 'easeOut' }}
+              >
+                Work
+              </motion.a>
+
+              <motion.div
+                style={{
+                  display: 'flex',
+                  gap: '1.25rem',
+                  flexWrap: 'wrap',
+                  justifyContent: 'center',
+                  marginTop: '-0.75rem',
+                  marginBottom: '0.5rem',
+                }}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.3, delay: 0.3 }}
+              >
+                {collectionLinks.map(({ label, href }) => (
+                  <Link
+                    key={href}
+                    href={href}
+                    onClick={() => setOpen(false)}
+                    style={{
+                      fontFamily: 'Manrope, sans-serif',
+                      fontSize: '0.6rem',
+                      letterSpacing: '0.28em',
+                      textTransform: 'uppercase' as const,
+                      color: 'var(--color-accent)',
+                      textDecoration: 'none',
+                      borderBottom: '1px solid rgba(184,150,90,0.35)',
+                      paddingBottom: '1px',
+                    }}
+                  >
+                    {label}
+                  </Link>
+                ))}
+              </motion.div>
+
+              {links.filter(l => l.label !== 'Work').map(({ label, href }, i) => (
                 <motion.a
                   key={label} href={href} onClick={() => setOpen(false)}
                   className="block cursor-pointer"
@@ -90,7 +143,7 @@ export default function Navbar() {
                   onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color = 'var(--color-accent)' }}
                   onMouseLeave={e => { (e.currentTarget as HTMLElement).style.color = 'rgba(255,255,255,0.85)' }}
                   initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.4, delay: 0.2 + i * 0.08, ease: 'easeOut' }}
+                  transition={{ duration: 0.4, delay: 0.28 + i * 0.08, ease: 'easeOut' }}
                 >
                   {label}
                 </motion.a>
