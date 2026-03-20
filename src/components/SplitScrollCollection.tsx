@@ -6,7 +6,7 @@ import type { PortfolioCategory } from '@/data/portfolioData'
 import CollectionCarousel from './CollectionCarousel'
 
 export default function SplitScrollCollection({ category }: { category: PortfolioCategory }) {
-  const [activeSection, setActiveSection] = useState(category.sections[0].id)
+  const [activeSection, setActiveSection] = useState(category.sections[0]?.id ?? '')
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -27,7 +27,8 @@ export default function SplitScrollCollection({ category }: { category: Portfoli
       if (el) observer.observe(el)
     })
     return () => observer.disconnect()
-  }, [category.sections])
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [category.id])
 
   return (
     <div style={{ backgroundColor: 'var(--color-bg)', minHeight: '100vh', paddingTop: '4rem' }}>
