@@ -3,9 +3,9 @@
 import { useEffect, useRef } from 'react'
 import { splitWords } from '@/lib/splitWords'
 
-const BIO_INTRO = "I'm Gabriela (Gaby) Gamargo, a fashion designer with 5 years of experience guiding women's collections from concept through creation & 10+ years working in the apparel industry. Since high school, fashion design has been my way of blending creativity with structure."
+const BIO_INTRO = "I'm Gabriela (Gaby) Gamargo — Head of Design at Pitusa with 5+ years leading women's RTW collections from concept to delivery, and 10+ years total in the apparel industry. I bridge creativity and commerce: trend-led design that moves at scale."
 
-const BIO_BODY = "At 18, I moved across the country to study in L.A. at FIDM, where I learned everything from illustration and pattern-making to draping and concept development — a leap of faith that became the foundation for my career in design and leadership."
+const BIO_BODY = "A FIDM graduate who left Colombia at 18 to study in Los Angeles, I've built my career across global vendor management, technical design, and creative direction. My work has been featured in Vogue Mexico and has contributed to 300K+ units sold across international markets."
 
 const SKILLS = [
   'Creative Direction', 'Trend Forecasting', 'Technical Design', 'Pattern Making',
