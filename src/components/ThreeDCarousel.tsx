@@ -1,13 +1,7 @@
 'use client'
 
-import { memo, useState } from 'react'
-import {
-  AnimatePresence,
-  motion,
-  useAnimation,
-  useMotionValue,
-  useTransform,
-} from 'framer-motion'
+import { memo, useEffect, useRef, useState } from 'react'
+import { AnimatePresence, animate, motion, useMotionValue, useTransform } from 'framer-motion'
 import Image from 'next/image'
 import type { PortfolioItem } from '@/data/portfolioData'
 
@@ -17,12 +11,10 @@ const transitionOverlay = { duration: 0.5, ease: [0.32, 0.72, 0, 1] as const }
 const Carousel = memo(function Carousel({
   items,
   handleClick,
-  controls,
   isCarouselActive,
 }: {
   items: PortfolioItem[]
   handleClick: (item: PortfolioItem) => void
-  controls: ReturnType<typeof useAnimation>
   isCarouselActive: boolean
 }) {
   const faceCount = items.length
@@ -31,6 +23,53 @@ const Carousel = memo(function Carousel({
   const radius = cylinderWidth / (2 * Math.PI)
   const rotation = useMotionValue(0)
   const transform = useTransform(rotation, (v) => `rotate3d(0, 1, 0, ${v}deg)`)
+
+  const isDragging = useRef(false)
+  const lastX = useRef(0)
+  const velocityX = useRef(0)
+  const lastTime = useRef(0)
+  const inertiaAnimation = useRef<ReturnType<typeof animate> | null>(null)
+
+  // Stop inertia when carousel is deactivated (card expanded)
+  useEffect(() => {
+    if (!isCarouselActive) {
+      inertiaAnimation.current?.stop()
+    }
+  }, [isCarouselActive])
+
+  const handlePointerDown = (e: React.PointerEvent) => {
+    if (!isCarouselActive) return
+    inertiaAnimation.current?.stop()
+    isDragging.current = true
+    lastX.current = e.clientX
+    lastTime.current = performance.now()
+    velocityX.current = 0
+    ;(e.currentTarget as HTMLElement).setPointerCapture(e.pointerId)
+  }
+
+  const handlePointerMove = (e: React.PointerEvent) => {
+    if (!isDragging.current || !isCarouselActive) return
+    const now = performance.now()
+    const dt = now - lastTime.current
+    const dx = e.clientX - lastX.current
+    velocityX.current = dt > 0 ? dx / dt : 0
+    lastX.current = e.clientX
+    lastTime.current = now
+    rotation.set(rotation.get() + dx * 0.3)
+  }
+
+  const handlePointerUp = () => {
+    if (!isDragging.current) return
+    isDragging.current = false
+    if (isCarouselActive) {
+      inertiaAnimation.current = animate(rotation, rotation.get() + velocityX.current * 60, {
+        type: 'spring',
+        stiffness: 100,
+        damping: 30,
+        mass: 0.1,
+      })
+    }
+  }
 
   return (
     <div
@@ -46,10 +85,12 @@ const Carousel = memo(function Carousel({
       }}
     >
       <motion.div
-        drag={isCarouselActive ? 'x' : false}
+        onPointerDown={handlePointerDown}
+        onPointerMove={handlePointerMove}
+        onPointerUp={handlePointerUp}
+        onPointerLeave={handlePointerUp}
         style={{
           transform,
-          rotateY: rotation,
           width: cylinderWidth,
           height: CARD_HEIGHT,
           transformStyle: 'preserve-3d',
@@ -58,20 +99,9 @@ const Carousel = memo(function Carousel({
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
+          touchAction: 'none',
+          userSelect: 'none',
         }}
-        whileTap={{ cursor: 'grabbing' }}
-        onDrag={(_, info) => {
-          if (isCarouselActive) rotation.set(rotation.get() + info.offset.x * 0.05)
-        }}
-        onDragEnd={(_, info) => {
-          if (isCarouselActive) {
-            controls.start({
-              rotateY: rotation.get() + info.velocity.x * 0.05,
-              transition: { type: 'spring', stiffness: 100, damping: 30, mass: 0.1 },
-            })
-          }
-        }}
-        animate={controls}
       >
         {items.map((item, i) => (
           <div
@@ -84,6 +114,9 @@ const Carousel = memo(function Carousel({
               padding: '0 8px',
             }}
             onClick={() => handleClick(item)}
+            role="button"
+            tabIndex={0}
+            onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') handleClick(item) }}
           >
             <motion.div
               layoutId={`card-${item.id}`}
@@ -132,12 +165,10 @@ const Carousel = memo(function Carousel({
 export default function ThreeDCarousel({ items }: { items: PortfolioItem[] }) {
   const [activeItem, setActiveItem] = useState<PortfolioItem | null>(null)
   const [isCarouselActive, setIsCarouselActive] = useState(true)
-  const controls = useAnimation()
 
   const handleClick = (item: PortfolioItem) => {
     setActiveItem(item)
     setIsCarouselActive(false)
-    controls.stop()
   }
 
   const handleClose = () => {
@@ -184,7 +215,6 @@ export default function ThreeDCarousel({ items }: { items: PortfolioItem[] }) {
                 sizes="520px"
               />
             </motion.div>
-            {/* Close hint */}
             <div
               style={{
                 position: 'absolute',
@@ -205,7 +235,6 @@ export default function ThreeDCarousel({ items }: { items: PortfolioItem[] }) {
       <Carousel
         items={items}
         handleClick={handleClick}
-        controls={controls}
         isCarouselActive={isCarouselActive}
       />
     </motion.div>
