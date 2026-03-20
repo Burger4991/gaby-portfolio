@@ -41,6 +41,12 @@ function Carousel({ images, sectionTitle, onActiveIndexChange }: {
     return unsubscribe
   }, [rotation, faceCount, onActiveIndexChange])
 
+  useEffect(() => {
+    return () => {
+      inertiaAnimation.current?.stop()
+    }
+  }, [])
+
   const handlePointerDown = (e: React.PointerEvent) => {
     inertiaAnimation.current?.stop()
     isDragging.current = true
@@ -142,6 +148,7 @@ function Carousel({ images, sectionTitle, onActiveIndexChange }: {
 
 export default function CollectionCarousel({ images, sectionTitle }: CollectionCarouselProps) {
   const [activeIndex, setActiveIndex] = useState(0)
+  if (images.length === 0) return null
   const activeImage = images[activeIndex]
 
   return (
