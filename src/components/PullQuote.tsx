@@ -11,46 +11,40 @@ export default function PullQuote() {
 
   useEffect(() => {
     if (!sectionRef.current) return
-
     let cancelled = false
-    const triggers: ScrollTrigger[] = []
+    let trigger: import('gsap/ScrollTrigger').ScrollTrigger | undefined
 
-    const initGSAP = async () => {
+    const init = async () => {
       const { gsap } = await import('gsap')
       const { ScrollTrigger } = await import('gsap/ScrollTrigger')
-      if (cancelled) return  // component unmounted before import resolved
+      if (cancelled) return
 
       gsap.registerPlugin(ScrollTrigger)
 
-      words.forEach((_, i) => {
-        if (cancelled) return
-        const el = wordRefs.current[i]
-        if (!el) return
-
-        const trigger = ScrollTrigger.create({
-          trigger: sectionRef.current,
-          start: 'top 80%',
-          end: 'bottom 20%',
-          scrub: true,
-          onUpdate: (self) => {
-            const progress = self.progress
+      trigger = ScrollTrigger.create({
+        trigger: sectionRef.current,
+        start: 'top 70%',
+        end: 'bottom 30%',
+        scrub: true,
+        onUpdate(self) {
+          const progress = self.progress
+          wordRefs.current.forEach((span, i) => {
+            if (!span) return
             const wordStart = i / words.length
             const wordEnd = (i + 1) / words.length
             const wordProgress = Math.max(0, Math.min(1, (progress - wordStart) / (wordEnd - wordStart)))
-            el.style.opacity = String(0.1 + wordProgress * 0.9)
-          },
-        })
-        triggers.push(trigger)
+            span.style.opacity = String(0.1 + wordProgress * 0.9)
+          })
+        },
       })
     }
 
-    initGSAP()
-
+    init()
     return () => {
       cancelled = true
-      triggers.forEach(t => t.kill())
+      trigger?.kill()
     }
-  }, []) // words.length is stable (QUOTE is a const)
+  }, []) // words.length stable — QUOTE is a module-level const
 
   return (
     <section ref={sectionRef} className="py-20 md:py-32 px-6 md:px-10" style={{ backgroundColor: 'var(--color-bg)', overflow: 'hidden' }}>
