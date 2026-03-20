@@ -1,15 +1,18 @@
 'use client'
 
 import { useEffect, useRef } from 'react'
+import Image from 'next/image'
 import { splitWords } from '@/lib/splitWords'
 
-const BIO_INTRO = "I'm Gabriela (Gaby) Gamargo — Head of Design at Pitusa with 5+ years leading women's RTW collections from concept to delivery, and 10+ years total in the apparel industry. I bridge creativity and commerce: trend-led design that moves at scale."
+const BIO_INTRO = "I'm Gabriela (Gaby) Gamargo, a fashion designer with 5 years of experience guiding women's collections from concept through creation — and 10+ years working in the apparel industry. Since high school, when I first took styling seriously and began learning sewing, fashion design has been my way of blending creativity with structure."
 
-const BIO_BODY = "A FIDM graduate who left Colombia at 18 to study in Los Angeles, I've built my career across global vendor management, technical design, and creative direction. My work has been featured in Vogue Mexico and has contributed to 300K+ units sold across international markets."
+const BIO_BODY = "At 18, I moved across the country on my own to study in L.A. at FIDM, where I learned everything from illustration and pattern-making to draping and concept development. At Pitusa, where I grew into the role of Head of Design, I learned to merge creative vision with practical execution — managing teams, collaborating with global vendors, and refining processes to ensure garments delivered on both style and quality."
 
 const SKILLS = [
-  'Creative Direction', 'Trend Forecasting', 'Technical Design', 'Pattern Making',
-  'Adobe Illustrator', 'CLO 3D', 'PROMEAI', 'Global Vendor Mgmt', 'Bilingual EN/ES',
+  'Creative Direction', 'Trend Forecasting', 'Technical Design', 'Fit & Grading', 'QC',
+  'Product Development', 'Global Vendor Mgmt', 'Line Planning', 'Fabric Sourcing',
+  'Team Leadership', 'Adobe Illustrator', 'Photoshop', 'CLO 3D', 'PROMEAI', 'ChatGPT',
+  'Netsuite', 'Canva', 'Bilingual EN/ES',
 ]
 
 const bioWords = splitWords(BIO_INTRO)
@@ -185,8 +188,14 @@ export default function About() {
             ))}
           </div>
         </div>
-        <div ref={imageColRef} className="aspect-[4/5] overflow-hidden" style={{ backgroundColor: 'var(--color-border)', opacity: 0 }}>
-          {/* Placeholder — real image added when Gaby provides one */}
+        <div ref={imageColRef} className="aspect-[4/5] overflow-hidden relative" style={{ opacity: 0 }}>
+          <Image
+            src="/assets/about/e84a9c6fe50fb3b0cc4b4bd758826a65.jpg"
+            alt="Gabriela Gamargo"
+            fill
+            style={{ objectFit: 'cover', objectPosition: 'center top' }}
+            sizes="(max-width: 768px) 100vw, 50vw"
+          />
         </div>
       </div>
     </section>

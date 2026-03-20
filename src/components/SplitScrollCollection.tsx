@@ -9,7 +9,7 @@ export default function SplitScrollCollection({ category }: { category: Portfoli
     <div style={{ backgroundColor: 'var(--color-bg)', minHeight: '100vh', paddingTop: '4rem' }}>
 
       {/* Back nav */}
-      <div style={{ padding: '1.5rem 4rem 0' }}>
+      <div className="split-back-nav" style={{ padding: '1.5rem 4rem 0' }}>
         <Link
           href="/#portfolio"
           style={{
@@ -27,6 +27,7 @@ export default function SplitScrollCollection({ category }: { category: Portfoli
 
       {/* Page header */}
       <div
+        className="split-page-header"
         style={{
           padding: '4rem 4rem 3rem',
           borderBottom: '1px solid var(--color-border)',
@@ -190,6 +191,7 @@ export default function SplitScrollCollection({ category }: { category: Portfoli
 
           {/* Right: scrollable image stack */}
           <div
+            className="split-images"
             style={{
               padding: '4rem 3rem',
               display: 'flex',
@@ -254,6 +256,12 @@ export default function SplitScrollCollection({ category }: { category: Portfoli
 
       <style>{`
         @media (max-width: 768px) {
+          .split-back-nav {
+            padding: 1.5rem 1.5rem 0 !important;
+          }
+          .split-page-header {
+            padding: 2.5rem 1.5rem 2rem !important;
+          }
           .split-collection {
             grid-template-columns: 1fr !important;
           }
@@ -263,6 +271,9 @@ export default function SplitScrollCollection({ category }: { category: Portfoli
             border-right: none !important;
             border-bottom: 1px solid var(--color-border);
             padding: 2.5rem 1.5rem !important;
+          }
+          .split-images {
+            padding: 2rem 1.5rem !important;
           }
         }
       `}</style>

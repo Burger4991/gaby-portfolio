@@ -75,7 +75,7 @@ export default function ScrollExpandHero({
       >
         {/* Layer 0: Background image + dark overlay */}
         <div style={{ position: 'absolute', inset: 0, zIndex: 0 }}>
-          <Image src={bgImageSrc} alt="" fill style={{ objectFit: 'cover' }} priority unoptimized />
+          <Image src={bgImageSrc} alt="" fill style={{ objectFit: 'cover' }} priority />
           <div
             style={{
               position: 'absolute',
@@ -101,7 +101,7 @@ export default function ScrollExpandHero({
             transition: 'width 0.05s linear, height 0.05s linear',
           }}
         >
-          <Image src={mediaSrc} alt={title} fill style={{ objectFit: 'cover' }} priority unoptimized />
+          <Image src={mediaSrc} alt={title} fill style={{ objectFit: 'cover' }} priority />
         </div>
 
         {/* Layer 2: Text — always visible on top */}

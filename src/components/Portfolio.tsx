@@ -26,6 +26,7 @@ export default function Portfolio() {
             key={category.id}
             className="accordion-panel"
             onMouseEnter={() => setActiveIdx(i)}
+            onClick={() => setActiveIdx(i)}
             style={{
               position: 'relative',
               flex: i === activeIdx ? '5 1 0%' : '1 1 0%',
