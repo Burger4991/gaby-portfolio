@@ -2,11 +2,9 @@
 
 import { useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
-import { motion } from 'framer-motion'
 
 interface ScrollExpandHeroProps {
   mediaSrc: string
-  posterSrc?: string
   bgImageSrc: string
   title: string
   eyebrow?: string
@@ -25,26 +23,10 @@ export default function ScrollExpandHero({
   className = '',
 }: ScrollExpandHeroProps) {
   const [scrollProgress, setScrollProgress] = useState(0)
-  const [isMobile, setIsMobile] = useState(false)
-  const containerRef = useRef<HTMLDivElement>(null)
   const scrollProgressRef = useRef(0)
 
   const showContent = scrollProgress >= 0.75
 
-  // Split title on first space
-  const spaceIndex = title.indexOf(' ')
-  const firstWord = spaceIndex !== -1 ? title.slice(0, spaceIndex) : title
-  const restOfTitle = spaceIndex !== -1 ? title.slice(spaceIndex + 1) : ''
-
-  // Detect mobile
-  useEffect(() => {
-    const check = () => setIsMobile(window.innerWidth < 768)
-    check()
-    window.addEventListener('resize', check)
-    return () => window.removeEventListener('resize', check)
-  }, [])
-
-  // Scroll interception
   useEffect(() => {
     const removeAll = () => {
       window.removeEventListener('wheel', handleWheel)
@@ -53,216 +35,171 @@ export default function ScrollExpandHero({
     }
 
     const handleWheel = (e: WheelEvent) => {
-      if (scrollProgressRef.current >= 1) {
-        removeAll()
-        return
-      }
+      if (scrollProgressRef.current >= 1) { removeAll(); return }
       e.preventDefault()
-      const newProgress = Math.min(1, Math.max(0, scrollProgressRef.current + e.deltaY / 800))
-      scrollProgressRef.current = newProgress
-      setScrollProgress(newProgress)
+      const next = Math.min(1, Math.max(0, scrollProgressRef.current + e.deltaY / 800))
+      scrollProgressRef.current = next
+      setScrollProgress(next)
     }
 
     let touchStartY = 0
-    const handleTouchStart = (e: TouchEvent) => {
-      touchStartY = e.touches[0].clientY
-    }
+    const handleTouchStart = (e: TouchEvent) => { touchStartY = e.touches[0].clientY }
     const handleTouchMove = (e: TouchEvent) => {
-      if (scrollProgressRef.current >= 1) {
-        removeAll()
-        return
-      }
+      if (scrollProgressRef.current >= 1) { removeAll(); return }
       e.preventDefault()
       const delta = touchStartY - e.touches[0].clientY
       touchStartY = e.touches[0].clientY
-      const newProgress = Math.min(1, Math.max(0, scrollProgressRef.current + delta / 400))
-      scrollProgressRef.current = newProgress
-      setScrollProgress(newProgress)
+      const next = Math.min(1, Math.max(0, scrollProgressRef.current + delta / 400))
+      scrollProgressRef.current = next
+      setScrollProgress(next)
     }
 
     window.addEventListener('wheel', handleWheel, { passive: false })
     window.addEventListener('touchstart', handleTouchStart, { passive: true })
     window.addEventListener('touchmove', handleTouchMove, { passive: false })
-    return () => {
-      removeAll()
-    }
+    return removeAll
   }, [])
 
-  // Derived dimensions
-  const mediaWidth = 300 + scrollProgress * (isMobile ? 650 : 1250)
-  const mediaHeight = 400 + scrollProgress * (isMobile ? 200 : 400)
-  const hasTwoWords = spaceIndex !== -1 && restOfTitle.length > 0
-  const effectiveTranslate = hasTwoWords ? scrollProgress * (isMobile ? 180 : 150) : 0
+  // Image grows from 15vw/25vh → 100vw/100vh
+  const imgW = `${15 + scrollProgress * 85}vw`
+  const imgH = `${25 + scrollProgress * 75}vh`
+  const bgOpacity = 0.7 - scrollProgress * 0.4
 
   return (
-    <div
-      ref={containerRef}
-      className={className}
-      style={{ position: 'relative', height: 'calc(100vh + 800px)' }}
-    >
-      {/* Sticky viewport */}
+    <div className={className} style={{ position: 'relative', height: 'calc(100vh + 800px)' }}>
       <div
         style={{
           position: 'sticky',
           top: 0,
           height: '100vh',
           overflow: 'hidden',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
         }}
       >
-        {/* Background image */}
-        <div
-          style={{
-            position: 'absolute',
-            inset: 0,
-            zIndex: 0,
-          }}
-        >
-          <Image
-            src={bgImageSrc}
-            alt=""
-            fill
-            style={{ objectFit: 'cover' }}
-            priority
-            unoptimized
-          />
-          {/* Dark overlay */}
+        {/* Layer 0: Background image + dark overlay */}
+        <div style={{ position: 'absolute', inset: 0, zIndex: 0 }}>
+          <Image src={bgImageSrc} alt="" fill style={{ objectFit: 'cover' }} priority unoptimized />
           <div
             style={{
               position: 'absolute',
               inset: 0,
               background: 'var(--color-bg)',
-              opacity: 0.7,
+              opacity: bgOpacity,
+              transition: 'opacity 0.1s linear',
             }}
           />
         </div>
 
-        {/* Content layer */}
+        {/* Layer 1: Expanding hero image — grows from center */}
         <div
           style={{
-            position: 'relative',
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            width: imgW,
+            height: imgH,
             zIndex: 1,
+            overflow: 'hidden',
+            transition: 'width 0.05s linear, height 0.05s linear',
+          }}
+        >
+          <Image src={mediaSrc} alt={title} fill style={{ objectFit: 'cover' }} priority unoptimized />
+        </div>
+
+        {/* Layer 2: Text — always visible on top */}
+        <div
+          style={{
+            position: 'absolute',
+            inset: 0,
+            zIndex: 2,
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
-            justifyContent: 'center',
-            width: '100%',
-            height: '100%',
+            paddingTop: '12vh',
+            pointerEvents: 'none',
           }}
         >
-          {/* Eyebrow */}
           {eyebrow && (
-            <motion.p
+            <p
               style={{
                 fontFamily: 'Manrope, sans-serif',
                 fontSize: '0.7rem',
                 textTransform: 'uppercase',
                 letterSpacing: '0.3em',
                 color: 'var(--color-accent)',
-                marginBottom: '1rem',
-                opacity: 1 - scrollProgress * 1.5 > 0 ? 1 - scrollProgress * 1.5 : 0,
+                marginBottom: '0.75rem',
+                textShadow: '0 1px 8px rgba(0,0,0,0.6)',
               }}
             >
               {eyebrow}
-            </motion.p>
+            </p>
           )}
-
-          {/* Title row */}
-          <div
+          <h1
             style={{
-              display: 'flex',
-              gap: '1rem',
-              alignItems: 'center',
-              overflow: 'hidden',
-              marginBottom: '1.5rem',
+              fontFamily: 'Cormorant Garamond, serif',
+              fontStyle: 'italic',
+              fontWeight: 300,
+              fontSize: 'clamp(3rem, 10vw, 8rem)',
+              color: 'var(--color-text)',
+              lineHeight: 1,
+              margin: 0,
+              textShadow: '0 2px 16px rgba(0,0,0,0.5)',
+              textAlign: 'center',
             }}
           >
-            <motion.span
-              style={{
-                fontFamily: 'Cormorant Garamond, serif',
-                fontStyle: 'italic',
-                fontWeight: 300,
-                fontSize: 'clamp(3rem, 10vw, 8rem)',
-                color: 'var(--color-text)',
-                display: 'block',
-                translateX: -effectiveTranslate,
-                lineHeight: 1,
-              }}
-            >
-              {firstWord}
-            </motion.span>
-            {restOfTitle && (
-              <motion.span
-                style={{
-                  fontFamily: 'Cormorant Garamond, serif',
-                  fontStyle: 'italic',
-                  fontWeight: 300,
-                  fontSize: 'clamp(3rem, 10vw, 8rem)',
-                  color: 'var(--color-text)',
-                  display: 'block',
-                  translateX: effectiveTranslate,
-                  lineHeight: 1,
-                }}
-              >
-                {restOfTitle}
-              </motion.span>
-            )}
-          </div>
-
-          {/* Expanding media */}
-          <div
-            style={{
-              position: 'relative',
-              width: mediaWidth,
-              height: mediaHeight,
-              maxWidth: '100vw',
-              overflow: 'hidden',
-              flexShrink: 0,
-            }}
-          >
-            <Image
-              src={mediaSrc}
-              alt={title}
-              fill
-              style={{ objectFit: 'cover' }}
-              priority
-              unoptimized
-            />
-          </div>
-
-          {/* Scroll to expand hint */}
-          {scrollToExpand && (
-            <div
-              style={{
-                fontFamily: 'Manrope, sans-serif',
-                fontSize: '0.65rem',
-                textTransform: 'uppercase',
-                letterSpacing: '0.3em',
-                color: 'var(--color-muted)',
-                marginTop: '1.25rem',
-                opacity: 1 - scrollProgress,
-                textAlign: 'center',
-              }}
-            >
-              {scrollToExpand}
-            </div>
-          )}
-
-          {/* Children revealed after 75% progress */}
-          {showContent && children && (
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              style={{ color: 'var(--color-text)' }}
-            >
-              {children}
-            </motion.div>
-          )}
+            {title}
+          </h1>
         </div>
+
+        {/* Scroll hint — fades out as user scrolls */}
+        {scrollToExpand && (
+          <div
+            style={{
+              position: 'absolute',
+              bottom: '2rem',
+              left: '50%',
+              transform: 'translateX(-50%)',
+              zIndex: 2,
+              fontFamily: 'Manrope, sans-serif',
+              fontSize: '0.65rem',
+              textTransform: 'uppercase',
+              letterSpacing: '0.3em',
+              color: 'var(--color-muted)',
+              opacity: 1 - scrollProgress * 2,
+              pointerEvents: 'none',
+              whiteSpace: 'nowrap',
+            }}
+          >
+            {scrollToExpand}
+          </div>
+        )}
+
+        {/* Children revealed at 75% */}
+        {showContent && children && (
+          <div
+            style={{
+              position: 'absolute',
+              bottom: '4rem',
+              left: '50%',
+              transform: 'translateX(-50%)',
+              zIndex: 3,
+              animation: 'fadeInUp 0.5s ease forwards',
+              width: '100%',
+              display: 'flex',
+              justifyContent: 'center',
+            }}
+          >
+            {children}
+          </div>
+        )}
       </div>
+
+      <style>{`
+        @keyframes fadeInUp {
+          from { opacity: 0; transform: translateX(-50%) translateY(20px); }
+          to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+        }
+      `}</style>
     </div>
   )
 }
