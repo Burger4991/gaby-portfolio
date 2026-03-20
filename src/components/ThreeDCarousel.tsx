@@ -4,7 +4,8 @@ import { memo, useEffect, useRef, useState } from 'react'
 import { AnimatePresence, animate, motion, useMotionValue, useTransform } from 'framer-motion'
 import Image from 'next/image'
 import Link from 'next/link'
-import type { PortfolioItem } from '@/data/portfolioData'
+// ThreeDCarousel is no longer used — kept for reference only
+type PortfolioItem = { id: string; src: string; alt: string; title: string }
 
 const CARD_HEIGHT = 320
 const transitionOverlay = { duration: 0.5, ease: [0.32, 0.72, 0, 1] as const }

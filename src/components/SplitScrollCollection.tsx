@@ -2,33 +2,21 @@
 
 import Image from 'next/image'
 import Link from 'next/link'
-import { useRef } from 'react'
 import type { PortfolioCategory } from '@/data/portfolioData'
 
 export default function SplitScrollCollection({ category }: { category: PortfolioCategory }) {
-  const stageRefs = useRef<(HTMLDivElement | null)[]>([])
-
-  const scrollToStage = (i: number) => {
-    stageRefs.current[i]?.scrollIntoView({ behavior: 'smooth', block: 'start' })
-  }
-
   return (
-    <div
-      style={{
-        minHeight: '100vh',
-        backgroundColor: 'var(--color-bg)',
-        paddingTop: '5rem',
-      }}
-    >
-      {/* Back link */}
-      <div style={{ padding: '1.5rem 2rem 0' }}>
+    <div style={{ backgroundColor: 'var(--color-bg)', minHeight: '100vh', paddingTop: '4rem' }}>
+
+      {/* Back nav */}
+      <div style={{ padding: '1.5rem 4rem 0' }}>
         <Link
           href="/#portfolio"
           style={{
             fontFamily: 'Manrope, sans-serif',
             fontSize: '0.65rem',
-            textTransform: 'uppercase',
             letterSpacing: '0.3em',
+            textTransform: 'uppercase',
             color: 'var(--color-muted)',
             textDecoration: 'none',
           }}
@@ -37,237 +25,244 @@ export default function SplitScrollCollection({ category }: { category: Portfoli
         </Link>
       </div>
 
-      {/* Split layout */}
+      {/* Page header */}
       <div
-        className="split-scroll-grid"
         style={{
-          display: 'grid',
-          gridTemplateColumns: '1fr 1fr',
-          maxWidth: '1400px',
-          margin: '0 auto',
-          padding: '0 2rem',
-          gap: '4rem',
-          alignItems: 'start',
+          padding: '4rem 4rem 3rem',
+          borderBottom: '1px solid var(--color-border)',
         }}
       >
-        {/* Left: sticky info panel */}
-        <div
-          className="split-scroll-left"
+        <p
           style={{
-            position: 'sticky',
-            top: '6rem',
-            height: 'calc(100vh - 8rem)',
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'center',
-            gap: '2rem',
-            padding: '2rem 0',
+            fontFamily: 'Manrope, sans-serif',
+            fontSize: '0.65rem',
+            letterSpacing: '0.35em',
+            textTransform: 'uppercase',
+            color: 'var(--color-accent)',
+            marginBottom: '1rem',
           }}
         >
-          <div>
-            <p
-              style={{
-                fontFamily: 'Manrope, sans-serif',
-                fontSize: '0.65rem',
-                textTransform: 'uppercase',
-                letterSpacing: '0.35em',
-                color: 'var(--color-accent)',
-                marginBottom: '0.75rem',
-              }}
-            >
-              Collection
-            </p>
-            <h1
-              style={{
-                fontFamily: 'Cormorant Garamond, serif',
-                fontStyle: 'italic',
-                fontWeight: 300,
-                fontSize: 'clamp(2rem, 4vw, 3.5rem)',
-                color: 'var(--color-text)',
-                lineHeight: 1.1,
-                margin: '0 0 1.5rem',
-              }}
-            >
-              {category.label}
-            </h1>
-            <p
-              style={{
-                fontFamily: 'Manrope, sans-serif',
-                fontSize: '0.9rem',
-                lineHeight: 1.7,
-                color: 'var(--color-muted)',
-                maxWidth: '36ch',
-              }}
-            >
-              {category.description}
-            </p>
-          </div>
+          Collections
+        </p>
+        <h1
+          style={{
+            fontFamily: 'Cormorant Garamond, serif',
+            fontStyle: 'italic',
+            fontWeight: 300,
+            fontSize: 'clamp(2.5rem, 6vw, 5rem)',
+            lineHeight: 1,
+            color: 'var(--color-text)',
+            margin: '0 0 1rem',
+          }}
+        >
+          {category.label}
+        </h1>
+        <p
+          style={{
+            fontFamily: 'Manrope, sans-serif',
+            fontSize: '0.75rem',
+            letterSpacing: '0.15em',
+            textTransform: 'uppercase',
+            color: 'var(--color-muted)',
+          }}
+        >
+          {category.subtitle}
+        </p>
+      </div>
 
-          {/* Outcome callout */}
+      {/* One split-collection block per section */}
+      {category.sections.map((section, i) => (
+        <div
+          key={section.id}
+          style={{
+            display: 'grid',
+            gridTemplateColumns: '1fr 1fr',
+            minHeight: '100vh',
+            borderBottom: '1px solid var(--color-border)',
+          }}
+          className="split-collection"
+        >
+          {/* Left: sticky story panel */}
           <div
+            className="split-story"
             style={{
-              borderLeft: '2px solid var(--color-accent)',
-              paddingLeft: '1rem',
+              position: 'sticky',
+              top: '4rem',
+              height: 'calc(100vh - 4rem)',
+              padding: '4rem',
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'center',
+              borderRight: '1px solid var(--color-border)',
+              gap: '1.5rem',
             }}
           >
             <p
               style={{
                 fontFamily: 'Manrope, sans-serif',
-                fontSize: '0.65rem',
+                fontSize: '0.6rem',
+                letterSpacing: '0.35em',
                 textTransform: 'uppercase',
-                letterSpacing: '0.3em',
                 color: 'var(--color-accent)',
-                marginBottom: '0.4rem',
               }}
             >
-              Outcome
+              {String(i + 1).padStart(2, '0')} / {String(category.sections.length).padStart(2, '0')}
             </p>
-            <p
+
+            <h2
               style={{
                 fontFamily: 'Cormorant Garamond, serif',
                 fontStyle: 'italic',
-                fontSize: '1.1rem',
+                fontWeight: 300,
+                fontSize: 'clamp(2rem, 4vw, 3.5rem)',
+                lineHeight: 1.05,
                 color: 'var(--color-text)',
-                lineHeight: 1.5,
+                margin: 0,
               }}
             >
-              {category.outcome}
-            </p>
-          </div>
+              {section.title}
+            </h2>
 
-          {/* Stage pills — jump navigation */}
-          <div>
             <p
               style={{
                 fontFamily: 'Manrope, sans-serif',
-                fontSize: '0.6rem',
-                textTransform: 'uppercase',
-                letterSpacing: '0.3em',
+                fontSize: '0.875rem',
+                lineHeight: 1.75,
                 color: 'var(--color-muted)',
-                marginBottom: '0.75rem',
+                maxWidth: '380px',
+                margin: 0,
               }}
             >
-              Process
+              {section.description}
             </p>
+
+            <div
+              style={{
+                padding: '1rem 1.25rem',
+                borderLeft: '2px solid var(--color-accent)',
+                background: 'rgba(184,150,90,0.05)',
+                fontSize: '0.8rem',
+                lineHeight: 1.6,
+                color: 'var(--color-text)',
+              }}
+            >
+              <span
+                style={{
+                  color: 'var(--color-accent)',
+                  fontWeight: 600,
+                  fontFamily: 'Manrope, sans-serif',
+                }}
+              >
+                {section.outcome.startsWith('↑') || section.outcome.startsWith('Featured')
+                  ? section.outcome.split(' — ')[0].split('. ')[0]
+                  : 'Outcome'}
+              </span>
+              {' '}
+              {section.outcome.includes(' — ')
+                ? section.outcome.split(' — ').slice(1).join(' — ')
+                : section.outcome.includes('. ')
+                ? section.outcome.split('. ').slice(1).join('. ')
+                : section.outcome}
+            </div>
+
+            {/* Stage pills */}
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
-              {category.processStages.map((stage, i) => (
-                <button
-                  key={stage.label}
-                  onClick={() => scrollToStage(i)}
+              {section.pills.map((pill) => (
+                <span
+                  key={pill}
                   style={{
-                    padding: '0.35rem 0.85rem',
-                    border: '1px solid var(--color-border)',
-                    background: 'transparent',
-                    color: 'var(--color-muted)',
+                    padding: '0.3rem 0.75rem',
+                    border: '1px solid var(--color-accent)',
+                    background: 'rgba(184,150,90,0.08)',
                     fontFamily: 'Manrope, sans-serif',
-                    fontSize: '0.65rem',
-                    textTransform: 'uppercase',
+                    fontSize: '0.6rem',
                     letterSpacing: '0.2em',
-                    cursor: 'pointer',
-                    transition: 'border-color 0.2s, color 0.2s',
-                  }}
-                  onMouseEnter={(e) => {
-                    const btn = e.currentTarget
-                    btn.style.borderColor = 'var(--color-accent)'
-                    btn.style.color = 'var(--color-accent)'
-                  }}
-                  onMouseLeave={(e) => {
-                    const btn = e.currentTarget
-                    btn.style.borderColor = 'var(--color-border)'
-                    btn.style.color = 'var(--color-muted)'
+                    textTransform: 'uppercase',
+                    color: 'var(--color-accent)',
+                    borderRadius: '2px',
                   }}
                 >
-                  {stage.label}
-                </button>
+                  {pill}
+                </span>
               ))}
             </div>
           </div>
-        </div>
 
-        {/* Right: scrollable stage images */}
-        <div style={{ paddingTop: '3rem', paddingBottom: '8rem' }}>
-          {category.processStages.map((stage, i) => (
-            <div
-              key={stage.label}
-              ref={(el) => { stageRefs.current[i] = el }}
-              style={{ marginBottom: '5rem' }}
-            >
+          {/* Right: scrollable image stack */}
+          <div
+            style={{
+              padding: '4rem 3rem',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '1.5rem',
+            }}
+          >
+            {section.images.map((img, j) => (
               <div
+                key={j}
                 style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '1rem',
-                  marginBottom: '1rem',
-                }}
-              >
-                <span
-                  style={{
-                    fontFamily: 'Manrope, sans-serif',
-                    fontSize: '0.6rem',
-                    textTransform: 'uppercase',
-                    letterSpacing: '0.35em',
-                    color: 'var(--color-accent)',
-                  }}
-                >
-                  {String(i + 1).padStart(2, '0')}
-                </span>
-                <span
-                  style={{
-                    fontFamily: 'Manrope, sans-serif',
-                    fontSize: '0.65rem',
-                    textTransform: 'uppercase',
-                    letterSpacing: '0.3em',
-                    color: 'var(--color-muted)',
-                  }}
-                >
-                  {stage.label}
-                </span>
-              </div>
-
-              <div
-                style={{
-                  position: 'relative',
-                  width: '100%',
-                  aspectRatio: '4/3',
+                  borderRadius: '4px',
                   overflow: 'hidden',
-                  backgroundColor: 'var(--color-surface)',
+                  background: 'var(--color-surface)',
+                  border: '1px solid var(--color-border)',
                 }}
               >
-                <Image
-                  src={stage.src}
-                  alt={`${category.label} — ${stage.label}`}
-                  fill
-                  style={{ objectFit: 'cover' }}
-                  sizes="(max-width: 768px) 100vw, 50vw"
-                />
+                <div style={{ position: 'relative', width: '100%', aspectRatio: '4/3' }}>
+                  <Image
+                    src={img.src}
+                    alt={img.caption ?? section.title}
+                    fill
+                    style={{ objectFit: 'cover' }}
+                    sizes="50vw"
+                  />
+                </div>
+                {(img.caption || img.stage) && (
+                  <div
+                    style={{
+                      padding: '0.75rem 1rem',
+                      fontFamily: 'Manrope, sans-serif',
+                      fontSize: '0.65rem',
+                      letterSpacing: '0.15em',
+                      textTransform: 'uppercase',
+                      color: 'var(--color-muted)',
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                    }}
+                  >
+                    <span>{img.caption}</span>
+                    {img.stage && (
+                      <span
+                        style={{
+                          padding: '0.2rem 0.5rem',
+                          border: '1px solid var(--color-border)',
+                          fontSize: '0.55rem',
+                          letterSpacing: '0.15em',
+                          color: 'var(--color-accent)',
+                        }}
+                      >
+                        {img.stage}
+                      </span>
+                    )}
+                  </div>
+                )}
               </div>
-
-              {stage.caption && (
-                <p
-                  style={{
-                    fontFamily: 'Manrope, sans-serif',
-                    fontSize: '0.7rem',
-                    color: 'var(--color-muted)',
-                    marginTop: '0.75rem',
-                    letterSpacing: '0.05em',
-                  }}
-                >
-                  {stage.caption}
-                </p>
-              )}
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
-      </div>
+      ))}
 
       <style>{`
         @media (max-width: 768px) {
-          .split-scroll-grid {
+          .split-collection {
             grid-template-columns: 1fr !important;
           }
-          .split-scroll-left {
+          .split-story {
             position: static !important;
             height: auto !important;
+            border-right: none !important;
+            border-bottom: 1px solid var(--color-border);
+            padding: 2.5rem 1.5rem !important;
           }
         }
       `}</style>
