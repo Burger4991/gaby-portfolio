@@ -151,8 +151,8 @@ export const categories: PortfolioCategory[] = [
         id: 'crochet-patchwork',
         title: 'The Crochet Patchwork Collection',
         description:
-          "Inspired by Brazilian crochet traditions and Miami's vibrant energy, the collection featured playful motifs — crabs, seashells, evil eye — across versatile separates. Each piece was hand-finished to preserve the artisanal quality of the craft.",
-        outcome: '↑ Viral bestseller — sold out multiple times. The Mini Dress became a top-selling signature style and remains in the permanent lineup.',
+          "Inspired by Brazilian crochet traditions and Miami's vibrant energy, the collection featured playful motifs — crabs, seashells, evil eye — across versatile separates. The standout Mini Dress became a top-selling signature style, demonstrating the ability to translate trend-driven design into commercially successful, customer-beloved pieces.",
+        outcome: '↑ Viral bestseller — sold out multiple times. The Mini Dress became a permanent signature style in the lineup.',
         pills: ['Moodboard', 'Sketches', 'Sampling', 'Final', 'Editorial'],
         images: [
           { src: '/assets/cutsew/crochet-patchwork/0445c4f9e362383a539751dd83a677de.png', caption: 'Moodboard — Brazilian crochet references', stage: 'Moodboard' },
@@ -164,10 +164,10 @@ export const categories: PortfolioCategory[] = [
       },
       {
         id: 'chunky-knits',
-        title: 'Chunky Knits',
+        title: "AW'23 Chunky Knits Capsule",
         description:
-          'Heavy-texture knit development — oversized silhouettes, artisan-knit construction, and elevated yarn sourcing. Balancing handmade character with production scalability.',
-        outcome: 'Full knit capsule delivered across the season.',
+          "A concept-led knitwear capsule blending chunky knit aesthetics with Pitusa's core DNA of comfort, wearability, and color. Bold stitch work, playful pattern blocking, and relaxed silhouettes — translating seasonal knit trends into cozy, lifestyle-driven designs.",
+        outcome: "Full AW'23 capsule delivered — best-selling garments across multiple colorways.",
         pills: ['Moodboard', 'Yarn Dev', 'Sampling', 'Final'],
         images: [
           { src: '/assets/cutsew/chunky-knits/176e79aa3fab0cc597ef2e9f1364c846.png', caption: 'Knit development', stage: 'Development' },
@@ -180,8 +180,8 @@ export const categories: PortfolioCategory[] = [
         id: 'vogue-mexico',
         title: 'Resort 2025 — Miami Swim Week',
         description:
-          "A collaboration with Spanish luxury brand Castañer, styled by Irma Martinez. The collection elevated resort dressing while honoring Pitusa's craftsmanship heritage — Inca burnout sarongs, crochet flowers, pukka shell embellishments.",
-        outcome: "↑ Featured in Vogue Mexico. Presented at Miami Swim Week 2025. Established Pitusa's position in the elevated resort category.",
+          "As Head of Design at Pitusa, I led the creative direction for Resort 2025 presented at Miami Swim Week — in collaboration with Spanish luxury shoe brand Castañer, styled by Irma Martinez. Signature Inca burnout sarongs, crochet flowers, pukka shell embellishments, and the show's standout two-piece crochet set. Featured in Vogue Mexico.",
+        outcome: "↑ Featured in Vogue Mexico — Espacio Vogue Mexico editorial shot in Mallorca. Presented at Miami Swim Week 2025.",
         pills: ['Direction', 'Collab', 'Runway', 'Vogue Mexico'],
         images: [
           { src: '/assets/cutsew/vogue-mexico/068e4e0d4268c7a00ec3f0c3acf58faa.jpg', caption: 'Creative direction — elevated resort concept', stage: 'Direction' },
@@ -195,8 +195,8 @@ export const categories: PortfolioCategory[] = [
         id: 'basics-intimates',
         title: 'Basics | Intimates & Loungewear',
         description:
-          'Originally a limited drop introducing never-before-seen styles. The line was designed for layering with sheer crochet or as standalone everyday pieces — soft jersey, rib 2×1, French Terry in apricot crush, lemon yellow, lime green, and Barbie pink.',
-        outcome: '↑ 300K+ in sales for a single set. Evolved from a limited drop into a multi-drop foundational BASICS branch spanning intimates, lounge, and everyday essentials.',
+          'Originally conceptualized as a single limited drop, this collection quickly evolved into a multi-drop exclusive category within Pitusa. Designed to complement the signature beachwear — layered with sheer crochet or worn standalone. Soft jersey, rib 2×1, French Terry in apricot crush, lemon yellow, lime green, and Barbie pink.',
+        outcome: '↑ Fan favorite: over 300K in sales for a single set. Expanded into a foundational BASICS branch spanning intimates, lounge, and everyday essentials — leading to private-label collaborations.',
         pills: ['Concept', 'Color Story', 'Tech Pack', 'Launch'],
         images: [
           { src: '/assets/cutsew/basics-intimates/18b087c23b1f433f451bc83c073765f7.png', caption: 'Color story — apricot crush, lemon yellow, lime green, barbie pink', stage: 'Color Story' },
