@@ -1,10 +1,34 @@
 'use client'
 
-import Image from 'next/image'
+import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import type { PortfolioCategory } from '@/data/portfolioData'
+import CollectionCarousel from './CollectionCarousel'
 
 export default function SplitScrollCollection({ category }: { category: PortfolioCategory }) {
+  const [activeSection, setActiveSection] = useState(category.sections[0].id)
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setActiveSection(entry.target.id.replace('section-', ''))
+          }
+        })
+      },
+      {
+        threshold: 0.4,
+        rootMargin: '-4rem 0px 0px 0px',
+      }
+    )
+    category.sections.forEach((s) => {
+      const el = document.getElementById(`section-${s.id}`)
+      if (el) observer.observe(el)
+    })
+    return () => observer.disconnect()
+  }, [category.sections])
+
   return (
     <div style={{ backgroundColor: 'var(--color-bg)', minHeight: '100vh', paddingTop: '4rem' }}>
 
@@ -75,10 +99,10 @@ export default function SplitScrollCollection({ category }: { category: Portfoli
       {category.sections.map((section, i) => (
         <div
           key={section.id}
+          id={`section-${section.id}`}
           style={{
             display: 'grid',
             gridTemplateColumns: '1fr 1fr',
-            minHeight: '100vh',
             borderBottom: '1px solid var(--color-border)',
           }}
           className="split-collection"
@@ -89,11 +113,11 @@ export default function SplitScrollCollection({ category }: { category: Portfoli
             style={{
               position: 'sticky',
               top: '4rem',
-              height: 'calc(100vh - 4rem)',
-              padding: '4rem',
+              height: 'auto',
+              alignSelf: 'flex-start',
+              padding: '3rem 2.5rem',
               display: 'flex',
               flexDirection: 'column',
-              justifyContent: 'center',
               borderRight: '1px solid var(--color-border)',
               gap: '1.5rem',
             }}
@@ -187,69 +211,44 @@ export default function SplitScrollCollection({ category }: { category: Portfoli
                 </span>
               ))}
             </div>
+
+            {/* Section jump nav */}
+            <div style={{ borderTop: '1px solid var(--color-border)', paddingTop: '1rem', marginTop: '0.5rem' }}>
+              <p style={{ fontSize: '0.55rem', letterSpacing: '0.3em', textTransform: 'uppercase', color: 'var(--color-border)', marginBottom: '0.5rem' }}>
+                Sections
+              </p>
+              {category.sections.map((s, idx) => (
+                <a
+                  key={s.id}
+                  href={`#section-${s.id}`}
+                  style={{
+                    display: 'block',
+                    fontFamily: 'Manrope, sans-serif',
+                    fontSize: '0.6rem',
+                    letterSpacing: '0.1em',
+                    padding: '0.2rem 0',
+                    color: activeSection === s.id ? 'var(--color-accent)' : 'var(--color-border)',
+                    textDecoration: 'none',
+                    transition: 'color 0.2s ease',
+                  }}
+                >
+                  {String(idx + 1).padStart(2, '0')}  {s.title}
+                </a>
+              ))}
+            </div>
           </div>
 
-          {/* Right: scrollable image stack */}
+          {/* Right: 3D carousel */}
           <div
             className="split-images"
             style={{
-              padding: '4rem 3rem',
+              padding: '3rem 2rem',
               display: 'flex',
-              flexDirection: 'column',
-              gap: '1.5rem',
+              alignItems: 'center',
+              justifyContent: 'center',
             }}
           >
-            {section.images.map((img, j) => (
-              <div
-                key={j}
-                style={{
-                  borderRadius: '4px',
-                  overflow: 'hidden',
-                  background: 'var(--color-surface)',
-                  border: '1px solid var(--color-border)',
-                }}
-              >
-                <div style={{ position: 'relative', width: '100%', aspectRatio: '4/3' }}>
-                  <Image
-                    src={img.src}
-                    alt={img.caption ?? section.title}
-                    fill
-                    style={{ objectFit: 'cover' }}
-                    sizes="50vw"
-                  />
-                </div>
-                {(img.caption || img.stage) && (
-                  <div
-                    style={{
-                      padding: '0.75rem 1rem',
-                      fontFamily: 'Manrope, sans-serif',
-                      fontSize: '0.65rem',
-                      letterSpacing: '0.15em',
-                      textTransform: 'uppercase',
-                      color: 'var(--color-muted)',
-                      display: 'flex',
-                      justifyContent: 'space-between',
-                      alignItems: 'center',
-                    }}
-                  >
-                    <span>{img.caption}</span>
-                    {img.stage && (
-                      <span
-                        style={{
-                          padding: '0.2rem 0.5rem',
-                          border: '1px solid var(--color-border)',
-                          fontSize: '0.55rem',
-                          letterSpacing: '0.15em',
-                          color: 'var(--color-accent)',
-                        }}
-                      >
-                        {img.stage}
-                      </span>
-                    )}
-                  </div>
-                )}
-              </div>
-            ))}
+            <CollectionCarousel images={section.images} sectionTitle={section.title} />
           </div>
         </div>
       ))}
@@ -267,6 +266,7 @@ export default function SplitScrollCollection({ category }: { category: Portfoli
           }
           .split-story {
             position: static !important;
+            align-self: auto !important;
             height: auto !important;
             border-right: none !important;
             border-bottom: 1px solid var(--color-border);
