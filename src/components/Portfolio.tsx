@@ -50,7 +50,7 @@ export default function Portfolio() {
             )}
           </div>
           {/* 3D Carousel */}
-          <ThreeDCarousel items={category.items} />
+          <ThreeDCarousel items={category.items} categoryId={category.id} />
         </div>
       ))}
     </section>

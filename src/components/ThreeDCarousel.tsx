@@ -3,6 +3,7 @@
 import { memo, useEffect, useRef, useState } from 'react'
 import { AnimatePresence, animate, motion, useMotionValue, useTransform } from 'framer-motion'
 import Image from 'next/image'
+import Link from 'next/link'
 import type { PortfolioItem } from '@/data/portfolioData'
 
 const CARD_HEIGHT = 320
@@ -12,10 +13,12 @@ const Carousel = memo(function Carousel({
   items,
   handleClick,
   isCarouselActive,
+  categoryId,
 }: {
   items: PortfolioItem[]
   handleClick: (item: PortfolioItem) => void
   isCarouselActive: boolean
+  categoryId: string
 }) {
   const faceCount = items.length
   const cylinderWidth = faceCount * 240
@@ -154,6 +157,25 @@ const Carousel = memo(function Carousel({
               >
                 {item.title}
               </div>
+              <Link
+                href={`/work/${categoryId}`}
+                onClick={(e) => e.stopPropagation()}
+                style={{
+                  position: 'absolute',
+                  bottom: '12px',
+                  right: '12px',
+                  fontFamily: 'Manrope, sans-serif',
+                  fontSize: '0.6rem',
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.2em',
+                  color: 'rgba(255,255,255,0.8)',
+                  textDecoration: 'none',
+                  padding: '4px 8px',
+                  border: '1px solid rgba(255,255,255,0.3)',
+                }}
+              >
+                Process →
+              </Link>
             </motion.div>
           </div>
         ))}
@@ -162,7 +184,7 @@ const Carousel = memo(function Carousel({
   )
 })
 
-export default function ThreeDCarousel({ items }: { items: PortfolioItem[] }) {
+export default function ThreeDCarousel({ items, categoryId }: { items: PortfolioItem[]; categoryId: string }) {
   const [activeItem, setActiveItem] = useState<PortfolioItem | null>(null)
   const [isCarouselActive, setIsCarouselActive] = useState(true)
 
@@ -236,6 +258,7 @@ export default function ThreeDCarousel({ items }: { items: PortfolioItem[] }) {
         items={items}
         handleClick={handleClick}
         isCarouselActive={isCarouselActive}
+        categoryId={categoryId}
       />
     </motion.div>
   )
