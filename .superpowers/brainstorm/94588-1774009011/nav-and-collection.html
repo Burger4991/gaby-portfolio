@@ -1,0 +1,102 @@
+<h2>Nav + Collection Page Design</h2>
+<p class="subtitle">Two things changing: (1) the full-screen menu gets collection shortcuts, (2) collection pages get a compact split + 3D carousel layout</p>
+
+<div class="section">
+  <h3>1 — Expanded Full-Screen Menu</h3>
+  <p class="subtitle">Logo always goes home. Menu adds direct links to each collection under Work.</p>
+  <div class="mockup">
+    <div class="mockup-header">Hamburger menu (open state)</div>
+    <div class="mockup-body" style="background:#0f0d0b;padding:2rem;display:flex;flex-direction:column;align-items:center;gap:1.5rem;font-family:sans-serif;min-height:300px;justify-content:center;">
+      <!-- Main nav links -->
+      <div style="display:flex;flex-direction:column;align-items:center;gap:0.25rem;width:100%;">
+        <div style="font-size:2.2rem;font-style:italic;color:rgba(255,255,255,0.85);font-family:Georgia,serif;line-height:1.1;">Work</div>
+        <!-- Collection sub-links -->
+        <div style="display:flex;gap:1rem;flex-wrap:wrap;justify-content:center;margin-top:0.3rem;margin-bottom:0.5rem;">
+          <a style="font-size:0.55rem;letter-spacing:0.25em;text-transform:uppercase;color:#b8965a;text-decoration:none;border-bottom:1px solid #b8965a44;padding-bottom:1px;">Resort &amp; Activewear</a>
+          <a style="font-size:0.55rem;letter-spacing:0.25em;text-transform:uppercase;color:#b8965a;text-decoration:none;border-bottom:1px solid #b8965a44;padding-bottom:1px;">Cut &amp; Sew Knits</a>
+          <a style="font-size:0.55rem;letter-spacing:0.25em;text-transform:uppercase;color:#b8965a;text-decoration:none;border-bottom:1px solid #b8965a44;padding-bottom:1px;">Bridal &amp; Eveningwear</a>
+          <a style="font-size:0.55rem;letter-spacing:0.25em;text-transform:uppercase;color:#b8965a;text-decoration:none;border-bottom:1px solid #b8965a44;padding-bottom:1px;">Illustrations</a>
+        </div>
+        <div style="font-size:2.2rem;font-style:italic;color:rgba(255,255,255,0.85);font-family:Georgia,serif;line-height:1.1;">About</div>
+        <div style="margin-bottom:0.25rem;"></div>
+        <div style="font-size:2.2rem;font-style:italic;color:rgba(255,255,255,0.85);font-family:Georgia,serif;line-height:1.1;">Contact</div>
+      </div>
+      <div style="font-size:0.45rem;letter-spacing:0.3em;text-transform:uppercase;color:#3a3028;margin-top:0.5rem;">Logo click → always goes home ( / )</div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <h3>2 — Collection Page: Compact Split + 3D Carousel</h3>
+  <p class="subtitle">Left sticky panel has section info + jump nav. Right has 3D drag carousel. Sections stack vertically but compact (~450px each, not full viewport).</p>
+
+  <div class="split">
+    <div class="mockup">
+      <div class="mockup-header">Section 1 of 7 — active</div>
+      <div class="mockup-body" style="background:#0a0806;padding:1.25rem;display:grid;grid-template-columns:1fr 1.5fr;gap:0.75rem;min-height:260px;font-family:sans-serif;">
+        <!-- Left sticky panel -->
+        <div style="display:flex;flex-direction:column;gap:0.6rem;border-right:1px solid #1e1a16;padding-right:0.75rem;">
+          <div style="font-size:0.4rem;letter-spacing:0.35em;color:#b8965a;text-transform:uppercase;">01 / 07</div>
+          <div style="font-size:0.9rem;font-style:italic;color:#f0ebe4;font-family:Georgia,serif;line-height:1.1;">Stephanie Gottlieb Collab</div>
+          <div style="font-size:0.42rem;color:#8a7d6e;line-height:1.5;">Resort capsule — elevated linen silhouettes to complement her jewelry aesthetic.</div>
+          <div style="padding:0.3rem 0.45rem;border-left:2px solid #b8965a;background:rgba(184,150,90,0.06);font-size:0.38rem;color:#b8965a;">Capsule delivered on time.</div>
+          <div style="display:flex;flex-wrap:wrap;gap:0.2rem;">
+            <span style="padding:0.15rem 0.35rem;border:1px solid #b8965a44;color:#b8965a;font-size:0.35rem;letter-spacing:0.15em;text-transform:uppercase;">Direction</span>
+            <span style="padding:0.15rem 0.35rem;border:1px solid #b8965a44;color:#b8965a;font-size:0.35rem;letter-spacing:0.15em;text-transform:uppercase;">Tech Packs</span>
+            <span style="padding:0.15rem 0.35rem;border:1px solid #b8965a44;color:#b8965a;font-size:0.35rem;letter-spacing:0.15em;text-transform:uppercase;">Final</span>
+          </div>
+          <!-- Section jump nav -->
+          <div style="border-top:1px solid #1e1a16;padding-top:0.5rem;margin-top:auto;">
+            <div style="font-size:0.38rem;letter-spacing:0.25em;color:#3a3028;text-transform:uppercase;margin-bottom:0.35rem;">Sections</div>
+            <div style="display:flex;flex-direction:column;gap:0.2rem;">
+              <div style="font-size:0.42rem;color:#b8965a;letter-spacing:0.1em;">01 Stephanie Gottlieb</div>
+              <div style="font-size:0.42rem;color:#3a3028;letter-spacing:0.1em;">02 Mercedes Salazar</div>
+              <div style="font-size:0.42rem;color:#3a3028;letter-spacing:0.1em;">03 Mimi Yoga</div>
+              <div style="font-size:0.42rem;color:#3a3028;letter-spacing:0.1em;">04 Private Label RTW</div>
+              <div style="font-size:0.42rem;color:#3a3028;letter-spacing:0.1em;">05 HPSET Collection</div>
+              <div style="font-size:0.42rem;color:#3a3028;letter-spacing:0.1em;">06 Ephyra</div>
+              <div style="font-size:0.42rem;color:#3a3028;letter-spacing:0.1em;">07 Ariel</div>
+            </div>
+          </div>
+        </div>
+        <!-- Right: 3D carousel suggestion -->
+        <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0.5rem;">
+          <div style="perspective:300px;display:flex;align-items:center;justify-content:center;height:140px;width:100%;">
+            <div style="display:flex;gap:0.5rem;transform:rotateY(-5deg);">
+              <div style="width:50px;height:120px;background:#1a1510;border:1px solid #2a2520;border-radius:3px;transform:rotateY(-20deg) translateZ(-20px);opacity:0.45;"></div>
+              <div style="width:70px;height:130px;background:#2a1e12;border:1px solid #b8965a33;border-radius:3px;box-shadow:0 6px 24px rgba(0,0,0,0.5);"></div>
+              <div style="width:50px;height:120px;background:#1a1510;border:1px solid #2a2520;border-radius:3px;transform:rotateY(20deg) translateZ(-20px);opacity:0.45;"></div>
+            </div>
+          </div>
+          <div style="font-size:0.4rem;color:#3a3028;letter-spacing:0.2em;text-transform:uppercase;">drag to rotate</div>
+          <div style="font-size:0.45rem;color:#6b6257;letter-spacing:0.15em;text-transform:uppercase;">Campaign direction · Direction</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="mockup">
+      <div class="mockup-header">Section 2 of 7 — below (scroll down)</div>
+      <div class="mockup-body" style="background:#0a0806;padding:1.25rem;display:grid;grid-template-columns:1fr 1.5fr;gap:0.75rem;min-height:260px;font-family:sans-serif;opacity:0.75;">
+        <div style="display:flex;flex-direction:column;gap:0.6rem;border-right:1px solid #1e1a16;padding-right:0.75rem;">
+          <div style="font-size:0.4rem;letter-spacing:0.35em;color:#b8965a;text-transform:uppercase;">02 / 07</div>
+          <div style="font-size:0.9rem;font-style:italic;color:#f0ebe4;font-family:Georgia,serif;line-height:1.1;">Mercedes Salazar Collab</div>
+          <div style="font-size:0.42rem;color:#8a7d6e;line-height:1.5;">Vibrant prints and artisan-led construction to complement her accessories line.</div>
+          <div style="padding:0.3rem 0.45rem;border-left:2px solid #b8965a;background:rgba(184,150,90,0.06);font-size:0.38rem;color:#b8965a;">Collab delivered for joint campaign.</div>
+          <div style="border-top:1px solid #1e1a16;padding-top:0.5rem;margin-top:auto;">
+            <div style="font-size:0.38rem;letter-spacing:0.25em;color:#3a3028;text-transform:uppercase;margin-bottom:0.35rem;">Sections</div>
+            <div style="display:flex;flex-direction:column;gap:0.2rem;">
+              <div style="font-size:0.42rem;color:#3a3028;letter-spacing:0.1em;">01 Stephanie Gottlieb</div>
+              <div style="font-size:0.42rem;color:#b8965a;letter-spacing:0.1em;">02 Mercedes Salazar</div>
+              <div style="font-size:0.42rem;color:#3a3028;letter-spacing:0.1em;">03 Mimi Yoga</div>
+              <div style="font-size:0.42rem;color:#3a3028;letter-spacing:0.1em;">04 — 07 ···</div>
+            </div>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:center;height:140px;">
+          <div style="width:70px;height:130px;background:#1a1510;border:1px solid #2a2520;border-radius:3px;opacity:0.6;"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <p class="subtitle" style="margin-top:0.75rem;">Each section is ~450px tall. With 7 sections it's ~3150px total — vs. the previous 7 × 100vh (~5600px on a 1080p screen). About 44% less scrolling.</p>
+</div>

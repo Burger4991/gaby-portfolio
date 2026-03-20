@@ -55,7 +55,21 @@ body {
 
 /* ─── Custom cursor (pointer devices only) ─── */
 @media (hover: hover) {
-  * { cursor: none !important; }
+  /**
+   * Hide the OS cursor on the page body so the custom JS cursor takes over.
+   * We scope this to `body` rather than `*` so that:
+   *  - text inputs/textareas still show the text I-beam (better UX + a11y)
+   *  - resize handles on textareas still work
+   *  - third-party accessibility overlays can still set their own cursors
+   */
+  body { cursor: none; }
+
+  /* Restore the I-beam cursor for text-entry elements */
+  input, textarea, [contenteditable] { cursor: text; }
+
+  /* Restore resize handle on textareas */
+  textarea { cursor: auto; }
+
   .cursor-dot {
     position: fixed;
     top: 0;
@@ -88,3 +102,4 @@ body {
     opacity: 0.3;
   }
 }
+

@@ -68,8 +68,10 @@ export default function Portfolio() {
                 position: 'absolute',
                 inset: 0,
                 display: 'flex',
+                flexDirection: 'column',
                 alignItems: 'center',
                 justifyContent: 'center',
+                gap: '0.75rem',
                 opacity: i === activeIdx ? 0 : 1,
                 transition: 'opacity 0.25s ease',
                 pointerEvents: 'none',
@@ -88,6 +90,38 @@ export default function Portfolio() {
                 }}
               >
                 {category.label}
+              </span>
+            </div>
+
+            {/* Mobile-only: tap to explore pill — only shown on collapsed panels */}
+            <div
+              className="mobile-tap-hint"
+              style={{
+                position: 'absolute',
+                bottom: '1rem',
+                left: 0,
+                right: 0,
+                display: 'flex',
+                justifyContent: 'center',
+                opacity: i === activeIdx ? 0 : 1,
+                transition: 'opacity 0.25s ease',
+                pointerEvents: 'none',
+              }}
+            >
+              <span
+                style={{
+                  fontFamily: 'Manrope, sans-serif',
+                  fontSize: '0.55rem',
+                  letterSpacing: '0.22em',
+                  textTransform: 'uppercase',
+                  color: 'rgba(255,255,255,0.55)',
+                  border: '1px solid rgba(255,255,255,0.2)',
+                  borderRadius: '999px',
+                  padding: '0.3rem 0.75rem',
+                  backdropFilter: 'blur(4px)',
+                }}
+              >
+                Tap to explore
               </span>
             </div>
 
@@ -187,10 +221,15 @@ export default function Portfolio() {
           }
           .accordion-panel {
             flex: none !important;
-            height: 65vw !important;
+            height: 55vw !important;
             min-width: unset !important;
             border-right: none !important;
             border-bottom: 1px solid var(--color-border) !important;
+            touch-action: manipulation;
+          }
+          /* Hide the tap hint on desktop — only show on touch screens */
+          @media (hover: hover) {
+            .mobile-tap-hint { display: none !important; }
           }
         }
       `}</style>

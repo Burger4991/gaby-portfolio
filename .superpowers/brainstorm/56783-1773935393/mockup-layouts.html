@@ -1,0 +1,878 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Layout Options — Gaby Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Manrope:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0C0C0E;
+    --surface: #111116;
+    --border: #1F1F25;
+    --text: #EDE8DF;
+    --muted: #5C5349;
+    --accent: #B8965A;
+    --card: #18181E;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Manrope', sans-serif;
+    font-size: 14px;
+  }
+
+  /* ── NAV TABS ── */
+  .tabs {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 999;
+    background: rgba(12,12,14,0.95);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 0;
+    padding: 0 2rem;
+  }
+  .tab {
+    padding: 1rem 1.5rem;
+    font-family: 'Manrope', sans-serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--muted);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    transition: color 0.2s, border-color 0.2s;
+    background: none;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+  }
+  .tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+  .tab:hover { color: var(--text); }
+  .tab-label {
+    padding: 1rem 1.5rem 1rem 0;
+    font-family: 'Manrope', sans-serif;
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--border);
+    margin-right: 1rem;
+    border-right: 1px solid var(--border);
+  }
+
+  .view { display: none; padding-top: 57px; }
+  .view.active { display: block; }
+
+  /* ────────────────────────────────────────
+     OPTION B — SPLIT SCROLL
+  ──────────────────────────────────────── */
+
+  .split-page-header {
+    padding: 5rem 4rem 3rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .split-page-header .eyebrow {
+    font-size: 0.65rem;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 1rem;
+  }
+  .split-page-header h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-weight: 300;
+    font-size: clamp(2.5rem, 6vw, 5rem);
+    line-height: 1;
+    color: var(--text);
+  }
+  .split-page-header .subtitle {
+    font-size: 0.75rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-top: 1rem;
+  }
+
+  .split-collection {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-height: 100vh;
+    border-bottom: 1px solid var(--border);
+  }
+
+  /* Left: sticky text */
+  .split-story {
+    position: sticky;
+    top: 57px;
+    height: calc(100vh - 57px);
+    padding: 4rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border-right: 1px solid var(--border);
+  }
+
+  .split-story .coll-num {
+    font-size: 0.6rem;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 1.5rem;
+  }
+  .split-story h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-weight: 300;
+    font-size: clamp(2rem, 4vw, 3.5rem);
+    line-height: 1.05;
+    color: var(--text);
+    margin-bottom: 1.5rem;
+  }
+  .split-story .desc {
+    font-size: 0.875rem;
+    line-height: 1.75;
+    color: var(--muted);
+    max-width: 380px;
+    margin-bottom: 2rem;
+  }
+  .split-story .outcome {
+    padding: 1rem 1.25rem;
+    border-left: 2px solid var(--accent);
+    background: rgba(184,150,90,0.05);
+    font-size: 0.8rem;
+    line-height: 1.6;
+    color: var(--text);
+    margin-bottom: 2rem;
+  }
+  .split-story .outcome strong {
+    color: var(--accent);
+    font-weight: 600;
+  }
+  .stage-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  .pill {
+    padding: 0.3rem 0.75rem;
+    border: 1px solid var(--border);
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    border-radius: 2px;
+  }
+  .pill.active-pill {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: rgba(184,150,90,0.08);
+  }
+
+  /* Right: scrollable images */
+  .split-images {
+    padding: 4rem 3rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  .img-card {
+    position: relative;
+    border-radius: 4px;
+    overflow: hidden;
+    background: var(--card);
+  }
+  .img-card img {
+    width: 100%;
+    display: block;
+    object-fit: cover;
+  }
+  .img-caption {
+    padding: 0.75rem 1rem;
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .img-stage {
+    padding: 0.2rem 0.5rem;
+    border: 1px solid var(--border);
+    font-size: 0.55rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+
+  /* ────────────────────────────────────────
+     OPTION C — TIMELINE STRIP
+  ──────────────────────────────────────── */
+
+  .timeline-page {
+    padding: 5rem 0 0;
+  }
+  .timeline-page-header {
+    padding: 0 4rem 4rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .timeline-page-header .eyebrow {
+    font-size: 0.65rem;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 1rem;
+  }
+  .timeline-page-header h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-weight: 300;
+    font-size: clamp(2.5rem, 6vw, 5rem);
+    color: var(--text);
+    line-height: 1;
+  }
+
+  .timeline-section {
+    border-bottom: 1px solid var(--border);
+    padding: 5rem 0;
+  }
+
+  .timeline-section-header {
+    padding: 0 4rem 3rem;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+  }
+  .timeline-section-header h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-weight: 300;
+    font-size: clamp(2rem, 4vw, 3.5rem);
+    color: var(--text);
+    line-height: 1;
+  }
+  .timeline-section-header .coll-meta {
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-align: right;
+  }
+  .timeline-section-header .coll-num {
+    color: var(--accent);
+    display: block;
+    margin-bottom: 0.25rem;
+  }
+
+  /* Horizontal scroll carousel */
+  .h-scroll-wrap {
+    padding: 0 4rem;
+    overflow-x: auto;
+    cursor: grab;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    margin-bottom: 2.5rem;
+  }
+  .h-scroll-wrap::-webkit-scrollbar { display: none; }
+  .h-scroll-track {
+    display: flex;
+    gap: 1.25rem;
+    padding-bottom: 1rem;
+  }
+  .h-card {
+    flex-shrink: 0;
+    width: 280px;
+    background: var(--card);
+    border-radius: 4px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    transition: border-color 0.2s;
+    cursor: pointer;
+  }
+  .h-card:hover { border-color: var(--accent); }
+  .h-card img {
+    width: 100%;
+    aspect-ratio: 3/4;
+    object-fit: cover;
+    display: block;
+  }
+  .h-card-info {
+    padding: 0.75rem 1rem;
+  }
+  .h-card-info .card-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 1rem;
+    color: var(--text);
+    margin-bottom: 0.25rem;
+  }
+  .h-card-info .card-sub {
+    font-size: 0.6rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  /* Process timeline strip */
+  .process-strip {
+    padding: 0 4rem;
+  }
+  .process-label {
+    font-size: 0.6rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 1.25rem;
+  }
+  .process-track {
+    display: flex;
+    align-items: flex-start;
+    gap: 0;
+    position: relative;
+  }
+  .process-track::before {
+    content: '';
+    position: absolute;
+    top: 28px;
+    left: 0; right: 0;
+    height: 1px;
+    background: var(--border);
+  }
+  .process-step {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+    position: relative;
+    cursor: pointer;
+  }
+  .step-img-wrap {
+    width: 56px;
+    height: 56px;
+    border-radius: 3px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    flex-shrink: 0;
+    background: var(--surface);
+    transition: border-color 0.2s, transform 0.2s;
+    position: relative;
+    z-index: 1;
+  }
+  .process-step:hover .step-img-wrap {
+    border-color: var(--accent);
+    transform: scale(1.1);
+  }
+  .step-img-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .step-label {
+    font-size: 0.55rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-align: center;
+    line-height: 1.4;
+  }
+  .process-step.highlighted .step-img-wrap {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 2px rgba(184,150,90,0.2);
+  }
+  .process-step.highlighted .step-label {
+    color: var(--accent);
+  }
+
+  /* Story block below carousel */
+  .story-block {
+    padding: 2.5rem 4rem 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    align-items: start;
+  }
+  .story-text .story-desc {
+    font-size: 0.9rem;
+    line-height: 1.8;
+    color: var(--muted);
+    margin-bottom: 1.5rem;
+  }
+  .story-text .story-outcome {
+    padding: 1rem 1.25rem;
+    border-left: 2px solid var(--accent);
+    background: rgba(184,150,90,0.05);
+    font-size: 0.8rem;
+    line-height: 1.6;
+    color: var(--text);
+  }
+  .story-text .story-outcome strong { color: var(--accent); }
+  .story-materials {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  .material-row {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.75rem;
+    color: var(--muted);
+  }
+  .material-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    flex-shrink: 0;
+  }
+  .materials-label {
+    font-size: 0.6rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.75rem;
+  }
+
+  /* ── scroll hint ── */
+  .scroll-hint {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1.5rem 4rem 0;
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--border);
+  }
+  .scroll-hint::after {
+    content: '';
+    display: block;
+    width: 40px;
+    height: 1px;
+    background: var(--border);
+  }
+
+</style>
+</head>
+<body>
+
+<!-- TABS -->
+<nav class="tabs">
+  <span class="tab-label">Layout Options</span>
+  <button class="tab active" onclick="switchTab('b')">B — Split Scroll</button>
+  <button class="tab" onclick="switchTab('c')">C — Timeline Strip</button>
+</nav>
+
+<!-- ══════════════════════════════════════
+     VIEW B — SPLIT SCROLL
+══════════════════════════════════════ -->
+<div id="view-b" class="view active">
+
+  <div class="split-page-header">
+    <p class="eyebrow">01 — Collections</p>
+    <h1>RTW, Resort<br>&amp; Activewear</h1>
+    <p class="subtitle">Pitusa · 2022 – 2025</p>
+  </div>
+
+  <!-- Collection 1 -->
+  <div class="split-collection">
+    <div class="split-story">
+      <p class="coll-num">01 / 03</p>
+      <h2>The Crochet<br>Patchwork<br>Collection</h2>
+      <p class="desc">Inspired by Brazilian crochet traditions and Miami's vibrant energy, the collection featured playful motifs — crabs, seashells, evil eye — across versatile separates. Each piece was hand-finished to preserve the artisanal quality of the craft.</p>
+      <div class="outcome">
+        <strong>↑ Viral bestseller</strong> — sold out multiple times. The Mini Dress became a top-selling signature style and remains in the permanent lineup.
+      </div>
+      <div class="stage-pills">
+        <span class="pill active-pill">Moodboard</span>
+        <span class="pill active-pill">Sketches</span>
+        <span class="pill active-pill">Sampling</span>
+        <span class="pill active-pill">Final</span>
+        <span class="pill active-pill">Editorial</span>
+      </div>
+    </div>
+    <div class="split-images">
+      <div class="img-card">
+        <img src="https://picsum.photos/seed/crochet-mood/700/500" alt="Moodboard">
+        <div class="img-caption">
+          Brazilian crochet references + Miami color palette
+          <span class="img-stage">Moodboard</span>
+        </div>
+      </div>
+      <div class="img-card">
+        <img src="https://picsum.photos/seed/crochet-sketch/700/600" alt="Sketches">
+        <div class="img-caption">
+          Initial motif explorations — crabs, seashells, evil eye
+          <span class="img-stage">Concept</span>
+        </div>
+      </div>
+      <div class="img-card">
+        <img src="https://picsum.photos/seed/crochet-sample/700/700" alt="Sample">
+        <div class="img-caption">
+          First sample fitting — Mini Dress silhouette
+          <span class="img-stage">Sampling</span>
+        </div>
+      </div>
+      <div class="img-card">
+        <img src="https://picsum.photos/seed/crochet-final/700/900" alt="Final">
+        <div class="img-caption">
+          Final collection — ecommerce shoot
+          <span class="img-stage">Final</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Collection 2 -->
+  <div class="split-collection">
+    <div class="split-story">
+      <p class="coll-num">02 / 03</p>
+      <h2>Resort 2025<br>Miami Swim Week</h2>
+      <p class="desc">A collaboration with Spanish luxury brand Castañer, styled by Irma Martinez. The collection elevated resort dressing while honoring Pitusa's craftsmanship heritage — Inca burnout sarongs, crochet flowers, pukka shell embellishments.</p>
+      <div class="outcome">
+        <strong>Featured in Vogue Mexico.</strong> Presented at Miami Swim Week 2025. Established Pitusa's position in the elevated resort category.
+      </div>
+      <div class="stage-pills">
+        <span class="pill active-pill">Direction</span>
+        <span class="pill active-pill">Collab</span>
+        <span class="pill active-pill">Runway</span>
+        <span class="pill active-pill">Editorial</span>
+      </div>
+    </div>
+    <div class="split-images">
+      <div class="img-card">
+        <img src="https://picsum.photos/seed/resort-direction/700/500" alt="Direction">
+        <div class="img-caption">
+          Creative direction — elevated resort concept
+          <span class="img-stage">Direction</span>
+        </div>
+      </div>
+      <div class="img-card">
+        <img src="https://picsum.photos/seed/resort-runway/700/800" alt="Runway">
+        <div class="img-caption">
+          Pitusa × Castañer runway — Miami Swim Week
+          <span class="img-stage">Runway</span>
+        </div>
+      </div>
+      <div class="img-card">
+        <img src="https://picsum.photos/seed/resort-vogue/700/1000" alt="Vogue">
+        <div class="img-caption">
+          Espacio Vogue Mexico — shot in Mallorca
+          <span class="img-stage">Editorial</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Collection 3 -->
+  <div class="split-collection">
+    <div class="split-story">
+      <p class="coll-num">03 / 03</p>
+      <h2>Basics | Intimates<br>&amp; Loungewear</h2>
+      <p class="desc">Originally a limited drop introducing never-before-seen styles. The line was designed for layering with sheer crochet or as standalone everyday pieces — soft jersey, rib 2×1, French Terry in apricot crush, lemon yellow, lime green, and Barbie pink.</p>
+      <div class="outcome">
+        <strong>↑ 300K+ in sales</strong> for a single set. Evolved from a limited drop into a multi-drop foundational BASICS branch spanning intimates, lounge, and everyday essentials.
+      </div>
+      <div class="stage-pills">
+        <span class="pill active-pill">Concept</span>
+        <span class="pill active-pill">Color Story</span>
+        <span class="pill active-pill">Tech Pack</span>
+        <span class="pill active-pill">Launch</span>
+      </div>
+    </div>
+    <div class="split-images">
+      <div class="img-card">
+        <img src="https://picsum.photos/seed/basics-color/700/400" alt="Color Story">
+        <div class="img-caption">
+          Color story — apricot crush, lemon yellow, lime green, barbie pink
+          <span class="img-stage">Color Story</span>
+        </div>
+      </div>
+      <div class="img-card">
+        <img src="https://picsum.photos/seed/basics-swatch/700/500" alt="Swatches">
+        <div class="img-caption">
+          Fabric swatches — jersey 40/1, rib 2×1, French Terry
+          <span class="img-stage">Development</span>
+        </div>
+      </div>
+      <div class="img-card">
+        <img src="https://picsum.photos/seed/basics-ecomm/700/900" alt="Ecommerce">
+        <div class="img-caption">
+          Ecommerce colorwall — full collection launch
+          <span class="img-stage">Final</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ══════════════════════════════════════
+     VIEW C — TIMELINE STRIP
+══════════════════════════════════════ -->
+<div id="view-c" class="view">
+
+  <div class="timeline-page">
+    <div class="timeline-page-header">
+      <p class="eyebrow">01 — Collections</p>
+      <h1>RTW, Resort<br>&amp; Activewear</h1>
+    </div>
+
+    <!-- Section 1 -->
+    <div class="timeline-section">
+      <div class="timeline-section-header">
+        <h2>The Crochet<br>Patchwork Collection</h2>
+        <div class="coll-meta">
+          <span class="coll-num">01 / 03</span>
+          Pitusa · 2023
+        </div>
+      </div>
+
+      <!-- Horizontal scroll carousel -->
+      <div class="scroll-hint">Drag to explore</div>
+      <div class="h-scroll-wrap" id="scroll1">
+        <div class="h-scroll-track">
+          <div class="h-card">
+            <img src="https://picsum.photos/seed/cp1/400/533" alt="">
+            <div class="h-card-info">
+              <div class="card-title">Mini Dress</div>
+              <div class="card-sub">Top-selling signature style</div>
+            </div>
+          </div>
+          <div class="h-card">
+            <img src="https://picsum.photos/seed/cp2/400/533" alt="">
+            <div class="h-card-info">
+              <div class="card-title">Crab Motif Set</div>
+              <div class="card-sub">Separates — top + skirt</div>
+            </div>
+          </div>
+          <div class="h-card">
+            <img src="https://picsum.photos/seed/cp3/400/533" alt="">
+            <div class="h-card-info">
+              <div class="card-title">Evil Eye Top</div>
+              <div class="card-sub">Hand-finished crochet</div>
+            </div>
+          </div>
+          <div class="h-card">
+            <img src="https://picsum.photos/seed/cp4/400/533" alt="">
+            <div class="h-card-info">
+              <div class="card-title">Seashell Shorts</div>
+              <div class="card-sub">Versatile separates</div>
+            </div>
+          </div>
+          <div class="h-card">
+            <img src="https://picsum.photos/seed/cp5/400/533" alt="">
+            <div class="h-card-info">
+              <div class="card-title">Full Look</div>
+              <div class="card-sub">Editorial — Miami</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Process strip -->
+      <div class="process-strip">
+        <p class="process-label">Design process</p>
+        <div class="process-track">
+          <div class="process-step highlighted">
+            <div class="step-img-wrap">
+              <img src="https://picsum.photos/seed/proc-mood1/100/100" alt="">
+            </div>
+            <span class="step-label">Moodboard</span>
+          </div>
+          <div class="process-step highlighted">
+            <div class="step-img-wrap">
+              <img src="https://picsum.photos/seed/proc-sketch1/100/100" alt="">
+            </div>
+            <span class="step-label">Sketches</span>
+          </div>
+          <div class="process-step highlighted">
+            <div class="step-img-wrap">
+              <img src="https://picsum.photos/seed/proc-swatch1/100/100" alt="">
+            </div>
+            <span class="step-label">Swatches</span>
+          </div>
+          <div class="process-step highlighted">
+            <div class="step-img-wrap">
+              <img src="https://picsum.photos/seed/proc-sample1/100/100" alt="">
+            </div>
+            <span class="step-label">Sampling</span>
+          </div>
+          <div class="process-step highlighted">
+            <div class="step-img-wrap">
+              <img src="https://picsum.photos/seed/proc-fitting1/100/100" alt="">
+            </div>
+            <span class="step-label">Fittings</span>
+          </div>
+          <div class="process-step highlighted">
+            <div class="step-img-wrap">
+              <img src="https://picsum.photos/seed/proc-final1/100/100" alt="">
+            </div>
+            <span class="step-label">Final</span>
+          </div>
+          <div class="process-step highlighted">
+            <div class="step-img-wrap">
+              <img src="https://picsum.photos/seed/proc-edit1/100/100" alt="">
+            </div>
+            <span class="step-label">Editorial</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Story block -->
+      <div class="story-block">
+        <div class="story-text">
+          <p class="story-desc">Inspired by Brazilian crochet traditions and Miami's vibrant energy, the collection featured playful motifs — crabs, seashells, evil eye — across versatile separates. Each piece was hand-finished to preserve the artisanal quality of the craft.</p>
+          <div class="story-outcome">
+            <strong>↑ Viral bestseller</strong> — sold out multiple times. The Mini Dress became a top-selling signature style and remains a permanent fixture in the Pitusa lineup.
+          </div>
+        </div>
+        <div class="story-materials">
+          <p class="materials-label">Materials &amp; techniques</p>
+          <div class="material-row"><span class="material-dot"></span>Hand-finished crochet patchwork</div>
+          <div class="material-row"><span class="material-dot"></span>Cotton yarn — Brazilian sourced</div>
+          <div class="material-row"><span class="material-dot"></span>Custom motif embroidery</div>
+          <div class="material-row"><span class="material-dot"></span>Versatile separates construction</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section 2 -->
+    <div class="timeline-section">
+      <div class="timeline-section-header">
+        <h2>Resort 2025<br>Miami Swim Week</h2>
+        <div class="coll-meta">
+          <span class="coll-num">02 / 03</span>
+          Pitusa × Castañer · 2025
+        </div>
+      </div>
+
+      <div class="scroll-hint">Drag to explore</div>
+      <div class="h-scroll-wrap">
+        <div class="h-scroll-track">
+          <div class="h-card">
+            <img src="https://picsum.photos/seed/resort1/400/533" alt="">
+            <div class="h-card-info">
+              <div class="card-title">Inca Burnout Sarong</div>
+              <div class="card-sub">Multiple trims + lengths</div>
+            </div>
+          </div>
+          <div class="h-card">
+            <img src="https://picsum.photos/seed/resort2/400/533" alt="">
+            <div class="h-card-info">
+              <div class="card-title">Crochet Flower Dress</div>
+              <div class="card-sub">Feminine mini silhouette</div>
+            </div>
+          </div>
+          <div class="h-card">
+            <img src="https://picsum.photos/seed/resort3/400/533" alt="">
+            <div class="h-card-info">
+              <div class="card-title">Crochet Two-Piece</div>
+              <div class="card-sub">Button-down top + shorts</div>
+            </div>
+          </div>
+          <div class="h-card">
+            <img src="https://picsum.photos/seed/resort4/400/533" alt="">
+            <div class="h-card-info">
+              <div class="card-title">Pukka Shell Skirt</div>
+              <div class="card-sub">Crochet embellishments</div>
+            </div>
+          </div>
+          <div class="h-card">
+            <img src="https://picsum.photos/seed/resort5/400/533" alt="">
+            <div class="h-card-info">
+              <div class="card-title">One-Piece Swimsuit</div>
+              <div class="card-sub">Multiple colorways</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="process-strip">
+        <p class="process-label">Design process</p>
+        <div class="process-track">
+          <div class="process-step highlighted">
+            <div class="step-img-wrap"><img src="https://picsum.photos/seed/r-dir/100/100" alt=""></div>
+            <span class="step-label">Direction</span>
+          </div>
+          <div class="process-step highlighted">
+            <div class="step-img-wrap"><img src="https://picsum.photos/seed/r-collab/100/100" alt=""></div>
+            <span class="step-label">Collab</span>
+          </div>
+          <div class="process-step highlighted">
+            <div class="step-img-wrap"><img src="https://picsum.photos/seed/r-fabric/100/100" alt=""></div>
+            <span class="step-label">Fabrics</span>
+          </div>
+          <div class="process-step highlighted">
+            <div class="step-img-wrap"><img src="https://picsum.photos/seed/r-runway/100/100" alt=""></div>
+            <span class="step-label">Runway</span>
+          </div>
+          <div class="process-step highlighted">
+            <div class="step-img-wrap"><img src="https://picsum.photos/seed/r-vogue/100/100" alt=""></div>
+            <span class="step-label">Vogue Mexico</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="story-block">
+        <div class="story-text">
+          <p class="story-desc">A collaboration with Spanish luxury brand Castañer, styled by Irma Martinez. The collection elevated resort dressing while honoring Pitusa's craftsmanship heritage — Inca burnout fabric sarongs, feminine crochet flowers, and pukka shell embellishments.</p>
+          <div class="story-outcome">
+            <strong>Featured in Vogue Mexico.</strong> Presented at Miami Swim Week 2025. Established Pitusa's position in the elevated resort category.
+          </div>
+        </div>
+        <div class="story-materials">
+          <p class="materials-label">Materials &amp; techniques</p>
+          <div class="material-row"><span class="material-dot"></span>Inca burnout jersey fabric</div>
+          <div class="material-row"><span class="material-dot"></span>Hand-applied crochet flowers</div>
+          <div class="material-row"><span class="material-dot"></span>Pukka shell embellishments</div>
+          <div class="material-row"><span class="material-dot"></span>Crinkle-knit fabrication</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  function switchTab(which) {
+    document.querySelectorAll('.tab').forEach((t, i) => {
+      t.classList.toggle('active', (i === 0 && which === 'b') || (i === 1 && which === 'c'))
+    })
+    document.getElementById('view-b').classList.toggle('active', which === 'b')
+    document.getElementById('view-c').classList.toggle('active', which === 'c')
+    window.scrollTo(0, 0)
+  }
+
+  // Drag-to-scroll on carousels (Option C)
+  document.querySelectorAll('.h-scroll-wrap').forEach(el => {
+    let isDown = false, startX, scrollLeft
+    el.addEventListener('mousedown', e => {
+      isDown = true
+      el.style.cursor = 'grabbing'
+      startX = e.pageX - el.offsetLeft
+      scrollLeft = el.scrollLeft
+    })
+    el.addEventListener('mouseleave', () => { isDown = false; el.style.cursor = 'grab' })
+    el.addEventListener('mouseup', () => { isDown = false; el.style.cursor = 'grab' })
+    el.addEventListener('mousemove', e => {
+      if (!isDown) return
+      e.preventDefault()
+      const x = e.pageX - el.offsetLeft
+      el.scrollLeft = scrollLeft - (x - startX) * 1.5
+    })
+  })
+</script>
+
+</body>
+</html>
