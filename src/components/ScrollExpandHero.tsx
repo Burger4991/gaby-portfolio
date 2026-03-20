@@ -35,7 +35,6 @@ export default function ScrollExpandHero({
     }
 
     const handleWheel = (e: WheelEvent) => {
-      if (scrollProgressRef.current >= 1) { removeAll(); return }
       e.preventDefault()
       const next = Math.min(1, Math.max(0, scrollProgressRef.current + e.deltaY / 800))
       scrollProgressRef.current = next
@@ -45,7 +44,6 @@ export default function ScrollExpandHero({
     let touchStartY = 0
     const handleTouchStart = (e: TouchEvent) => { touchStartY = e.touches[0].clientY }
     const handleTouchMove = (e: TouchEvent) => {
-      if (scrollProgressRef.current >= 1) { removeAll(); return }
       e.preventDefault()
       const delta = touchStartY - e.touches[0].clientY
       touchStartY = e.touches[0].clientY
