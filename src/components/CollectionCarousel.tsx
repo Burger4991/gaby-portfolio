@@ -30,16 +30,19 @@ function Carousel({ images, sectionTitle, onActiveIndexChange }: {
   const velocityX = useRef(0)
   const lastTime = useRef(0)
   const inertiaAnimation = useRef<ReturnType<typeof animate> | null>(null)
+  // Stable ref avoids re-subscribing when caller re-renders with a new callback identity
+  const onActiveIndexChangeRef = useRef(onActiveIndexChange)
+  onActiveIndexChangeRef.current = onActiveIndexChange
 
   useEffect(() => {
     const unsubscribe = rotation.on('change', (v) => {
       const faceAngle = 360 / faceCount
       const rawIndex = Math.round(-v / faceAngle)                         // round first
       const normalized = ((rawIndex % faceCount) + faceCount) % faceCount // then normalize
-      onActiveIndexChange(normalized)
+      onActiveIndexChangeRef.current(normalized)
     })
     return unsubscribe
-  }, [rotation, faceCount, onActiveIndexChange])
+  }, [rotation, faceCount])
 
   useEffect(() => {
     return () => {
@@ -125,8 +128,7 @@ function Carousel({ images, sectionTitle, onActiveIndexChange }: {
               style={{
                 width: '100%',
                 height: '100%',
-                borderRadius: 4,
-                overflow: 'hidden',
+                clipPath: 'inset(0 round 4px)', // clip-path avoids overflow:hidden + preserve-3d Safari bug
                 position: 'relative',
                 border: '1px solid var(--color-border)',
               }}
@@ -149,6 +151,25 @@ function Carousel({ images, sectionTitle, onActiveIndexChange }: {
 export default function CollectionCarousel({ images, sectionTitle }: CollectionCarouselProps) {
   const [activeIndex, setActiveIndex] = useState(0)
   if (images.length === 0) return null
+
+  // Single image: skip carousel, show static display
+  if (images.length === 1) {
+    const img = images[0]
+    return (
+      <div style={{ display: 'flex', flexDirection: 'column', width: '100%', maxWidth: FACE_WIDTH * 2 }}>
+        <div style={{ position: 'relative', width: '100%', height: CARD_HEIGHT, border: '1px solid var(--color-border)', borderRadius: 4, overflow: 'hidden' }}>
+          <Image src={img.src} alt={img.caption ?? sectionTitle} fill style={{ objectFit: 'cover' }} sizes="400px" />
+        </div>
+        {(img.caption || img.stage) && (
+          <div style={{ padding: '0.6rem 1rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontFamily: 'Manrope, sans-serif', fontSize: '0.62rem', letterSpacing: '0.15em', textTransform: 'uppercase', color: 'var(--color-muted)', borderTop: '1px solid var(--color-border)' }}>
+            <span>{img.caption}</span>
+            {img.stage && <span style={{ padding: '0.2rem 0.5rem', border: '1px solid var(--color-border)', fontSize: '0.55rem', letterSpacing: '0.15em', color: 'var(--color-accent)' }}>{img.stage}</span>}
+          </div>
+        )}
+      </div>
+    )
+  }
+
   const activeImage = images[activeIndex]
 
   return (
