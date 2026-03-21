@@ -1,24 +1,27 @@
 # Gaby Portfolio — Project State
-*Last updated: 2026-03-21 09:38*
+*Last updated: 2026-03-21 21:00*
 
 ## Phase
-planning → implementing (spec not written yet; ready to proceed)
+complete (CollectionScrollFX looping carousel shipped)
 
 ## Plan
-- **File:** `docs/superpowers/specs/2026-03-21-portfolio-effects-design.md` — does not exist yet, writing is the next step
-- **Current step:** Spec writing → spec review → implementation plan → build
-- **Decided:** All three effects approved using exact 21st.dev component code; FullScreenScrollFX placement is option B (section picker at top, existing split layout below)
-- **Open:** Spec not written; implementation plan not written; build order TBD (GlowCard → GlowingShadow → FullScreenScrollFX home → FullScreenScrollFX collection)
+- **File:** `docs/superpowers/plans/2026-03-21-collection-scroll-looping.md` — complete
+- **Spec:** `docs/superpowers/specs/2026-03-21-collection-scroll-looping-design.md`
+- **Current step:** Done — both tasks implemented, spec + quality reviewed, pushed
+- **Decided:** GSAP Observer (not ScrollTrigger), full-screen panels, 40/60 split, modulo looping, progress dots display-only, subtitle suppressed
+- **Open:** Vercel deploy to verify on mobile/desktop; copy alignment with Gaby's original site (needs URL)
 
 ## Implementation
-- **Active:** Nothing built yet — in pre-implementation planning
-- **Done:** UI polish pass complete (40/60 grid, vertical divider, 3D carousel restored, text reveal); brainstorming complete for 3 new features
-- **Blocked:** None — waiting on spec
+- **Active:** Nothing — complete
+- **Done:**
+  - `CollectionScrollFX.tsx` rewritten as looping GSAP Observer carousel (`3ec0bfc`)
+  - `SplitScrollCollection.tsx` simplified to 15-line data mapper (`4a7006f`)
+  - Build passes, all `/work/[slug]` pages statically generated, pushed
 
 ## Review / Eval
-- **Status:** not started
-- **Findings:** n/a
-- **Actions needed:** Spec review loop before building (dispatch spec-document-reviewer, fix issues, get sign-off)
+- **Status:** complete
+- **Findings:** Spec compliant (14/14 requirements). Quality reviewers flagged tween cleanup + stale closure — both already applied by implementer. `@ts-ignore` on GSAP Observer import for macOS casing quirk.
+- **Actions needed:** None
 
 ## Decisions Log
 - 2026-03-21: 40/60 grid — collection page uses `2fr 3fr` (text narrower, carousel wider)
@@ -27,14 +30,15 @@ planning → implementing (spec not written yet; ready to proceed)
 - 2026-03-21: Text reveal — IntersectionObserver triggers staggered fade-up (0→320ms) on section enter
 - 2026-03-21: FullScreenScrollFX placement B — FX sits at top of collection page as section picker, existing split layout continues below
 - 2026-03-21: GlowCard + GlowingShadow + FullScreenScrollFX — all approved to use exact 21st.dev component code
+- 2026-03-21: CollectionScrollFX architecture — GSAP Observer for infinite looping; body overflow lock via useLayoutEffect; goTo inside useLayoutEffect to avoid stale closure; tween cleanup on unmount
+- 2026-03-21: Subtitle suppressed — `category.subtitle` dropped from overlay (too long); label truncated with ellipsis
 
 ## Open Questions
-- None blocking — ready to write spec
+- Progress dots: decided display-only (not clickable). No change needed.
 
 ## Watch Out For
-- `style jsx` in pasted components — needs `'use client'` directive
-- GlowCard uses Tailwind classes — verify Tailwind 4 class names match
-- FullScreenScrollFX uses GSAP ScrollTrigger — register once via GSAPProvider
+- `gsap/Observer` import gets `// @ts-ignore` — TypeScript casing conflict on macOS, runtime is fine
+- Lint warnings about refs in GSAP cleanup are false positives — not real bugs
 - Next.js pinned to 15 — do not upgrade
-- "Improve X" ≠ "replace X" — the 3D carousel was previously replaced by mistake; modify, don't swap
-- ESLint: use `npm run lint`, not `npx eslint` directly
+- ESLint: use `npm run lint`, not `npx eslint`
+- Pre-existing lint errors in `Contact.tsx`, `Navbar.tsx`, `PullQuote.tsx` — don't fix in unrelated work

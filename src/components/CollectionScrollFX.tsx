@@ -51,6 +51,7 @@ export default function CollectionScrollFX({ sections, collectionLabel }: Collec
   const currentIndexRef = useRef(0)
   const bgRefs = useRef<(HTMLDivElement | null)[]>([])
   const textRefs = useRef<(HTMLDivElement | null)[]>([])
+  const goToRef = useRef<((next: number) => void) | null>(null)
 
   useLayoutEffect(() => {
     if (typeof window === 'undefined' || total === 0) return
@@ -89,6 +90,8 @@ export default function CollectionScrollFX({ sections, collectionLabel }: Collec
       setActiveIndex(next)
       gsap.delayedCall(0.8, () => { isAnimatingRef.current = false })
     }
+
+    goToRef.current = goTo
 
     const observer = Observer.create({
       type: 'wheel,touch',
@@ -342,8 +345,10 @@ export default function CollectionScrollFX({ sections, collectionLabel }: Collec
         }}
       >
         {sections.map((_, i) => (
-          <div
+          <button
             key={i}
+            onClick={() => goToRef.current?.(i)}
+            data-cursor="link"
             style={{
               width: 6,
               height: 6,
@@ -351,6 +356,8 @@ export default function CollectionScrollFX({ sections, collectionLabel }: Collec
               background: i === activeIndex ? 'var(--color-accent)' : 'transparent',
               border: i === activeIndex ? '1px solid var(--color-accent)' : '1px solid var(--color-border)',
               transition: 'background 0.3s ease',
+              padding: 0,
+              cursor: 'pointer',
             }}
           />
         ))}

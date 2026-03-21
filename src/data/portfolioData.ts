@@ -151,7 +151,7 @@ export const categories: PortfolioCategory[] = [
         id: 'crochet-patchwork',
         title: 'The Crochet Patchwork Collection',
         description:
-          "Inspired by Brazilian crochet traditions and Miami's vibrant energy, the collection featured playful motifs — crabs, seashells, evil eye — across versatile separates. The standout Mini Dress became a top-selling signature style, demonstrating the ability to translate trend-driven design into commercially successful, customer-beloved pieces.",
+          "The Crochet Patchwork Collection was a viral bestseller that sold out multiple times. Inspired by Brazilian crochet traditions and Miami's vibrant energy, the collection featured playful motifs (crabs, seashells, evil eye) across versatile separates. The standout Mini Dress became a top-selling signature style, demonstrating my ability to translate trend-driven design into commercially successful, customer-beloved pieces.",
         outcome: '↑ Viral bestseller — sold out multiple times. The Mini Dress became a permanent signature style in the lineup.',
         pills: ['Moodboard', 'Sketches', 'Sampling', 'Final', 'Editorial'],
         images: [
@@ -180,7 +180,7 @@ export const categories: PortfolioCategory[] = [
         id: 'vogue-mexico',
         title: 'Resort 2025 — Miami Swim Week',
         description:
-          "As Head of Design at Pitusa, I led the creative direction for Resort 2025 presented at Miami Swim Week — in collaboration with Spanish luxury shoe brand Castañer, styled by Irma Martinez. Signature Inca burnout sarongs, crochet flowers, pukka shell embellishments, and the show's standout two-piece crochet set. Featured in Vogue Mexico.",
+          "As Head of Design at Pitusa, I led the creative direction and design for our Resort 2025 collection presented at Miami Swim Week in collaboration with Spanish luxury shoe brand Castañer and styled by Irma Martinez. The collection elevated resortwear through sophisticated cover-ups and swim-to-street pieces, featuring signature Inca burnout fabric sarongs in varying trims, colors, and lengths; a feminine mini dress in Inca burnout accented with crochet flowers; our iconic one-piece, one-size swimsuit styled in multiple colorways; a crochet skirt embellished with pukka shells; and the show's standout piece—a two-piece crochet set comprising a button-down top and shorts, styled with Pitusa's dramatic two-tone oversized brim hat. Featured in Vogue Mexico, the presentation showcased our evolution into elevated resort dressing while honoring our craftsmanship heritage and bohemian luxury aesthetic.",
         outcome: "↑ Featured in Vogue Mexico — Espacio Vogue Mexico editorial shot in Mallorca. Presented at Miami Swim Week 2025.",
         pills: ['Direction', 'Collab', 'Runway', 'Vogue Mexico'],
         images: [
@@ -195,7 +195,7 @@ export const categories: PortfolioCategory[] = [
         id: 'basics-intimates',
         title: 'Basics | Intimates & Loungewear',
         description:
-          'Originally conceptualized as a single limited drop, this collection quickly evolved into a multi-drop exclusive category within Pitusa. Designed to complement the signature beachwear — layered with sheer crochet or worn standalone. Soft jersey, rib 2×1, French Terry in apricot crush, lemon yellow, lime green, and Barbie pink.',
+          "Originally conceptualized as a single, limited drop introducing never-before-seen styles for the brand, this collection quickly evolved into a multi-drop, exclusive category within Pitusa. Designed to complement the brand's signature beachwear, the pieces were intentionally developed to be worn under more revealing silhouettes or layered with sheer crochet dresses—bridging functionality with effortless styling. As demand grew, the collection expanded into a foundational BASICS branch, spanning intimates, lounge, and everyday essentials. Its commercial success led to private-label collaborations and established a new design category that continues to shape the brand's core offering today.",
         outcome: '↑ Fan favorite: over 300K in sales for a single set. Expanded into a foundational BASICS branch spanning intimates, lounge, and everyday essentials — leading to private-label collaborations.',
         pills: ['Concept', 'Color Story', 'Tech Pack', 'Launch'],
         images: [
