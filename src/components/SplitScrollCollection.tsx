@@ -5,6 +5,7 @@ import Link from 'next/link'
 import type { PortfolioCategory } from '@/data/portfolioData'
 import CollectionCarousel from './CollectionCarousel'
 import GlowingShadow from './GlowingShadow'
+import FullScreenScrollFX from './FullScreenScrollFX'
 
 export default function SplitScrollCollection({ category }: { category: PortfolioCategory }) {
   const [activeSection, setActiveSection] = useState(category.sections[0]?.id ?? '')
@@ -106,6 +107,18 @@ export default function SplitScrollCollection({ category }: { category: Portfoli
           {category.subtitle}
         </p>
       </div>
+
+      {/* Section-picker intro */}
+      <FullScreenScrollFX
+        mode="collection"
+        collectionLabel={category.label}
+        panels={category.sections.map((s, idx) => ({
+          id: s.id,
+          title: s.title,
+          index: idx,
+          total: category.sections.length,
+        }))}
+      />
 
       {/* One split-collection block per section */}
       {category.sections.map((section, i) => {
