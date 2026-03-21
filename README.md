@@ -1,16 +1,45 @@
-# React + Vite
+# Gaby Cárdenas — Portfolio
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Fashion design portfolio for Gaby Cárdenas. Built with Next.js 15 and deployed on Vercel.
 
-Currently, two official plugins are available:
+## Stack
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- **Next.js 15** (App Router, pinned — do not upgrade)
+- **React 19**
+- **Tailwind CSS 4**
+- **GSAP** — scroll-driven animations via `GSAPProvider` + `ScrollTrigger`
+- **Framer Motion** — 3D cylindrical carousel (`ThreeDCarousel`)
+- **Resend** — contact form email delivery
 
-## React Compiler
+## Routes
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- `/` — home page with section components
+- `/work/[slug]` — collection detail pages, statically generated
 
-## Expanding the ESLint configuration
+All content lives in `src/data/portfolioData.ts` — the single source of truth for copy, images, and collection structure.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Development
+
+```bash
+npm install
+npm run dev      # localhost:3000
+npm run lint     # run before committing (no test suite)
+npm run build    # production build
+```
+
+## Environment variables
+
+Required for the contact form. Set in Vercel dashboard or `.env.local`:
+
+```
+RESEND_API_KEY=...
+GABY_EMAIL=...
+```
+
+## Deployment
+
+Vercel — pushes to `main` auto-deploy. No manual steps needed.
+
+## Known constraints
+
+**Next.js is pinned to 15** — Next.js 16 Turbopack production builds break `work/[slug]` page generation. Do not upgrade. See `CLAUDE.md` for full architecture notes.
