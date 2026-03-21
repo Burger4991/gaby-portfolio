@@ -19,7 +19,7 @@ export default function SplitScrollCollection({ category }: { category: Portfoli
       },
       {
         threshold: 0.4,
-        rootMargin: '-4rem 0px 0px 0px',
+        rootMargin: '-64px 0px 0px 0px',
       }
     )
     category.sections.forEach((s) => {
