@@ -36,7 +36,7 @@ Page root (position: fixed, inset: 0, overflow: hidden)
     │   ├── Outcome callout (gold left-border box)
     │   └── Stage pills (gold border, uppercase)
     ├── Right column — 60% width
-    │   └── ThreeDCarousel (existing component, current section's images)
+    │   └── CollectionCarousel (existing component, current section's images)
     └── Progress indicator (bottom — dots or bar, shows current/total)
 ```
 
@@ -84,6 +84,7 @@ interface CollectionScrollFXProps {
     outcome: string
     pills: string[]
     images: SectionImage[]   // full image array for carousel
+    sectionTitle: string     // passed as sectionTitle prop to CollectionCarousel
     counter: string          // e.g. "01 / 03"
   }[]
   collectionLabel: string    // e.g. "Resort"
@@ -96,7 +97,7 @@ interface CollectionScrollFXProps {
 - Body overflow locked in `useLayoutEffect`, restored via cleanup
 - Active section index in `useState`
 - Background images: render all, only active is visible (opacity), so Next.js can preload them
-- ThreeDCarousel receives `images={sections[activeIndex].images}` — resets on index change via `key={activeIndex}`
+- `CollectionCarousel` receives `images={sections[activeIndex].images}` and `sectionTitle={sections[activeIndex].title}` — resets on index change via `key={activeIndex}`
 
 ### `SplitScrollCollection.tsx` — major simplification
 
@@ -123,6 +124,7 @@ return (
         outcome: s.outcome,
         pills: s.pills,
         images: s.images,
+        sectionTitle: s.title,
         counter: `${String(i + 1).padStart(2, '0')} / ${String(category.sections.length).padStart(2, '0')}`,
       }))}
       collectionLabel={category.label}
@@ -137,7 +139,7 @@ The vertical divider component was placed between text and carousel columns. Wit
 
 ### `GlowCard.tsx` — unchanged
 
-Still wraps carousel card faces in `ThreeDCarousel`. No changes needed.
+Still wraps carousel card faces in `CollectionCarousel`. No changes needed.
 
 ## What Gets Deleted (from existing files)
 
@@ -147,15 +149,19 @@ Still wraps carousel card faces in `ThreeDCarousel`. No changes needed.
 - The `GlowingShadow` import in `SplitScrollCollection.tsx`
 - All `CollectionScrollFX` import/usage in `SplitScrollCollection.tsx` (re-added inside new component)
 - All stacked section grid markup
+- `split-back-nav` block (back nav link) in `SplitScrollCollection.tsx` — now owned by `CollectionScrollFX` fixed overlay
+- `split-page-header` block (collection title + subtitle) in `SplitScrollCollection.tsx` — now owned by `CollectionScrollFX` fixed overlay
+- `paddingTop: '4rem'` and `minHeight: '100vh'` on the outer wrapper in `SplitScrollCollection.tsx` — the new component owns the full viewport
 
 ## Constraints
 
 - Next.js pinned to 15 — no upgrade
 - `'use client'` on all interactive components
 - No test suite — verify with `npm run lint` + `npm run build`
-- GSAP already registered via `GSAPProvider` — Observer is part of GSAP core, no additional registration needed
+- GSAP Observer must be explicitly registered: `gsap.registerPlugin(Observer)`. Import from `gsap/Observer`. This is not auto-registered — the existing `CollectionScrollFX.tsx` demonstrates the correct pattern for `ScrollTrigger`.
 - Body overflow lock must be cleaned up on unmount (Next.js route changes)
-- ThreeDCarousel uses Framer Motion inertia — ensure it still receives correct props on section change
+- `CollectionCarousel` uses Framer Motion inertia internally — ensure it still receives correct `images` and `sectionTitle` props on section change
+- `category.label` is a full display string (e.g. `"Resort & Activewear"`, `"Cut & Sew Knits"`) — not a short slug. The fixed overlay label should use `font-size: 0.6rem` or smaller, or truncate with `text-overflow: ellipsis` if the label is long.
 
 ## Success Criteria
 
