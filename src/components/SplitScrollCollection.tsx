@@ -112,48 +112,6 @@ export default function SplitScrollCollection({ category }: { category: Portfoli
         return (
           <div key={section.id}>
 
-            {/* B+C divider between sections */}
-            {i > 0 && (
-              <div className="section-divider" style={{ position: 'relative', overflow: 'hidden', borderBottom: '1px solid var(--color-border)' }}>
-                {/* Ghost number */}
-                <span style={{
-                  position: 'absolute',
-                  left: '1.5rem',
-                  top: '50%',
-                  transform: 'translateY(-50%)',
-                  fontFamily: 'Cormorant Garamond, serif',
-                  fontWeight: 700,
-                  fontSize: 'clamp(5rem, 10vw, 8rem)',
-                  lineHeight: 1,
-                  color: 'var(--color-border)',
-                  opacity: 0.35,
-                  pointerEvents: 'none',
-                  userSelect: 'none',
-                }}>
-                  {String(i + 1).padStart(2, '0')}
-                </span>
-                {/* Dot + gradient line + counter */}
-                <div style={{
-                  padding: '1.25rem 2.5rem 1.25rem 8rem',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '1rem',
-                }}>
-                  <div style={{ width: '5px', height: '5px', borderRadius: '50%', background: 'var(--color-accent)', flexShrink: 0 }} />
-                  <div style={{ height: '1px', flex: 1, background: 'linear-gradient(to right, var(--color-accent), transparent)' }} />
-                  <span style={{
-                    fontFamily: 'Manrope, sans-serif',
-                    fontSize: '0.55rem',
-                    letterSpacing: '0.3em',
-                    textTransform: 'uppercase',
-                    color: 'var(--color-muted)',
-                    flexShrink: 0,
-                  }}>
-                    {String(i + 1).padStart(2, '0')} / {String(category.sections.length).padStart(2, '0')}
-                  </span>
-                </div>
-              </div>
-            )}
 
             {/* Section grid */}
             <div
@@ -176,7 +134,6 @@ export default function SplitScrollCollection({ category }: { category: Portfoli
                   padding: '3rem 2.5rem',
                   display: 'flex',
                   flexDirection: 'column',
-                  borderRight: '1px solid var(--color-border)',
                   gap: '1.5rem',
                 }}
               >
@@ -325,6 +282,18 @@ export default function SplitScrollCollection({ category }: { category: Portfoli
       })}
 
       <style>{`
+        /* Gradient vertical divider between text and carousel */
+        .split-story::after {
+          content: '';
+          position: absolute;
+          top: 0;
+          right: 0;
+          width: 1px;
+          height: 100%;
+          background: linear-gradient(to bottom, transparent, var(--color-accent) 20%, var(--color-accent) 80%, transparent);
+          opacity: 0.45;
+        }
+
         @keyframes sectionFadeUp {
           from {
             opacity: 0;
@@ -354,6 +323,9 @@ export default function SplitScrollCollection({ category }: { category: Portfoli
           }
           .split-collection {
             grid-template-columns: 1fr !important;
+          }
+          .split-story::after {
+            display: none;
           }
           .split-story {
             position: static !important;
