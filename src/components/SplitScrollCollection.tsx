@@ -1,24 +1,33 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
 import type { PortfolioCategory } from '@/data/portfolioData'
 import CollectionCarousel from './CollectionCarousel'
 
 export default function SplitScrollCollection({ category }: { category: PortfolioCategory }) {
   const [activeSection, setActiveSection] = useState(category.sections[0]?.id ?? '')
+  const [revealedSections, setRevealedSections] = useState<Set<string>>(
+    () => new Set([category.sections[0]?.id ?? ''])
+  )
+  const revealedRef = useRef<Set<string>>(new Set([category.sections[0]?.id ?? '']))
 
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            setActiveSection(entry.target.id.replace('section-', ''))
+            const id = entry.target.id.replace('section-', '')
+            setActiveSection(id)
+            if (!revealedRef.current.has(id)) {
+              revealedRef.current.add(id)
+              setRevealedSections(new Set(revealedRef.current))
+            }
           }
         })
       },
       {
-        threshold: 0.4,
+        threshold: 0.15,
         rootMargin: '-64px 0px 0px 0px',
       }
     )
@@ -98,164 +107,244 @@ export default function SplitScrollCollection({ category }: { category: Portfoli
       </div>
 
       {/* One split-collection block per section */}
-      {category.sections.map((section, i) => (
-        <div
-          key={section.id}
-          id={`section-${section.id}`}
-          style={{
-            display: 'grid',
-            gridTemplateColumns: '2fr 3fr',
-            borderBottom: '1px solid var(--color-border)',
-          }}
-          className="split-collection"
-        >
-          {/* Left: sticky story panel */}
-          <div
-            className="split-story"
-            style={{
-              position: 'sticky',
-              top: '4rem',
-              height: 'auto',
-              alignSelf: 'flex-start',
-              padding: '3rem 2.5rem',
-              display: 'flex',
-              flexDirection: 'column',
-              borderRight: '1px solid var(--color-border)',
-              gap: '1.5rem',
-            }}
-          >
-            <p
-              style={{
-                fontFamily: 'Manrope, sans-serif',
-                fontSize: '0.6rem',
-                letterSpacing: '0.35em',
-                textTransform: 'uppercase',
-                color: 'var(--color-accent)',
-              }}
-            >
-              {String(i + 1).padStart(2, '0')} / {String(category.sections.length).padStart(2, '0')}
-            </p>
+      {category.sections.map((section, i) => {
+        const revealed = revealedSections.has(section.id)
+        return (
+          <div key={section.id}>
 
-            <h2
-              style={{
-                fontFamily: 'Cormorant Garamond, serif',
-                fontStyle: 'italic',
-                fontWeight: 300,
-                fontSize: 'clamp(2rem, 4vw, 3.5rem)',
-                lineHeight: 1.05,
-                color: 'var(--color-text)',
-                margin: 0,
-              }}
-            >
-              {section.title}
-            </h2>
+            {/* B+C divider between sections */}
+            {i > 0 && (
+              <div className="section-divider" style={{ position: 'relative', overflow: 'hidden', borderBottom: '1px solid var(--color-border)' }}>
+                {/* Ghost number */}
+                <span style={{
+                  position: 'absolute',
+                  left: '1.5rem',
+                  top: '50%',
+                  transform: 'translateY(-50%)',
+                  fontFamily: 'Cormorant Garamond, serif',
+                  fontWeight: 700,
+                  fontSize: 'clamp(5rem, 10vw, 8rem)',
+                  lineHeight: 1,
+                  color: 'var(--color-border)',
+                  opacity: 0.35,
+                  pointerEvents: 'none',
+                  userSelect: 'none',
+                }}>
+                  {String(i + 1).padStart(2, '0')}
+                </span>
+                {/* Dot + gradient line + counter */}
+                <div style={{
+                  padding: '1.25rem 2.5rem 1.25rem 8rem',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '1rem',
+                }}>
+                  <div style={{ width: '5px', height: '5px', borderRadius: '50%', background: 'var(--color-accent)', flexShrink: 0 }} />
+                  <div style={{ height: '1px', flex: 1, background: 'linear-gradient(to right, var(--color-accent), transparent)' }} />
+                  <span style={{
+                    fontFamily: 'Manrope, sans-serif',
+                    fontSize: '0.55rem',
+                    letterSpacing: '0.3em',
+                    textTransform: 'uppercase',
+                    color: 'var(--color-muted)',
+                    flexShrink: 0,
+                  }}>
+                    {String(i + 1).padStart(2, '0')} / {String(category.sections.length).padStart(2, '0')}
+                  </span>
+                </div>
+              </div>
+            )}
 
-            <p
-              style={{
-                fontFamily: 'Manrope, sans-serif',
-                fontSize: '0.875rem',
-                lineHeight: 1.75,
-                color: 'var(--color-muted)',
-                maxWidth: '380px',
-                margin: 0,
-              }}
-            >
-              {section.description}
-            </p>
-
+            {/* Section grid */}
             <div
+              id={`section-${section.id}`}
               style={{
-                padding: '1rem 1.25rem',
-                borderLeft: '2px solid var(--color-accent)',
-                background: 'rgba(184,150,90,0.05)',
-                fontSize: '0.8rem',
-                lineHeight: 1.6,
-                color: 'var(--color-text)',
+                display: 'grid',
+                gridTemplateColumns: '2fr 3fr',
+                borderBottom: '1px solid var(--color-border)',
               }}
+              className="split-collection"
             >
-              <span
+              {/* Left: sticky story panel */}
+              <div
+                className="split-story"
                 style={{
-                  color: 'var(--color-accent)',
-                  fontWeight: 600,
-                  fontFamily: 'Manrope, sans-serif',
+                  position: 'sticky',
+                  top: '4rem',
+                  height: 'auto',
+                  alignSelf: 'flex-start',
+                  padding: '3rem 2.5rem',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  borderRight: '1px solid var(--color-border)',
+                  gap: '1.5rem',
                 }}
               >
-                {section.outcome.startsWith('↑') || section.outcome.startsWith('Featured')
-                  ? section.outcome.split(' — ')[0].split('. ')[0]
-                  : 'Outcome'}
-              </span>
-              {' '}
-              {section.outcome.includes(' — ')
-                ? section.outcome.split(' — ').slice(1).join(' — ')
-                : section.outcome.includes('. ')
-                ? section.outcome.split('. ').slice(1).join('. ')
-                : section.outcome}
-            </div>
-
-            {/* Stage pills */}
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
-              {section.pills.map((pill) => (
-                <span
-                  key={pill}
+                <p
+                  className={revealed ? 'section-reveal revealed' : 'section-reveal'}
                   style={{
-                    padding: '0.3rem 0.75rem',
-                    border: '1px solid var(--color-accent)',
-                    background: 'rgba(184,150,90,0.08)',
                     fontFamily: 'Manrope, sans-serif',
                     fontSize: '0.6rem',
-                    letterSpacing: '0.2em',
+                    letterSpacing: '0.35em',
                     textTransform: 'uppercase',
                     color: 'var(--color-accent)',
-                    borderRadius: '2px',
+                    animationDelay: '0ms',
                   }}
                 >
-                  {pill}
-                </span>
-              ))}
-            </div>
+                  {String(i + 1).padStart(2, '0')} / {String(category.sections.length).padStart(2, '0')}
+                </p>
 
-            {/* Section jump nav */}
-            <div style={{ borderTop: '1px solid var(--color-border)', paddingTop: '1rem', marginTop: '0.5rem' }}>
-              <p style={{ fontSize: '0.55rem', letterSpacing: '0.3em', textTransform: 'uppercase', color: 'var(--color-border)', marginBottom: '0.5rem' }}>
-                Sections
-              </p>
-              {category.sections.map((s, idx) => (
-                <a
-                  key={s.id}
-                  href={`#section-${s.id}`}
+                <h2
+                  className={revealed ? 'section-reveal revealed' : 'section-reveal'}
                   style={{
-                    display: 'block',
-                    fontFamily: 'Manrope, sans-serif',
-                    fontSize: '0.6rem',
-                    letterSpacing: '0.1em',
-                    padding: '0.2rem 0',
-                    color: activeSection === s.id ? 'var(--color-accent)' : 'var(--color-border)',
-                    textDecoration: 'none',
-                    transition: 'color 0.2s ease',
+                    fontFamily: 'Cormorant Garamond, serif',
+                    fontStyle: 'italic',
+                    fontWeight: 300,
+                    fontSize: 'clamp(2rem, 4vw, 3.5rem)',
+                    lineHeight: 1.05,
+                    color: 'var(--color-text)',
+                    margin: 0,
+                    animationDelay: '80ms',
                   }}
                 >
-                  {String(idx + 1).padStart(2, '0')}  {s.title}
-                </a>
-              ))}
+                  {section.title}
+                </h2>
+
+                <p
+                  className={revealed ? 'section-reveal revealed' : 'section-reveal'}
+                  style={{
+                    fontFamily: 'Manrope, sans-serif',
+                    fontSize: '0.875rem',
+                    lineHeight: 1.75,
+                    color: 'var(--color-muted)',
+                    maxWidth: '380px',
+                    margin: 0,
+                    animationDelay: '160ms',
+                  }}
+                >
+                  {section.description}
+                </p>
+
+                <div
+                  className={revealed ? 'section-reveal revealed' : 'section-reveal'}
+                  style={{
+                    padding: '1rem 1.25rem',
+                    borderLeft: '2px solid var(--color-accent)',
+                    background: 'rgba(184,150,90,0.05)',
+                    fontSize: '0.8rem',
+                    lineHeight: 1.6,
+                    color: 'var(--color-text)',
+                    animationDelay: '240ms',
+                  }}
+                >
+                  <span
+                    style={{
+                      color: 'var(--color-accent)',
+                      fontWeight: 600,
+                      fontFamily: 'Manrope, sans-serif',
+                    }}
+                  >
+                    {section.outcome.startsWith('↑') || section.outcome.startsWith('Featured')
+                      ? section.outcome.split(' — ')[0].split('. ')[0]
+                      : 'Outcome'}
+                  </span>
+                  {' '}
+                  {section.outcome.includes(' — ')
+                    ? section.outcome.split(' — ').slice(1).join(' — ')
+                    : section.outcome.includes('. ')
+                    ? section.outcome.split('. ').slice(1).join('. ')
+                    : section.outcome}
+                </div>
+
+                {/* Stage pills */}
+                <div
+                  className={revealed ? 'section-reveal revealed' : 'section-reveal'}
+                  style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', animationDelay: '320ms' }}
+                >
+                  {section.pills.map((pill) => (
+                    <span
+                      key={pill}
+                      style={{
+                        padding: '0.3rem 0.75rem',
+                        border: '1px solid var(--color-accent)',
+                        background: 'rgba(184,150,90,0.08)',
+                        fontFamily: 'Manrope, sans-serif',
+                        fontSize: '0.6rem',
+                        letterSpacing: '0.2em',
+                        textTransform: 'uppercase',
+                        color: 'var(--color-accent)',
+                        borderRadius: '2px',
+                      }}
+                    >
+                      {pill}
+                    </span>
+                  ))}
+                </div>
+
+                {/* Section jump nav */}
+                <div style={{ borderTop: '1px solid var(--color-border)', paddingTop: '1rem', marginTop: '0.5rem' }}>
+                  <p style={{ fontSize: '0.55rem', letterSpacing: '0.3em', textTransform: 'uppercase', color: 'var(--color-border)', marginBottom: '0.5rem' }}>
+                    Sections
+                  </p>
+                  {category.sections.map((s, idx) => (
+                    <a
+                      key={s.id}
+                      href={`#section-${s.id}`}
+                      style={{
+                        display: 'block',
+                        fontFamily: 'Manrope, sans-serif',
+                        fontSize: '0.6rem',
+                        letterSpacing: '0.1em',
+                        padding: '0.2rem 0',
+                        color: activeSection === s.id ? 'var(--color-accent)' : 'var(--color-border)',
+                        textDecoration: 'none',
+                        transition: 'color 0.2s ease',
+                      }}
+                    >
+                      {String(idx + 1).padStart(2, '0')}  {s.title}
+                    </a>
+                  ))}
+                </div>
+              </div>
+
+              {/* Right: image carousel */}
+              <div
+                className="split-images"
+                style={{
+                  padding: '3rem',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'flex-start',
+                }}
+              >
+                <CollectionCarousel images={section.images} sectionTitle={section.title} />
+              </div>
             </div>
           </div>
-
-          {/* Right: image carousel */}
-          <div
-            className="split-images"
-            style={{
-              padding: '3rem',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'flex-start',
-            }}
-          >
-            <CollectionCarousel images={section.images} sectionTitle={section.title} />
-          </div>
-        </div>
-      ))}
+        )
+      })}
 
       <style>{`
+        @keyframes sectionFadeUp {
+          from {
+            opacity: 0;
+            transform: translateY(18px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+
+        .section-reveal {
+          opacity: 0;
+          transform: translateY(18px);
+        }
+
+        .section-reveal.revealed {
+          animation: sectionFadeUp 0.55s cubic-bezier(0.4, 0, 0.2, 1) both;
+        }
+
         @media (max-width: 768px) {
           .split-back-nav {
             padding: 1.5rem 1.5rem 0 !important;
@@ -276,6 +365,9 @@ export default function SplitScrollCollection({ category }: { category: Portfoli
           }
           .split-images {
             padding: 2rem 1.5rem !important;
+          }
+          .section-divider {
+            display: none;
           }
         }
       `}</style>
