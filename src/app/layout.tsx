@@ -3,6 +3,7 @@ import type { Metadata } from 'next'
 import { Analytics } from '@vercel/analytics/next'
 import { ThemeProvider } from '@/components/ThemeProvider'
 import GSAPProvider from '@/components/GSAPProvider'
+import CustomCursor from '@/components/CustomCursor'
 import './globals.css'
 
 const SITE_URL = 'https://gabrielagamargo.com'
@@ -54,6 +55,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
         <ThemeProvider>
           <GSAPProvider>
+            <CustomCursor />
             {children}
           </GSAPProvider>
         </ThemeProvider>

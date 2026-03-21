@@ -7,7 +7,6 @@ import PullQuote from '@/components/PullQuote'
 import About from '@/components/About'
 import Contact from '@/components/Contact'
 import BackToTop from '@/components/BackToTop'
-import CustomCursor from '@/components/CustomCursor'
 
 export default function Home() {
   return (
@@ -23,7 +22,6 @@ export default function Home() {
         <Contact />
       </main>
       <BackToTop />
-      <CustomCursor />
     </>
   )
 }

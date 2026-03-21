@@ -23,8 +23,8 @@ export default function PullQuote() {
 
       trigger = ScrollTrigger.create({
         trigger: sectionRef.current,
-        start: 'top 70%',
-        end: 'bottom 30%',
+        start: 'top 90%',
+        end: 'top 15%',
         scrub: true,
         onUpdate(self) {
           const progress = self.progress
