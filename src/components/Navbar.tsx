@@ -43,6 +43,7 @@ export default function Navbar() {
       >
         <a
           href="/"
+          data-cursor="link"
           onClick={() => setOpen(false)}
           className="text-xl font-semibold tracking-[0.2em] transition-opacity duration-200 hover:opacity-70 cursor-pointer"
           style={{ fontFamily: 'Cormorant Garamond, serif', color: open ? 'white' : 'var(--color-text)', position: 'relative', zIndex: 60 }}
@@ -90,7 +91,7 @@ export default function Navbar() {
           >
             <nav className="flex flex-col items-center gap-2 mb-16">
               <motion.a
-                key="Work" href="/#portfolio" onClick={() => setOpen(false)}
+                key="Work" href="/#portfolio" data-cursor="link" onClick={() => setOpen(false)}
                 className="block cursor-pointer"
                 style={{ fontFamily: 'Cormorant Garamond, serif', color: 'rgba(255,255,255,0.85)', fontSize: 'clamp(3rem, 10vw, 6rem)', fontWeight: 300, fontStyle: 'italic', lineHeight: 1.1 }}
                 onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color = 'var(--color-accent)' }}
@@ -118,6 +119,7 @@ export default function Navbar() {
                   <Link
                     key={href}
                     href={href}
+                    data-cursor="link"
                     onClick={() => setOpen(false)}
                     style={{
                       fontFamily: 'Manrope, sans-serif',
@@ -137,7 +139,7 @@ export default function Navbar() {
 
               {links.filter(l => l.label !== 'Work').map(({ label, href }, i) => (
                 <motion.a
-                  key={label} href={href} onClick={() => setOpen(false)}
+                  key={label} href={href} data-cursor="link" onClick={() => setOpen(false)}
                   className="block cursor-pointer"
                   style={{ fontFamily: 'Cormorant Garamond, serif', color: 'rgba(255,255,255,0.85)', fontSize: 'clamp(3rem, 10vw, 6rem)', fontWeight: 300, fontStyle: 'italic', lineHeight: 1.1 }}
                   onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color = 'var(--color-accent)' }}

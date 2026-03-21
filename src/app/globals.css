@@ -55,51 +55,106 @@ body {
 
 /* ─── Custom cursor (pointer devices only) ─── */
 @media (hover: hover) {
-  /**
-   * Hide the OS cursor on the page body so the custom JS cursor takes over.
-   * We scope this to `body` rather than `*` so that:
-   *  - text inputs/textareas still show the text I-beam (better UX + a11y)
-   *  - resize handles on textareas still work
-   *  - third-party accessibility overlays can still set their own cursors
-   */
-  body { cursor: none; }
+  /* Hide OS cursor on all elements — inline cursor: pointer styles would
+     otherwise override a body-only rule */
+  * { cursor: none !important; }
+  input, textarea, [contenteditable] { cursor: text !important; }
+  textarea { cursor: auto !important; }
 
-  /* Restore the I-beam cursor for text-entry elements */
-  input, textarea, [contenteditable] { cursor: text; }
-
-  /* Restore resize handle on textareas */
-  textarea { cursor: auto; }
-
+  /* Magnetic dot */
   .cursor-dot {
     position: fixed;
     top: 0;
     left: 0;
-    width: 8px;
-    height: 8px;
+    width: 12px;
+    height: 12px;
     border-radius: 50%;
-    background: var(--color-accent);
+    background: white;
+    mix-blend-mode: exclusion;
     pointer-events: none;
     z-index: 9999;
-    transform: translate(-100px, -100px);
+    transform: translate(-200px, -200px);
+    transition: opacity 0.3s ease;
   }
-  .cursor-ring {
+
+  /* Zero-size positioning wrapper — ring grows symmetrically around this point */
+  .cursor-ring-wrap {
     position: fixed;
     top: 0;
     left: 0;
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    border: 1px solid var(--color-accent);
+    width: 0;
+    height: 0;
     pointer-events: none;
     z-index: 9998;
-    transform: translate(-100px, -100px);
-    transition: width 0.2s, height 0.2s, opacity 0.2s;
-    opacity: 0.5;
+    mix-blend-mode: exclusion;
+    transform: translate(-200px, -200px);
+    transition: opacity 0.3s ease;
   }
-  .cursor-ring.hovering {
-    width: 52px;
-    height: 52px;
-    opacity: 0.3;
+
+  /* Ring — positioned relative to the zero-size wrap so it stays centered */
+  .cursor-ring {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    left: -20px;
+    top: -20px;
+    border-radius: 50%;
+    border: 1.5px solid white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: width 0.3s ease, height 0.3s ease, left 0.3s ease, top 0.3s ease;
   }
+
+  .cursor-ring[data-state="view"],
+  .cursor-ring[data-state="drag"] {
+    width: 80px;
+    height: 80px;
+    left: -40px;
+    top: -40px;
+  }
+
+  .cursor-ring[data-state="link"] {
+    width: 60px;
+    height: 60px;
+    left: -30px;
+    top: -30px;
+  }
+
+  /* Label — revealed inside the ring when state is set */
+  .cursor-label {
+    color: white;
+    font-family: 'Manrope', sans-serif;
+    font-size: 0.5rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    pointer-events: none;
+    white-space: nowrap;
+    user-select: none;
+  }
+}
+
+/* ─── Touch ripple & press highlight (all devices) ─── */
+@keyframes cursor-ripple {
+  from { transform: translate(-50%, -50%) scale(0); opacity: 0.5; }
+  to   { transform: translate(-50%, -50%) scale(1); opacity: 0; }
+}
+
+.cursor-ripple {
+  position: fixed;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  border: 1.5px solid var(--color-accent);
+  pointer-events: none;
+  z-index: 9999;
+  animation: cursor-ripple 0.6s ease-out forwards;
+}
+
+.cursor-pressed {
+  outline: 1px solid var(--color-accent) !important;
+  outline-offset: 2px;
 }
 

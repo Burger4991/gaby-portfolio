@@ -95,6 +95,7 @@ function Carousel({ images, sectionTitle, onActiveIndexChange }: {
       }}
     >
       <motion.div
+        data-cursor="drag"
         onPointerDown={handlePointerDown}
         onPointerMove={handlePointerMove}
         onPointerUp={handlePointerUp}

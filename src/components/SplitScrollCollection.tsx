@@ -37,6 +37,7 @@ export default function SplitScrollCollection({ category }: { category: Portfoli
       <div className="split-back-nav" style={{ padding: '1.5rem 4rem 0' }}>
         <Link
           href="/#portfolio"
+          data-cursor="link"
           style={{
             fontFamily: 'Manrope, sans-serif',
             fontSize: '0.65rem',

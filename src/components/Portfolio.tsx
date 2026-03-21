@@ -25,6 +25,7 @@ export default function Portfolio() {
           <div
             key={category.id}
             className="accordion-panel"
+            data-cursor="view"
             onMouseEnter={() => setActiveIdx(i)}
             onClick={() => setActiveIdx(i)}
             style={{
@@ -182,6 +183,7 @@ export default function Portfolio() {
               <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem' }}>
                 <Link
                   href={`/work/${category.id}`}
+                  data-cursor="link"
                   onClick={(e) => e.stopPropagation()}
                   style={{
                     fontFamily: 'Manrope, sans-serif',
