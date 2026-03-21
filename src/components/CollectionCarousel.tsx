@@ -4,9 +4,9 @@ import { useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
 import type { SectionImage } from '@/data/portfolioData'
 
-const CARD_HEIGHT = 280
-const CARD_WIDTH = 220
-const GAP = 20
+const CARD_HEIGHT = 360
+const CARD_WIDTH = 280
+const GAP = 24
 
 type CollectionCarouselProps = {
   images: SectionImage[]
@@ -34,7 +34,7 @@ export default function CollectionCarousel({ images, sectionTitle }: CollectionC
     return (
       <div style={{ display: 'flex', flexDirection: 'column', width: '100%', maxWidth: CARD_WIDTH * 2 }}>
         <div style={{ position: 'relative', width: '100%', height: CARD_HEIGHT, border: '1px solid var(--color-border)', borderRadius: 4, overflow: 'hidden' }}>
-          <Image src={img.src} alt={img.caption ?? sectionTitle} fill style={{ objectFit: 'cover' }} sizes="440px" />
+          <Image src={img.src} alt={img.caption ?? sectionTitle} fill draggable={false} style={{ objectFit: 'cover' }} sizes="560px" />
         </div>
         {(img.caption || img.stage) && (
           <div style={{ padding: '0.6rem 1rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontFamily: 'Manrope, sans-serif', fontSize: '0.62rem', letterSpacing: '0.15em', textTransform: 'uppercase', color: 'var(--color-muted)', borderTop: '1px solid var(--color-border)' }}>
@@ -107,6 +107,7 @@ export default function CollectionCarousel({ images, sectionTitle }: CollectionC
         onPointerMove={handlePointerMove}
         onPointerUp={handlePointerUp}
         onPointerLeave={handlePointerUp}
+        onDragStart={(e) => e.preventDefault()}
         style={{
           display: 'flex',
           gap: `${GAP}px`,
@@ -134,8 +135,9 @@ export default function CollectionCarousel({ images, sectionTitle }: CollectionC
               src={img.src}
               alt={img.caption ?? sectionTitle}
               fill
+              draggable={false}
               style={{ objectFit: 'cover', pointerEvents: 'none' }}
-              sizes="220px"
+              sizes="280px"
             />
           </div>
         ))}

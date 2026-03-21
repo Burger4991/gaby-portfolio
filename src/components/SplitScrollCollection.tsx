@@ -104,7 +104,7 @@ export default function SplitScrollCollection({ category }: { category: Portfoli
           id={`section-${section.id}`}
           style={{
             display: 'grid',
-            gridTemplateColumns: '1fr 1fr',
+            gridTemplateColumns: '1fr 2fr',
             borderBottom: '1px solid var(--color-border)',
           }}
           className="split-collection"
@@ -240,14 +240,14 @@ export default function SplitScrollCollection({ category }: { category: Portfoli
             </div>
           </div>
 
-          {/* Right: 3D carousel */}
+          {/* Right: image carousel */}
           <div
             className="split-images"
             style={{
-              padding: '3rem 2rem',
+              padding: '3rem',
               display: 'flex',
               alignItems: 'center',
-              justifyContent: 'center',
+              justifyContent: 'flex-start',
             }}
           >
             <CollectionCarousel images={section.images} sectionTitle={section.title} />
