@@ -31,6 +31,7 @@ No other files change. `CollectionCarousel.tsx`, `GlowCard.tsx`, `portfolioData.
 - **Wheel event coexistence** — the carousel attaches its own `{ passive: false }` wheel listener for horizontal scroll. Observer should use `preventDefault: false` and filter out wheel events where `|deltaX| >= |deltaY|`.
 - **Body overflow** — lock in `useLayoutEffect`, restore in cleanup. Next.js App Router soft nav triggers cleanup reliably when using `useLayoutEffect`.
 - **`category.label` is a full string** (e.g. `"Resort & Activewear"`) — the fixed overlay must truncate with `text-overflow: ellipsis`.
+- **`GlowingShadow` is removed** — it was imported in `SplitScrollCollection.tsx` (line 7, used at line 278). The Task 2 rewrite drops the entire file so it disappears implicitly. No separate step needed, but don't be surprised when it's gone.
 
 ---
 
@@ -390,7 +391,7 @@ export default function CollectionScrollFX({ sections, collectionLabel }: Collec
               height: 6,
               borderRadius: '50%',
               background: i === activeIndex ? 'var(--color-accent)' : 'transparent',
-              border: '1px solid var(--color-accent)',
+              border: i === activeIndex ? '1px solid var(--color-accent)' : '1px solid var(--color-border)',
               transition: 'background 0.3s ease',
             }}
           />
