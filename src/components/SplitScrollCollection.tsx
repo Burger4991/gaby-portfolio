@@ -104,7 +104,7 @@ export default function SplitScrollCollection({ category }: { category: Portfoli
           id={`section-${section.id}`}
           style={{
             display: 'grid',
-            gridTemplateColumns: '1fr 2fr',
+            gridTemplateColumns: '1fr 1fr',
             borderBottom: '1px solid var(--color-border)',
           }}
           className="split-collection"
