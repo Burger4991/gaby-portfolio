@@ -4,6 +4,8 @@ import { useLayoutEffect, useRef, useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import gsap from 'gsap'
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore — gsap/Observer casing conflicts with observer.d.ts on macOS case-insensitive FS
 import { Observer } from 'gsap/Observer'
 import type { SectionImage } from '@/data/portfolioData'
 import CollectionCarousel from './CollectionCarousel'
@@ -50,32 +52,6 @@ export default function CollectionScrollFX({ sections, collectionLabel }: Collec
   const bgRefs = useRef<(HTMLDivElement | null)[]>([])
   const textRefs = useRef<(HTMLDivElement | null)[]>([])
 
-  const goTo = (next: number) => {
-    if (isAnimatingRef.current) return
-    const prev = currentIndexRef.current
-    if (next === prev) return
-    isAnimatingRef.current = true
-    currentIndexRef.current = next
-
-    const prevBg = bgRefs.current[prev]
-    const nextBg = bgRefs.current[next]
-    if (prevBg) gsap.to(prevBg, { opacity: 0, duration: 0.6, ease: 'power2.out' })
-    if (nextBg) gsap.to(nextBg, { opacity: 1, duration: 0.6, ease: 'power2.out' })
-
-    const prevText = textRefs.current[prev]
-    if (prevText) gsap.to(prevText, { opacity: 0, y: -20, duration: 0.4, ease: 'power2.out' })
-
-    const nextText = textRefs.current[next]
-    if (nextText) {
-      gsap.set(nextText, { opacity: 0, y: 20 })
-      gsap.to(nextText, { opacity: 1, y: 0, duration: 0.5, delay: 0.25, ease: 'power2.out' })
-    }
-
-    setActiveIndex(next)
-    gsap.delayedCall(0.8, () => { isAnimatingRef.current = false })
-  }
-
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   useLayoutEffect(() => {
     if (typeof window === 'undefined' || total === 0) return
 
@@ -88,6 +64,31 @@ export default function CollectionScrollFX({ sections, collectionLabel }: Collec
     textRefs.current.forEach((text, i) => {
       if (text) gsap.set(text, { opacity: i === 0 ? 1 : 0, y: i === 0 ? 0 : 20 })
     })
+
+    const goTo = (next: number) => {
+      if (isAnimatingRef.current) return
+      const prev = currentIndexRef.current
+      if (next === prev) return
+      isAnimatingRef.current = true
+      currentIndexRef.current = next
+
+      const prevBg = bgRefs.current[prev]
+      const nextBg = bgRefs.current[next]
+      if (prevBg) gsap.to(prevBg, { opacity: 0, duration: 0.6, ease: 'power2.out' })
+      if (nextBg) gsap.to(nextBg, { opacity: 1, duration: 0.6, ease: 'power2.out' })
+
+      const prevText = textRefs.current[prev]
+      if (prevText) gsap.to(prevText, { opacity: 0, y: -20, duration: 0.4, ease: 'power2.out' })
+
+      const nextText = textRefs.current[next]
+      if (nextText) {
+        gsap.set(nextText, { opacity: 0, y: 20 })
+        gsap.to(nextText, { opacity: 1, y: 0, duration: 0.5, delay: 0.25, ease: 'power2.out' })
+      }
+
+      setActiveIndex(next)
+      gsap.delayedCall(0.8, () => { isAnimatingRef.current = false })
+    }
 
     const observer = Observer.create({
       type: 'wheel,touch',
@@ -110,6 +111,8 @@ export default function CollectionScrollFX({ sections, collectionLabel }: Collec
     })
 
     return () => {
+      gsap.killTweensOf(bgRefs.current)
+      gsap.killTweensOf(textRefs.current)
       observer.kill()
       document.body.style.overflow = prevOverflow
     }
