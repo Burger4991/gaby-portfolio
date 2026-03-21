@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
 import type { PortfolioCategory } from '@/data/portfolioData'
 import CollectionCarousel from './CollectionCarousel'
+import GlowingShadow from './GlowingShadow'
 
 export default function SplitScrollCollection({ category }: { category: PortfolioCategory }) {
   const [activeSection, setActiveSection] = useState(category.sections[0]?.id ?? '')
@@ -262,6 +263,8 @@ export default function SplitScrollCollection({ category }: { category: Portfoli
                     </a>
                   ))}
                 </div>
+
+                <GlowingShadow />
               </div>
 
               {/* Right: image carousel */}
@@ -282,18 +285,6 @@ export default function SplitScrollCollection({ category }: { category: Portfoli
       })}
 
       <style>{`
-        /* Gradient vertical divider between text and carousel */
-        .split-story::after {
-          content: '';
-          position: absolute;
-          top: 0;
-          right: 0;
-          width: 1px;
-          height: 100%;
-          background: linear-gradient(to bottom, transparent, var(--color-accent) 20%, var(--color-accent) 80%, transparent);
-          opacity: 0.45;
-        }
-
         @keyframes sectionFadeUp {
           from {
             opacity: 0;
@@ -323,9 +314,6 @@ export default function SplitScrollCollection({ category }: { category: Portfoli
           }
           .split-collection {
             grid-template-columns: 1fr !important;
-          }
-          .split-story::after {
-            display: none;
           }
           .split-story {
             position: static !important;
