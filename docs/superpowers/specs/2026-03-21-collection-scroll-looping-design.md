@@ -59,7 +59,9 @@ Easing: `cubic-bezier(0.4, 0, 0.2, 1)` (matches existing `sectionFadeUp` animati
 
 Contents:
 - Back link: `← Back to Portfolio` (existing Manrope style, `--color-muted`)
-- Collection label: category label in `--color-accent`, Manrope 0.65rem, letter-spacing 0.35em, uppercase, displayed below the back link
+- Collection label: `collectionLabel` prop in `--color-accent`, Manrope 0.6rem, letter-spacing 0.2em, uppercase, displayed below the back link. Use `max-width: 12rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap` to handle long labels like `"Resort & Activewear"`.
+
+**Note:** `category.subtitle` (e.g. `"RTW women's resort and activewear collections"`) is intentionally suppressed in this design — it is too long for the compact fixed overlay and is not passed via props. This is a deliberate content decision.
 
 ### Progress Indicator
 
@@ -74,6 +76,8 @@ Bottom-center of the viewport. Dot style:
 ### `CollectionScrollFX.tsx` — full rewrite
 
 **New name:** Keep filename. **New responsibility:** Looping GSAP Observer carousel (replaces scrub-based implementation entirely).
+
+**All existing implementation code is discarded.** The current file contains ScrollTrigger pinning setup, `goTo`/`changeSection` machinery, word-splitting logic, left/right label tracks, and a `CollectionScrollSection` props interface — none of this carries over. Treat this as a from-scratch file that happens to keep the same name.
 
 **Props:**
 ```ts
