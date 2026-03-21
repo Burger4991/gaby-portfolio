@@ -3,10 +3,12 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 import { categories } from '@/data/portfolioData'
 
 export default function Portfolio() {
   const [activeIdx, setActiveIdx] = useState(0)
+  const router = useRouter()
 
   return (
     <section id="portfolio" style={{ background: 'var(--color-bg)' }}>
@@ -27,7 +29,10 @@ export default function Portfolio() {
             className="accordion-panel"
             data-cursor="view"
             onMouseEnter={() => setActiveIdx(i)}
-            onClick={() => setActiveIdx(i)}
+            onClick={() => {
+              if (i === activeIdx) router.push(`/work/${category.id}`)
+              else setActiveIdx(i)
+            }}
             style={{
               position: 'relative',
               flex: i === activeIdx ? '5 1 0%' : '1 1 0%',
