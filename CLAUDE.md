@@ -23,9 +23,13 @@ GABY_EMAIL=...   # recipient address for contact form submissions
 
 The `from` address in `sendEmail.ts` is currently `onboarding@resend.dev` (Resend dev default) — swap to a verified domain for production.
 
+## Known Constraints
+
+**Next.js pinned to 15** — do not upgrade to 16+. Next.js 16 Turbopack production builds omit the `work/[slug]` page entry file, causing collection pages to 404 in production (compilation succeeds but `generateStaticParams` collection fails). ESLint also runs with `ignoreDuringBuilds: true` due to an ESLint 9 + legacy `.eslintrc.json` incompatibility in Next.js 15's build lint step — lint manually with `npm run lint`.
+
 ## Architecture
 
-**Next.js 16 App Router** — two routes, both static:
+**Next.js 15 App Router** — two routes, both static:
 
 - `/` — home page assembled from section components in `src/app/page.tsx`
 - `/work/[slug]` — collection detail pages, statically generated from `categories` in `portfolioData.ts` via `generateStaticParams`
