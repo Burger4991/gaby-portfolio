@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react'
 import { animate, motion, useMotionValue, useTransform } from 'framer-motion'
 import Image from 'next/image'
 import type { SectionImage } from '@/data/portfolioData'
+import GlowCard from './GlowCard'
 
 const CARD_HEIGHT = 360
 const FACE_WIDTH = 280
@@ -142,13 +143,13 @@ function Carousel({ images, sectionTitle, onActiveIndexChange }: {
               padding: `0 ${FACE_PADDING}px`,
             }}
           >
-            <div
+            <GlowCard
               style={{
                 width: '100%',
                 height: '100%',
                 clipPath: 'inset(0 round 4px)',
-                position: 'relative',
                 border: '1px solid var(--color-border)',
+                overflow: 'hidden',
               }}
             >
               <Image
@@ -159,7 +160,7 @@ function Carousel({ images, sectionTitle, onActiveIndexChange }: {
                 style={{ objectFit: 'cover', pointerEvents: 'none' }}
                 sizes="280px"
               />
-            </div>
+            </GlowCard>
           </div>
         ))}
       </motion.div>
