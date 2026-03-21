@@ -131,7 +131,7 @@ export default function SplitScrollCollection({ category }: { category: Portfoli
               id={`section-${section.id}`}
               style={{
                 display: 'grid',
-                gridTemplateColumns: '3fr 2fr',
+                gridTemplateColumns: '2fr 3fr',
                 borderBottom: '1px solid var(--color-border)',
               }}
               className="split-collection"
@@ -144,7 +144,7 @@ export default function SplitScrollCollection({ category }: { category: Portfoli
                   top: '4rem',
                   height: 'auto',
                   alignSelf: 'flex-start',
-                  padding: '3rem 2.5rem',
+                  padding: '3rem 2.5rem 3rem 4rem',
                   display: 'flex',
                   flexDirection: 'column',
                   gap: '1.5rem',
@@ -187,7 +187,6 @@ export default function SplitScrollCollection({ category }: { category: Portfoli
                     fontSize: '0.875rem',
                     lineHeight: 1.75,
                     color: 'var(--color-muted)',
-                    maxWidth: '380px',
                     margin: 0,
                     animationDelay: '160ms',
                   }}
@@ -283,10 +282,10 @@ export default function SplitScrollCollection({ category }: { category: Portfoli
               <div
                 className="split-images"
                 style={{
-                  padding: '3rem',
+                  padding: '3rem 3rem 3rem 2.5rem',
                   display: 'flex',
                   alignItems: 'center',
-                  justifyContent: 'flex-start',
+                  justifyContent: 'center',
                 }}
               >
                 <CollectionCarousel images={section.images} sectionTitle={section.title} />
@@ -333,7 +332,7 @@ export default function SplitScrollCollection({ category }: { category: Portfoli
             height: auto !important;
             border-right: none !important;
             border-bottom: 1px solid var(--color-border);
-            padding: 2.5rem 1.5rem !important;
+            padding: 2rem 1.5rem !important;
           }
           .split-images {
             padding: 2rem 1.5rem !important;
