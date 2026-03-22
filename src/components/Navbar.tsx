@@ -41,7 +41,7 @@ export default function Navbar() {
           borderColor: open ? 'transparent' : 'var(--color-border)',
         }}
       >
-        <a
+        <Link
           href="/"
           data-cursor="link"
           onClick={() => setOpen(false)}
@@ -50,7 +50,7 @@ export default function Navbar() {
           aria-label="Gabriela Gamargo — home"
         >
           G. GAMARGO
-        </a>
+        </Link>
 
         <div className="flex items-center gap-4" style={{ position: 'relative', zIndex: 60 }}>
           <div className={open ? 'hidden' : 'block'}>
