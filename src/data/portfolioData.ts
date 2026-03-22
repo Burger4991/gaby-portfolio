@@ -23,12 +23,14 @@ export type PortfolioCategory = {
 }
 
 export const categories: PortfolioCategory[] = [
+  // TODO: PENDING GABY REVIEW — resort section copy written by Claude (original site has no resort pages).
+  // Review descriptions + outcomes and update with accurate first-person copy before launch.
   {
     id: 'resort',
     label: 'Resort & Activewear',
     subtitle: "RTW women's resort and activewear collections",
     description:
-      'Trend-led resort and activewear capsules developed for global retail — blending wearable silhouettes with elevated fabrications.',
+      'Trend-led resort and activewear developed for global retail — full capsule direction from moodboard through tech packs, sampling, and campaign. Wearable silhouettes and elevated fabrications across collaboration and private label work.',
     previewImages: [
       '/assets/resort/stephanie-gottlieb/969c394b624e05384f21c85fb925ab57.png',
       '/assets/resort/mimi-yoga/602e863833f8e3d31bfba9327396ba96.jpg',
@@ -39,7 +41,7 @@ export const categories: PortfolioCategory[] = [
         id: 'stephanie-gottlieb',
         title: 'Stephanie Gottlieb Collab',
         description:
-          'Resort capsule developed in collaboration with Stephanie Gottlieb — elevated linen and crinkle silhouettes designed to complement her jewelry aesthetic. Directed from moodboard through final tech packs and sample approval.',
+          'Resort capsule developed in collaboration with Stephanie Gottlieb — elevated linen and crinkle silhouettes designed to complement her jewelry aesthetic. I directed the full process from moodboard through tech packs and sample approval, ensuring every piece felt cohesive with her brand DNA.',
         outcome: 'Capsule delivered on time for the collaboration campaign.',
         pills: ['Direction', 'Moodboard', 'Tech Packs', 'Sampling', 'Final'],
         images: [
@@ -53,7 +55,7 @@ export const categories: PortfolioCategory[] = [
         id: 'mercedes-salazar',
         title: 'Mercedes Salazar Collab',
         description:
-          'Resort pieces developed alongside Mercedes Salazar — vibrant prints and artisan-led construction to complement her accessories line. Wearable silhouettes built for layering and movement.',
+          'Resort collab developed alongside Mercedes Salazar — vibrant prints and artisan construction designed to complement her accessories aesthetic. Print development was central to the process, with silhouettes built for effortless layering and movement that would photograph alongside her pieces.',
         outcome: 'Collab delivered for joint campaign across both brand audiences.',
         pills: ['Concept', 'Print Dev', 'Sampling', 'Final'],
         images: [
@@ -67,7 +69,7 @@ export const categories: PortfolioCategory[] = [
         id: 'mimi-yoga',
         title: 'Mimi Yoga — Activewear',
         description:
-          "Activewear capsule developed in collaboration with Mimi Yoga — high-performance fabrications with a resort edge. Designed to transition from studio to beach, blending function with Pitusa's signature aesthetic.",
+          "Activewear capsule developed in collaboration with Mimi Yoga — high-performance fabrications engineered to move from studio to beach. I led development from moodboard through sampling, translating Pitusa's resortwear DNA into performance silhouettes without losing the brand's effortless, sun-soaked identity.",
         outcome: "Activewear line expanded Pitusa's category reach into performance-resort.",
         pills: ['Moodboard', 'Activewear Dev', 'Sampling', 'Final'],
         images: [
@@ -82,7 +84,7 @@ export const categories: PortfolioCategory[] = [
         id: 'private-label',
         title: 'Private Label RTW',
         description:
-          'Private label resort development — woven separates, elevated fabrications, and versatile silhouettes designed for global retail distribution.',
+          'End-to-end private label resort development — concept through vendor management, tech packs, and sampling. Woven separates and elevated fabrications built for global retail distribution, designed to translate consistently across multiple colorways.',
         outcome: 'Full private label collection delivered across multiple colorways.',
         pills: ['Concept', 'Tech Packs', 'Vendor Mgmt', 'Sampling', 'Final'],
         images: [
@@ -96,7 +98,7 @@ export const categories: PortfolioCategory[] = [
         id: 'hpset',
         title: 'HPSET Collection',
         description:
-          'Resort collection developed for HPSET — clean silhouettes and elevated fabrications with a focus on versatility across beach and day-wear contexts.',
+          'Resort collection developed for HPSET — directional silhouettes and elevated fabrications built to work across beach and day-wear contexts. I drove creative direction through sampling and final approval, maintaining clarity of vision across the full range.',
         outcome: 'Collection delivered and launched across the season.',
         pills: ['Direction', 'Sampling', 'Final'],
         images: [
@@ -109,7 +111,7 @@ export const categories: PortfolioCategory[] = [
         id: 'ephyra',
         title: 'Ephyra',
         description:
-          'Resort and swimwear capsule for Ephyra — feminine silhouettes, elevated fabrications, and a refined color palette designed for the contemporary resort customer.',
+          'Resort and swimwear capsule developed for Ephyra — feminine silhouettes and a refined color palette built for the contemporary resort customer. Concept led through sampling and final delivery, with fabrication choices balancing a luxury feel with real wearability.',
         outcome: 'Full capsule delivered and presented to buyers.',
         pills: ['Concept', 'Sampling', 'Final'],
         images: [
@@ -123,7 +125,7 @@ export const categories: PortfolioCategory[] = [
         id: 'ariel',
         title: 'Ariel',
         description:
-          'Resort capsule developed for Ariel — playful silhouettes and vibrant fabrications aligned with a coastal, joyful brand identity.',
+          "Resort capsule developed for Ariel — playful silhouettes and vibrant fabrications that lean into the brand's coastal, joyful identity. I took concept through sampling and final delivery, ensuring every piece felt true to the brand's energy.",
         outcome: 'Collection delivered for seasonal launch.',
         pills: ['Concept', 'Sampling', 'Final'],
         images: [
@@ -222,12 +224,14 @@ export const categories: PortfolioCategory[] = [
     ],
   },
 
+  // TODO: PENDING GABY REVIEW — bridal section copy written by Claude (original site has no bridal pages).
+  // Review descriptions + outcomes and update with accurate first-person copy before launch.
   {
     id: 'bridal',
     label: 'Bridal & Eveningwear',
     subtitle: 'Custom bespoke bridal and evening collections',
     description:
-      'Bespoke evening and bridal looks built from client concept to final fitting — luxe fabrication, intricate construction, and custom embellishment.',
+      'Bespoke bridal and evening looks built from first consultation to final fitting — luxe fabrication, intricate construction, and custom embellishment. Each piece begins with the client\'s vision and is shaped through sketch, toile, and multiple fittings into something singular.',
     previewImages: [
       '/assets/bridal/resort-bride/1376b5b9dfa2bdf90ff056336a096f79.jpg',
       '/assets/bridal/night-time/108a4df01e4010d4e4523ed409c659cf.jpg',
@@ -238,7 +242,7 @@ export const categories: PortfolioCategory[] = [
         id: 'galia-lahav',
         title: 'Galia Lahav',
         description:
-          "Bridal work inspired by and developed alongside Galia Lahav's signature aesthetic — structured corsetry, dramatic silhouettes, and intricate embellishment. Each piece built with couture-level construction.",
+          "Bridal work developed inspired by and alongside Galia Lahav's signature aesthetic — structured corsetry, dramatic silhouettes, and intricate hand embellishment. I built each piece with couture-level construction, working through consultation, pattern development, and final fitting to deliver looks that live up to the Lahav standard.",
         outcome: 'Custom pieces delivered for private clients and editorial.',
         pills: ['Consultation', 'Design', 'Construction', 'Final Fitting'],
         images: [
@@ -252,7 +256,7 @@ export const categories: PortfolioCategory[] = [
         id: 'resort-bride',
         title: 'Resort Bride',
         description:
-          'Bridal collection designed for the destination wedding market — feminine silhouettes, lightweight fabrications, and a sense of effortless elegance appropriate for beach and coastal ceremonies.',
+          'Bridal collection designed for the destination wedding customer — feminine silhouettes and lightweight fabrications built for beach and coastal ceremonies. I developed the collection from concept sketches through sampling and final delivery, creating pieces that feel genuinely bridal without sacrificing ease and movement.',
         outcome: 'Full resort bridal line delivered for the season.',
         pills: ['Concept', 'Sketch', 'Sampling', 'Final'],
         images: [
@@ -267,7 +271,7 @@ export const categories: PortfolioCategory[] = [
         id: 'night-time',
         title: 'Night Time — Evening',
         description:
-          'Evening and night-time bridal looks — dramatic gowns, luxe fabrications, and intricate construction built for the most important moments. Each piece a singular design collaboration with the client.',
+          'Evening and night-time looks built for the most significant occasions — dramatic gowns, luxe fabrications, and intricate construction. Each piece is fully bespoke: consultation, toile, final fabric fittings, and delivery; I see every detail through from first sketch to the moment she wears it.',
         outcome: 'Custom evening pieces produced for private clients and editorial features.',
         pills: ['Consultation', 'Design', 'Toile', 'Final Fabric', 'Delivery'],
         images: [
@@ -296,7 +300,7 @@ export const categories: PortfolioCategory[] = [
         id: 'butterfly-bridal',
         title: 'Butterfly Bridal',
         description:
-          'Bridal collection featuring butterfly-inspired embellishment and ethereal silhouettes — delicate construction, layered fabrics, and intricate detailing built for the romantic, theatrical bride.',
+          'A bridal collection anchored by butterfly-inspired embellishment and ethereal silhouettes — delicate layered fabrics, intricate detailing, and construction as considered as it looks. Developed from concept through hand embellishment and final delivery for the romantic, theatrical bride.',
         outcome: 'Collection pieces delivered for private clients and editorial.',
         pills: ['Concept', 'Sketch', 'Embellishment', 'Final'],
         images: [

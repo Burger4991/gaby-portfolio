@@ -38,3 +38,6 @@ pnpm-debug.log*
 next-env.d.ts
 HANDOFF.md
 .superpowers/
+
+# Nested repos / unrelated tools
+pixel-agents/

@@ -9,6 +9,8 @@ import GlowCard from './GlowCard'
 const CARD_HEIGHT = 360
 const FACE_WIDTH = 280
 const FACE_PADDING = 18 // gap between images on the cylinder
+const CAPTION_HEIGHT = 42 // reserved height for caption bar (always present to keep alignment stable)
+const DRAG_HEIGHT = 24   // reserved height for drag hint row
 
 type CollectionCarouselProps = {
   images: SectionImage[]
@@ -168,29 +170,83 @@ function Carousel({ images, sectionTitle, onActiveIndexChange }: {
   )
 }
 
+// Caption bar — always rendered at fixed height to keep total wrapper height stable across sections.
+// When no caption/stage, renders as a transparent spacer.
+function CaptionBar({ image, visible }: { image?: SectionImage; visible: boolean }) {
+  return (
+    <div
+      style={{
+        height: CAPTION_HEIGHT,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        padding: '0 1rem',
+        fontFamily: 'Manrope, sans-serif',
+        fontSize: '0.62rem',
+        letterSpacing: '0.15em',
+        textTransform: 'uppercase',
+        color: 'var(--color-muted)',
+        borderTop: visible ? '1px solid var(--color-border)' : '1px solid transparent',
+        visibility: visible ? 'visible' : 'hidden',
+      }}
+    >
+      <span>{image?.caption ?? ''}</span>
+      {image?.stage && (
+        <span style={{ padding: '0.2rem 0.5rem', border: '1px solid var(--color-border)', fontSize: '0.55rem', letterSpacing: '0.15em', color: 'var(--color-accent)' }}>
+          {image.stage}
+        </span>
+      )}
+    </div>
+  )
+}
+
+// Drag hint — always rendered at fixed height; text hidden for single-image sections.
+function DragHint({ show }: { show: boolean }) {
+  return (
+    <div
+      style={{
+        height: DRAG_HEIGHT,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        fontFamily: 'Manrope, sans-serif',
+        fontSize: '0.52rem',
+        letterSpacing: '0.2em',
+        textTransform: 'uppercase',
+        color: 'var(--color-border)',
+        visibility: show ? 'visible' : 'hidden',
+      }}
+    >
+      drag to rotate
+    </div>
+  )
+}
+
 export default function CollectionCarousel({ images, sectionTitle }: CollectionCarouselProps) {
   const [activeIndex, setActiveIndex] = useState(0)
   if (images.length === 0) return null
 
-  // Single image: skip carousel, show static display
-  if (images.length === 1) {
+  const isSingle = images.length === 1
+
+  // Single image: static display — wrap in CARD_HEIGHT + 40 zone to match Carousel container height.
+  if (isSingle) {
     const img = images[0]
+    const hasMeta = !!(img.caption || img.stage)
     return (
       <div style={{ display: 'flex', flexDirection: 'column', width: '100%', maxWidth: FACE_WIDTH * 2 }}>
-        <div style={{ position: 'relative', width: '100%', height: CARD_HEIGHT, border: '1px solid var(--color-border)', borderRadius: 4, overflow: 'hidden' }}>
-          <Image src={img.src} alt={img.caption ?? sectionTitle} fill draggable={false} style={{ objectFit: 'cover' }} sizes="560px" />
-        </div>
-        {(img.caption || img.stage) && (
-          <div style={{ padding: '0.6rem 1rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontFamily: 'Manrope, sans-serif', fontSize: '0.62rem', letterSpacing: '0.15em', textTransform: 'uppercase', color: 'var(--color-muted)', borderTop: '1px solid var(--color-border)' }}>
-            <span>{img.caption}</span>
-            {img.stage && <span style={{ padding: '0.2rem 0.5rem', border: '1px solid var(--color-border)', fontSize: '0.55rem', letterSpacing: '0.15em', color: 'var(--color-accent)' }}>{img.stage}</span>}
+        <div style={{ height: CARD_HEIGHT + 40, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <div style={{ position: 'relative', width: '100%', height: CARD_HEIGHT, border: '1px solid var(--color-border)', borderRadius: 4, overflow: 'hidden' }}>
+            <Image src={img.src} alt={img.caption ?? sectionTitle} fill draggable={false} style={{ objectFit: 'cover' }} sizes="560px" />
           </div>
-        )}
+        </div>
+        <CaptionBar image={img} visible={hasMeta} />
+        <DragHint show={false} />
       </div>
     )
   }
 
   const activeImage = images[activeIndex]
+  const hasMeta = !!(activeImage?.caption || activeImage?.stage)
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
@@ -199,32 +255,8 @@ export default function CollectionCarousel({ images, sectionTitle }: CollectionC
         sectionTitle={sectionTitle}
         onActiveIndexChange={setActiveIndex}
       />
-      {activeImage && (activeImage.caption || activeImage.stage) && (
-        <div
-          style={{
-            padding: '0.6rem 1rem',
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            fontFamily: 'Manrope, sans-serif',
-            fontSize: '0.62rem',
-            letterSpacing: '0.15em',
-            textTransform: 'uppercase',
-            color: 'var(--color-muted)',
-            borderTop: '1px solid var(--color-border)',
-          }}
-        >
-          <span>{activeImage.caption}</span>
-          {activeImage.stage && (
-            <span style={{ padding: '0.2rem 0.5rem', border: '1px solid var(--color-border)', fontSize: '0.55rem', letterSpacing: '0.15em', color: 'var(--color-accent)' }}>
-              {activeImage.stage}
-            </span>
-          )}
-        </div>
-      )}
-      <div style={{ textAlign: 'center', fontFamily: 'Manrope, sans-serif', fontSize: '0.52rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--color-border)', paddingBottom: '0.5rem' }}>
-        drag to rotate
-      </div>
+      <CaptionBar image={activeImage} visible={hasMeta} />
+      <DragHint show={true} />
     </div>
   )
 }
