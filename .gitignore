@@ -36,7 +36,6 @@ pnpm-debug.log*
 # TypeScript
 *.tsbuildinfo
 next-env.d.ts
-HANDOFF.md
 .superpowers/
 
 # Nested repos / unrelated tools
