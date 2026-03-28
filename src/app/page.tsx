@@ -2,7 +2,7 @@ import Preloader from '@/components/Preloader'
 import Navbar from '@/components/Navbar'
 import Hero from '@/components/Hero'
 import Marquee from '@/components/Marquee'
-import HomeSnap from '@/components/HomeSnap'
+import HomeSections from '@/components/HomeSections'
 import BackToTop from '@/components/BackToTop'
 
 export default function Home() {
@@ -13,7 +13,7 @@ export default function Home() {
       <main>
         <Hero />
         <Marquee />
-        <HomeSnap />
+        <HomeSections />
       </main>
       <BackToTop />
     </>
