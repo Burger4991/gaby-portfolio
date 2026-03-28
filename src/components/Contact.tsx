@@ -26,6 +26,7 @@ export default function Contact() {
       setName('')
       setEmail('')
       setMessage('')
+      setTimeout(() => setStatus('idle'), 4000)
     } else {
       setStatus('error')
       setErrorMessage(result.error ?? 'Something went wrong.')
@@ -43,7 +44,7 @@ export default function Contact() {
         </p>
         <h2 className="text-4xl md:text-5xl font-light mb-4"
           style={{ fontFamily: 'Cormorant Garamond, serif', color: 'var(--color-text)' }}>
-          Let's Work Together
+          Let&apos;s Work Together
         </h2>
         <p className="mb-10 leading-relaxed" style={{ color: 'var(--color-muted)' }}>
           Open to collaborations, commissions, and new opportunities.
@@ -119,11 +120,11 @@ export default function Contact() {
           </div>
           {status === 'success' && (
             <p className="text-sm font-medium" style={{ color: 'var(--color-accent)' }}>
-              Message sent! I'll be in touch soon.
+              Message sent! I&apos;ll be in touch soon.
             </p>
           )}
           {status === 'error' && errorMessage && (
-            <p className="text-sm font-medium" style={{ color: '#e53e3e' }}>
+            <p className="text-sm font-medium" role="alert" style={{ color: 'var(--color-error)' }}>
               {errorMessage}
             </p>
           )}

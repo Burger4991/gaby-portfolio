@@ -41,16 +41,16 @@ export default function Navbar() {
           borderColor: open ? 'transparent' : 'var(--color-border)',
         }}
       >
-        <a
+        <Link
           href="/"
           data-cursor="link"
           onClick={() => setOpen(false)}
           className="text-xl font-semibold tracking-[0.2em] transition-opacity duration-200 hover:opacity-70 cursor-pointer"
-          style={{ fontFamily: 'Cormorant Garamond, serif', color: open ? 'white' : 'var(--color-text)', position: 'relative', zIndex: 60 }}
+          style={{ fontFamily: 'Cormorant Garamond, serif', color: open ? 'var(--color-overlay-heading)' : 'var(--color-text)', position: 'relative', zIndex: 60 }}
           aria-label="Gabriela Gamargo — home"
         >
           G. GAMARGO
-        </a>
+        </Link>
 
         <div className="flex items-center gap-4" style={{ position: 'relative', zIndex: 60 }}>
           <div className={open ? 'hidden' : 'block'}>
@@ -64,15 +64,15 @@ export default function Navbar() {
             className="flex flex-col justify-center gap-[5px] w-8 h-8 cursor-pointer"
           >
             <motion.span className="block h-px w-5 origin-center"
-              style={{ backgroundColor: open ? 'white' : 'var(--color-text)' }}
+              style={{ backgroundColor: open ? 'var(--color-overlay-heading)' : 'var(--color-text)' }}
               animate={open ? { rotate: 45, y: 6 } : { rotate: 0, y: 0 }}
               transition={{ duration: 0.2 }} />
             <motion.span className="block h-px w-5"
-              style={{ backgroundColor: open ? 'white' : 'var(--color-text)' }}
+              style={{ backgroundColor: open ? 'var(--color-overlay-heading)' : 'var(--color-text)' }}
               animate={open ? { opacity: 0 } : { opacity: 1 }}
               transition={{ duration: 0.2 }} />
             <motion.span className="block h-px w-5 origin-center"
-              style={{ backgroundColor: open ? 'white' : 'var(--color-text)' }}
+              style={{ backgroundColor: open ? 'var(--color-overlay-heading)' : 'var(--color-text)' }}
               animate={open ? { rotate: -45, y: -6 } : { rotate: 0, y: 0 }}
               transition={{ duration: 0.2 }} />
           </button>
@@ -93,9 +93,9 @@ export default function Navbar() {
               <motion.a
                 key="Work" href="/#portfolio" data-cursor="link" onClick={() => setOpen(false)}
                 className="block cursor-pointer"
-                style={{ fontFamily: 'Cormorant Garamond, serif', color: 'rgba(255,255,255,0.85)', fontSize: 'clamp(3rem, 10vw, 6rem)', fontWeight: 300, fontStyle: 'italic', lineHeight: 1.1 }}
+                style={{ fontFamily: 'Cormorant Garamond, serif', color: 'var(--color-overlay-text)', fontSize: 'clamp(3rem, 10vw, 6rem)', fontWeight: 300, fontStyle: 'italic', lineHeight: 1.1 }}
                 onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color = 'var(--color-accent)' }}
-                onMouseLeave={e => { (e.currentTarget as HTMLElement).style.color = 'rgba(255,255,255,0.85)' }}
+                onMouseLeave={e => { (e.currentTarget as HTMLElement).style.color = 'var(--color-overlay-text)' }}
                 initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.4, delay: 0.2, ease: 'easeOut' }}
               >
@@ -123,12 +123,12 @@ export default function Navbar() {
                     onClick={() => setOpen(false)}
                     style={{
                       fontFamily: 'Manrope, sans-serif',
-                      fontSize: '0.6rem',
-                      letterSpacing: '0.28em',
+                      fontSize: 'var(--text-label-sm)',
+                      letterSpacing: 'var(--tracking-wide)',
                       textTransform: 'uppercase' as const,
                       color: 'var(--color-accent)',
                       textDecoration: 'none',
-                      borderBottom: '1px solid rgba(184,150,90,0.35)',
+                      borderBottom: '1px solid color-mix(in srgb, var(--color-accent) 35%, transparent)',
                       paddingBottom: '1px',
                     }}
                   >
@@ -141,9 +141,9 @@ export default function Navbar() {
                 <motion.a
                   key={label} href={href} data-cursor="link" onClick={() => setOpen(false)}
                   className="block cursor-pointer"
-                  style={{ fontFamily: 'Cormorant Garamond, serif', color: 'rgba(255,255,255,0.85)', fontSize: 'clamp(3rem, 10vw, 6rem)', fontWeight: 300, fontStyle: 'italic', lineHeight: 1.1 }}
+                  style={{ fontFamily: 'Cormorant Garamond, serif', color: 'var(--color-overlay-text)', fontSize: 'clamp(3rem, 10vw, 6rem)', fontWeight: 300, fontStyle: 'italic', lineHeight: 1.1 }}
                   onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color = 'var(--color-accent)' }}
-                  onMouseLeave={e => { (e.currentTarget as HTMLElement).style.color = 'rgba(255,255,255,0.85)' }}
+                  onMouseLeave={e => { (e.currentTarget as HTMLElement).style.color = 'var(--color-overlay-text)' }}
                   initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.4, delay: 0.28 + i * 0.08, ease: 'easeOut' }}
                 >

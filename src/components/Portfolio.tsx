@@ -43,7 +43,6 @@ export default function Portfolio() {
               minWidth: '64px',
             }}
           >
-            {/* Background image */}
             <Image
               src={category.previewImages[0]}
               alt={category.label}
@@ -56,14 +55,14 @@ export default function Portfolio() {
               sizes="50vw"
             />
 
-            {/* Overlay */}
+            {/* Overlay — uses token-based gradient */}
             <div
               style={{
                 position: 'absolute',
                 inset: 0,
                 background: i === activeIdx
-                  ? 'linear-gradient(to top, rgba(10,8,6,0.88) 35%, rgba(10,8,6,0.2) 100%)'
-                  : 'rgba(10,8,6,0.6)',
+                  ? 'linear-gradient(to top, var(--color-overlay-gradient) 35%, transparent 100%)'
+                  : 'var(--color-overlay-scrim)',
                 transition: 'background 0.5s ease',
               }}
             />
@@ -89,17 +88,17 @@ export default function Portfolio() {
                   fontStyle: 'italic',
                   fontWeight: 300,
                   fontSize: '1rem',
-                  color: 'rgba(255,255,255,0.85)',
+                  color: 'var(--color-overlay-text)',
                   whiteSpace: 'nowrap',
                   transform: 'rotate(-90deg)',
-                  letterSpacing: '0.06em',
+                  letterSpacing: 'var(--tracking-tight)',
                 }}
               >
                 {category.label}
               </span>
             </div>
 
-            {/* Mobile-only: tap to explore pill — only shown on collapsed panels */}
+            {/* Mobile-only: tap to explore pill */}
             <div
               className="mobile-tap-hint"
               style={{
@@ -117,11 +116,11 @@ export default function Portfolio() {
               <span
                 style={{
                   fontFamily: 'Manrope, sans-serif',
-                  fontSize: '0.55rem',
-                  letterSpacing: '0.22em',
+                  fontSize: 'var(--text-label-xs)',
+                  letterSpacing: 'var(--tracking-normal)',
                   textTransform: 'uppercase',
-                  color: 'rgba(255,255,255,0.55)',
-                  border: '1px solid rgba(255,255,255,0.2)',
+                  color: 'var(--color-overlay-muted)',
+                  border: '1px solid var(--color-overlay-dim)',
                   borderRadius: '999px',
                   padding: '0.3rem 0.75rem',
                   backdropFilter: 'blur(4px)',
@@ -138,7 +137,7 @@ export default function Portfolio() {
                 bottom: 0,
                 left: 0,
                 right: 0,
-                padding: '2.5rem 2.5rem 2.75rem',
+                padding: '2.5rem',
                 opacity: i === activeIdx ? 1 : 0,
                 transform: i === activeIdx ? 'translateY(0)' : 'translateY(10px)',
                 transition: 'opacity 0.35s ease 0.2s, transform 0.35s ease 0.2s',
@@ -148,8 +147,8 @@ export default function Portfolio() {
               <p
                 style={{
                   fontFamily: 'Manrope, sans-serif',
-                  fontSize: '0.58rem',
-                  letterSpacing: '0.38em',
+                  fontSize: 'var(--text-label-sm)',
+                  letterSpacing: 'var(--tracking-wide)',
                   textTransform: 'uppercase',
                   color: 'var(--color-accent)',
                   margin: '0 0 0.6rem',
@@ -165,7 +164,7 @@ export default function Portfolio() {
                   fontWeight: 300,
                   fontSize: 'clamp(2rem, 3vw, 3.25rem)',
                   lineHeight: 1.05,
-                  color: '#fff',
+                  color: 'var(--color-overlay-heading)',
                   margin: '0 0 0.65rem',
                 }}
               >
@@ -175,10 +174,10 @@ export default function Portfolio() {
               <p
                 style={{
                   fontFamily: 'Manrope, sans-serif',
-                  fontSize: '0.62rem',
-                  letterSpacing: '0.18em',
+                  fontSize: 'var(--text-label-sm)',
+                  letterSpacing: 'var(--tracking-normal)',
                   textTransform: 'uppercase',
-                  color: 'rgba(255,255,255,0.55)',
+                  color: 'var(--color-overlay-muted)',
                   margin: '0 0 1.5rem',
                 }}
               >
@@ -192,8 +191,8 @@ export default function Portfolio() {
                   onClick={(e) => e.stopPropagation()}
                   style={{
                     fontFamily: 'Manrope, sans-serif',
-                    fontSize: '0.62rem',
-                    letterSpacing: '0.28em',
+                    fontSize: 'var(--text-label-sm)',
+                    letterSpacing: 'var(--tracking-wide)',
                     textTransform: 'uppercase',
                     color: 'var(--color-accent)',
                     textDecoration: 'none',
@@ -206,10 +205,10 @@ export default function Portfolio() {
                 <span
                   style={{
                     fontFamily: 'Manrope, sans-serif',
-                    fontSize: '0.55rem',
-                    letterSpacing: '0.15em',
+                    fontSize: 'var(--text-label-xs)',
+                    letterSpacing: 'var(--tracking-tight)',
                     textTransform: 'uppercase',
-                    color: 'rgba(255,255,255,0.3)',
+                    color: 'var(--color-overlay-dim)',
                   }}
                 >
                   {category.sections.length} sections
@@ -234,7 +233,6 @@ export default function Portfolio() {
             border-bottom: 1px solid var(--color-border) !important;
             touch-action: manipulation;
           }
-          /* Hide the tap hint on desktop — only show on touch screens */
           @media (hover: hover) {
             .mobile-tap-hint { display: none !important; }
           }

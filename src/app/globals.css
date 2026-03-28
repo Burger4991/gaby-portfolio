@@ -14,6 +14,26 @@ html:not([data-theme]) {
   --color-accent-hover: #CCA96A;
   --color-card-bg:      #18181E;
   --color-overlay:      #0C0C0E;
+  --color-error:        #E57373;
+
+  /* Overlay context — forced-dark panels (accordion, fullscreen scroll) */
+  --color-overlay-text:       rgba(255,255,255,0.85);
+  --color-overlay-heading:    #fff;
+  --color-overlay-muted:      rgba(255,255,255,0.55);
+  --color-overlay-dim:        rgba(255,255,255,0.3);
+  --color-overlay-gradient:   rgba(12,12,14,0.88);
+  --color-overlay-scrim:      rgba(12,12,14,0.6);
+
+  /* Type scale — labels & UI text */
+  --text-label-xs:    0.55rem;   /* hints, counters */
+  --text-label-sm:    0.62rem;   /* nav links, pills, captions */
+  --text-label:       0.7rem;    /* eyebrows, section labels */
+  --text-body:        0.875rem;  /* paragraph body */
+
+  /* Letter-spacing scale */
+  --tracking-tight:   0.1em;
+  --tracking-normal:  0.2em;
+  --tracking-wide:    0.3em;
 }
 
 /* ─── Warm Ivory (light) ─── */
@@ -27,6 +47,25 @@ html[data-theme="light"] {
   --color-accent-hover: #B5784A;
   --color-card-bg:      #EDE7DF;
   --color-overlay:      #F8F4EE;
+  --color-error:        #C62828;
+
+  /* Overlay context — same as dark since overlays are always dark */
+  --color-overlay-text:       rgba(255,255,255,0.85);
+  --color-overlay-heading:    #fff;
+  --color-overlay-muted:      rgba(255,255,255,0.55);
+  --color-overlay-dim:        rgba(255,255,255,0.3);
+  --color-overlay-gradient:   rgba(12,12,14,0.88);
+  --color-overlay-scrim:      rgba(12,12,14,0.6);
+
+  /* Type scale — same across themes */
+  --text-label-xs:    0.55rem;
+  --text-label-sm:    0.62rem;
+  --text-label:       0.7rem;
+  --text-body:        0.875rem;
+
+  --tracking-tight:   0.1em;
+  --tracking-normal:  0.2em;
+  --tracking-wide:    0.3em;
 }
 
 /* ─── Base ─── */

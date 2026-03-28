@@ -24,38 +24,55 @@ export default function ScrollExpandHero({
 }: ScrollExpandHeroProps) {
   const [scrollProgress, setScrollProgress] = useState(0)
   const scrollProgressRef = useRef(0)
+  const completedRef = useRef(false)
 
   const showContent = scrollProgress >= 0.75
 
   useEffect(() => {
-    const removeAll = () => {
-      window.removeEventListener('wheel', handleWheel)
-      window.removeEventListener('touchstart', handleTouchStart)
-      window.removeEventListener('touchmove', handleTouchMove)
-    }
-
     const handleWheel = (e: WheelEvent) => {
+      // Once the hero expand completes, release scroll to the browser
+      if (completedRef.current) return
+
       e.preventDefault()
       const next = Math.min(1, Math.max(0, scrollProgressRef.current + e.deltaY / 800))
       scrollProgressRef.current = next
       setScrollProgress(next)
+
+      if (next >= 1) {
+        completedRef.current = true
+        // Remove listeners so native scroll resumes
+        cleanup()
+      }
     }
 
     let touchStartY = 0
     const handleTouchStart = (e: TouchEvent) => { touchStartY = e.touches[0].clientY }
     const handleTouchMove = (e: TouchEvent) => {
+      if (completedRef.current) return
+
       e.preventDefault()
       const delta = touchStartY - e.touches[0].clientY
       touchStartY = e.touches[0].clientY
       const next = Math.min(1, Math.max(0, scrollProgressRef.current + delta / 400))
       scrollProgressRef.current = next
       setScrollProgress(next)
+
+      if (next >= 1) {
+        completedRef.current = true
+        cleanup()
+      }
+    }
+
+    function cleanup() {
+      window.removeEventListener('wheel', handleWheel)
+      window.removeEventListener('touchstart', handleTouchStart)
+      window.removeEventListener('touchmove', handleTouchMove)
     }
 
     window.addEventListener('wheel', handleWheel, { passive: false })
     window.addEventListener('touchstart', handleTouchStart, { passive: true })
     window.addEventListener('touchmove', handleTouchMove, { passive: false })
-    return removeAll
+    return cleanup
   }, [])
 
   // Image grows from 15vw/25vh → 100vw/100vh
@@ -121,9 +138,9 @@ export default function ScrollExpandHero({
             <p
               style={{
                 fontFamily: 'Manrope, sans-serif',
-                fontSize: '0.7rem',
+                fontSize: 'var(--text-label)',
                 textTransform: 'uppercase',
-                letterSpacing: '0.3em',
+                letterSpacing: 'var(--tracking-wide)',
                 color: 'var(--color-accent)',
                 marginBottom: '0.75rem',
                 textShadow: '0 1px 8px rgba(0,0,0,0.6)',
@@ -159,9 +176,9 @@ export default function ScrollExpandHero({
               transform: 'translateX(-50%)',
               zIndex: 2,
               fontFamily: 'Manrope, sans-serif',
-              fontSize: '0.65rem',
+              fontSize: 'var(--text-label-sm)',
               textTransform: 'uppercase',
-              letterSpacing: '0.3em',
+              letterSpacing: 'var(--tracking-wide)',
               color: 'var(--color-muted)',
               opacity: 1 - scrollProgress * 2,
               pointerEvents: 'none',

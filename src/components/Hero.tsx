@@ -11,7 +11,17 @@ export default function Hero() {
       scrollToExpand="↓ Scroll"
     >
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '2rem', paddingTop: '2rem' }}>
-        <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '1.5rem 2.5rem', fontFamily: 'Manrope, sans-serif', fontSize: '0.75rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--color-muted)' }}>
+        <div style={{
+          display: 'flex',
+          flexWrap: 'wrap',
+          justifyContent: 'center',
+          gap: '1.5rem 2.5rem',
+          fontFamily: 'Manrope, sans-serif',
+          fontSize: 'var(--text-label)',
+          letterSpacing: 'var(--tracking-normal)',
+          textTransform: 'uppercase',
+          color: 'var(--color-muted)',
+        }}>
           <div><div style={{ fontSize: '1.5rem', color: 'var(--color-text)', fontFamily: 'Cormorant Garamond, serif', fontStyle: 'italic' }}>10+</div>Years Industry</div>
           <div><div style={{ fontSize: '1.5rem', color: 'var(--color-text)', fontFamily: 'Cormorant Garamond, serif', fontStyle: 'italic' }}>5+</div>Design Lead</div>
           <div><div style={{ fontSize: '1.5rem', color: 'var(--color-text)', fontFamily: 'Cormorant Garamond, serif', fontStyle: 'italic' }}>300K+</div>Units Sold</div>
@@ -25,8 +35,8 @@ export default function Hero() {
             border: '1px solid var(--color-accent)',
             color: 'var(--color-accent)',
             fontFamily: 'Manrope, sans-serif',
-            fontSize: '0.7rem',
-            letterSpacing: '0.3em',
+            fontSize: 'var(--text-label)',
+            letterSpacing: 'var(--tracking-wide)',
             textTransform: 'uppercase',
             textDecoration: 'none',
           }}

@@ -30,15 +30,14 @@ function Carousel({ images, sectionTitle, onActiveIndexChange }: {
   const velocityX = useRef(0)
   const lastTime = useRef(0)
   const inertiaAnimation = useRef<ReturnType<typeof animate> | null>(null)
-  // Stable ref avoids re-subscribing when caller re-renders with a new callback identity
   const onActiveIndexChangeRef = useRef(onActiveIndexChange)
   onActiveIndexChangeRef.current = onActiveIndexChange
 
   useEffect(() => {
     const unsubscribe = rotation.on('change', (v) => {
       const faceAngle = 360 / faceCount
-      const rawIndex = Math.round(-v / faceAngle)                         // round first
-      const normalized = ((rawIndex % faceCount) + faceCount) % faceCount // then normalize
+      const rawIndex = Math.round(-v / faceAngle)
+      const normalized = ((rawIndex % faceCount) + faceCount) % faceCount
       onActiveIndexChangeRef.current(normalized)
     })
     return unsubscribe
@@ -129,7 +128,7 @@ function Carousel({ images, sectionTitle, onActiveIndexChange }: {
               style={{
                 width: '100%',
                 height: '100%',
-                clipPath: 'inset(0 round 4px)', // clip-path avoids overflow:hidden + preserve-3d Safari bug
+                clipPath: 'inset(0 round 4px)',
                 position: 'relative',
                 border: '1px solid var(--color-border)',
               }}
@@ -153,7 +152,6 @@ export default function CollectionCarousel({ images, sectionTitle }: CollectionC
   const [activeIndex, setActiveIndex] = useState(0)
   if (images.length === 0) return null
 
-  // Single image: skip carousel, show static display
   if (images.length === 1) {
     const img = images[0]
     return (
@@ -162,9 +160,26 @@ export default function CollectionCarousel({ images, sectionTitle }: CollectionC
           <Image src={img.src} alt={img.caption ?? sectionTitle} fill style={{ objectFit: 'cover' }} sizes="400px" />
         </div>
         {(img.caption || img.stage) && (
-          <div style={{ padding: '0.6rem 1rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontFamily: 'Manrope, sans-serif', fontSize: '0.62rem', letterSpacing: '0.15em', textTransform: 'uppercase', color: 'var(--color-muted)', borderTop: '1px solid var(--color-border)' }}>
+          <div style={{
+            padding: '0.6rem 1rem',
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            fontFamily: 'Manrope, sans-serif',
+            fontSize: 'var(--text-label-sm)',
+            letterSpacing: 'var(--tracking-tight)',
+            textTransform: 'uppercase',
+            color: 'var(--color-muted)',
+            borderTop: '1px solid var(--color-border)',
+          }}>
             <span>{img.caption}</span>
-            {img.stage && <span style={{ padding: '0.2rem 0.5rem', border: '1px solid var(--color-border)', fontSize: '0.55rem', letterSpacing: '0.15em', color: 'var(--color-accent)' }}>{img.stage}</span>}
+            {img.stage && <span style={{
+              padding: '0.2rem 0.5rem',
+              border: '1px solid var(--color-border)',
+              fontSize: 'var(--text-label-xs)',
+              letterSpacing: 'var(--tracking-tight)',
+              color: 'var(--color-accent)',
+            }}>{img.stage}</span>}
           </div>
         )}
       </div>
@@ -188,8 +203,8 @@ export default function CollectionCarousel({ images, sectionTitle }: CollectionC
             justifyContent: 'space-between',
             alignItems: 'center',
             fontFamily: 'Manrope, sans-serif',
-            fontSize: '0.62rem',
-            letterSpacing: '0.15em',
+            fontSize: 'var(--text-label-sm)',
+            letterSpacing: 'var(--tracking-tight)',
             textTransform: 'uppercase',
             color: 'var(--color-muted)',
             borderTop: '1px solid var(--color-border)',
@@ -201,8 +216,8 @@ export default function CollectionCarousel({ images, sectionTitle }: CollectionC
               style={{
                 padding: '0.2rem 0.5rem',
                 border: '1px solid var(--color-border)',
-                fontSize: '0.55rem',
-                letterSpacing: '0.15em',
+                fontSize: 'var(--text-label-xs)',
+                letterSpacing: 'var(--tracking-tight)',
                 color: 'var(--color-accent)',
               }}
             >
@@ -215,10 +230,10 @@ export default function CollectionCarousel({ images, sectionTitle }: CollectionC
         style={{
           textAlign: 'center',
           fontFamily: 'Manrope, sans-serif',
-          fontSize: '0.52rem',
-          letterSpacing: '0.2em',
+          fontSize: 'var(--text-label-xs)',
+          letterSpacing: 'var(--tracking-normal)',
           textTransform: 'uppercase',
-          color: 'var(--color-border)',
+          color: 'var(--color-muted)',
           paddingBottom: '0.5rem',
         }}
       >

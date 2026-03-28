@@ -40,8 +40,8 @@ export default function SplitScrollCollection({ category }: { category: Portfoli
           data-cursor="link"
           style={{
             fontFamily: 'Manrope, sans-serif',
-            fontSize: '0.65rem',
-            letterSpacing: '0.3em',
+            fontSize: 'var(--text-label)',
+            letterSpacing: 'var(--tracking-wide)',
             textTransform: 'uppercase',
             color: 'var(--color-muted)',
             textDecoration: 'none',
@@ -62,8 +62,8 @@ export default function SplitScrollCollection({ category }: { category: Portfoli
         <p
           style={{
             fontFamily: 'Manrope, sans-serif',
-            fontSize: '0.65rem',
-            letterSpacing: '0.35em',
+            fontSize: 'var(--text-label)',
+            letterSpacing: 'var(--tracking-wide)',
             textTransform: 'uppercase',
             color: 'var(--color-accent)',
             marginBottom: '1rem',
@@ -87,8 +87,8 @@ export default function SplitScrollCollection({ category }: { category: Portfoli
         <p
           style={{
             fontFamily: 'Manrope, sans-serif',
-            fontSize: '0.75rem',
-            letterSpacing: '0.15em',
+            fontSize: 'var(--text-body)',
+            letterSpacing: 'var(--tracking-tight)',
             textTransform: 'uppercase',
             color: 'var(--color-muted)',
           }}
@@ -127,8 +127,8 @@ export default function SplitScrollCollection({ category }: { category: Portfoli
             <p
               style={{
                 fontFamily: 'Manrope, sans-serif',
-                fontSize: '0.6rem',
-                letterSpacing: '0.35em',
+                fontSize: 'var(--text-label-sm)',
+                letterSpacing: 'var(--tracking-wide)',
                 textTransform: 'uppercase',
                 color: 'var(--color-accent)',
               }}
@@ -153,7 +153,7 @@ export default function SplitScrollCollection({ category }: { category: Portfoli
             <p
               style={{
                 fontFamily: 'Manrope, sans-serif',
-                fontSize: '0.875rem',
+                fontSize: 'var(--text-body)',
                 lineHeight: 1.75,
                 color: 'var(--color-muted)',
                 maxWidth: '380px',
@@ -167,7 +167,7 @@ export default function SplitScrollCollection({ category }: { category: Portfoli
               style={{
                 padding: '1rem 1.25rem',
                 borderLeft: '2px solid var(--color-accent)',
-                background: 'rgba(184,150,90,0.05)',
+                background: 'color-mix(in srgb, var(--color-accent) 5%, transparent)',
                 fontSize: '0.8rem',
                 lineHeight: 1.6,
                 color: 'var(--color-text)',
@@ -200,10 +200,10 @@ export default function SplitScrollCollection({ category }: { category: Portfoli
                   style={{
                     padding: '0.3rem 0.75rem',
                     border: '1px solid var(--color-accent)',
-                    background: 'rgba(184,150,90,0.08)',
+                    background: 'color-mix(in srgb, var(--color-accent) 8%, transparent)',
                     fontFamily: 'Manrope, sans-serif',
-                    fontSize: '0.6rem',
-                    letterSpacing: '0.2em',
+                    fontSize: 'var(--text-label-sm)',
+                    letterSpacing: 'var(--tracking-normal)',
                     textTransform: 'uppercase',
                     color: 'var(--color-accent)',
                     borderRadius: '2px',
@@ -216,7 +216,13 @@ export default function SplitScrollCollection({ category }: { category: Portfoli
 
             {/* Section jump nav */}
             <div style={{ borderTop: '1px solid var(--color-border)', paddingTop: '1rem', marginTop: '0.5rem' }}>
-              <p style={{ fontSize: '0.55rem', letterSpacing: '0.3em', textTransform: 'uppercase', color: 'var(--color-border)', marginBottom: '0.5rem' }}>
+              <p style={{
+                fontSize: 'var(--text-label-xs)',
+                letterSpacing: 'var(--tracking-wide)',
+                textTransform: 'uppercase',
+                color: 'var(--color-muted)',
+                marginBottom: '0.5rem',
+              }}>
                 Sections
               </p>
               {category.sections.map((s, idx) => (
@@ -226,10 +232,10 @@ export default function SplitScrollCollection({ category }: { category: Portfoli
                   style={{
                     display: 'block',
                     fontFamily: 'Manrope, sans-serif',
-                    fontSize: '0.6rem',
-                    letterSpacing: '0.1em',
+                    fontSize: 'var(--text-label-sm)',
+                    letterSpacing: 'var(--tracking-tight)',
                     padding: '0.2rem 0',
-                    color: activeSection === s.id ? 'var(--color-accent)' : 'var(--color-border)',
+                    color: activeSection === s.id ? 'var(--color-accent)' : 'var(--color-muted)',
                     textDecoration: 'none',
                     transition: 'color 0.2s ease',
                   }}
