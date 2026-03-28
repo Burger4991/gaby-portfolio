@@ -2,12 +2,15 @@
 
 import { forwardRef } from 'react'
 
-type LiquidGlassProps = {
+type LiquidGlassProps = React.HTMLAttributes<HTMLElement> & {
   children: React.ReactNode
   as?: 'button' | 'span' | 'a' | 'div'
   className?: string
   style?: React.CSSProperties
-  [key: string]: unknown
+  href?: string
+  download?: boolean
+  type?: string
+  disabled?: boolean
 }
 
 /**
