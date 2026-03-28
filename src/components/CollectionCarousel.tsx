@@ -4,9 +4,10 @@ import { useEffect, useRef, useState } from 'react'
 import { animate, motion, useMotionValue, useTransform } from 'framer-motion'
 import Image from 'next/image'
 import type { SectionImage } from '@/data/portfolioData'
+import LiquidGlass from './LiquidGlass'
 
-const CARD_HEIGHT = 280
-const FACE_WIDTH = 200
+const CARD_HEIGHT = 320
+const FACE_WIDTH = 220
 
 type CollectionCarouselProps = {
   images: SectionImage[]
@@ -24,11 +25,8 @@ function Carousel({ images, sectionTitle, onActiveIndexChange }: {
   const radius = cylinderWidth / (2 * Math.PI)
   const rotation = useMotionValue(0)
   const transform = useTransform(rotation, (v) => `rotate3d(0, 1, 0, ${v}deg)`)
+  const containerRef = useRef<HTMLDivElement>(null)
 
-  const isDragging = useRef(false)
-  const lastX = useRef(0)
-  const velocityX = useRef(0)
-  const lastTime = useRef(0)
   const inertiaAnimation = useRef<ReturnType<typeof animate> | null>(null)
   const onActiveIndexChangeRef = useRef(onActiveIndexChange)
   onActiveIndexChangeRef.current = onActiveIndexChange
@@ -43,45 +41,67 @@ function Carousel({ images, sectionTitle, onActiveIndexChange }: {
     return unsubscribe
   }, [rotation, faceCount])
 
+  // Scroll/swipe to rotate — replaces drag interaction
   useEffect(() => {
-    return () => {
+    const el = containerRef.current
+    if (!el) return
+
+    const handleWheel = (e: WheelEvent) => {
+      e.preventDefault()
+      e.stopPropagation()
       inertiaAnimation.current?.stop()
+      const delta = e.deltaY !== 0 ? e.deltaY : e.deltaX
+      rotation.set(rotation.get() - delta * 0.15)
     }
+
+    let touchStartX = 0
+    let touchStartY = 0
+    const handleTouchStart = (e: TouchEvent) => {
+      inertiaAnimation.current?.stop()
+      touchStartX = e.touches[0].clientX
+      touchStartY = e.touches[0].clientY
+    }
+    const handleTouchMove = (e: TouchEvent) => {
+      const dx = e.touches[0].clientX - touchStartX
+      const dy = e.touches[0].clientY - touchStartY
+      // Only rotate if horizontal swipe dominates
+      if (Math.abs(dx) > Math.abs(dy)) {
+        e.preventDefault()
+        rotation.set(rotation.get() + dx * 0.3)
+        touchStartX = e.touches[0].clientX
+        touchStartY = e.touches[0].clientY
+      }
+    }
+    const handleTouchEnd = () => {
+      // Light inertia after swipe
+      inertiaAnimation.current = animate(rotation, rotation.get(), {
+        type: 'spring',
+        stiffness: 100,
+        damping: 30,
+        mass: 0.1,
+      })
+    }
+
+    el.addEventListener('wheel', handleWheel, { passive: false })
+    el.addEventListener('touchstart', handleTouchStart, { passive: true })
+    el.addEventListener('touchmove', handleTouchMove, { passive: false })
+    el.addEventListener('touchend', handleTouchEnd, { passive: true })
+
+    return () => {
+      el.removeEventListener('wheel', handleWheel)
+      el.removeEventListener('touchstart', handleTouchStart)
+      el.removeEventListener('touchmove', handleTouchMove)
+      el.removeEventListener('touchend', handleTouchEnd)
+    }
+  }, [rotation])
+
+  useEffect(() => {
+    return () => { inertiaAnimation.current?.stop() }
   }, [])
-
-  const handlePointerDown = (e: React.PointerEvent) => {
-    inertiaAnimation.current?.stop()
-    isDragging.current = true
-    lastX.current = e.clientX
-    lastTime.current = performance.now()
-    velocityX.current = 0
-    ;(e.currentTarget as HTMLElement).setPointerCapture(e.pointerId)
-  }
-
-  const handlePointerMove = (e: React.PointerEvent) => {
-    if (!isDragging.current) return
-    const now = performance.now()
-    const dt = now - lastTime.current
-    const dx = e.clientX - lastX.current
-    velocityX.current = dt > 0 ? dx / dt : 0
-    lastX.current = e.clientX
-    lastTime.current = now
-    rotation.set(rotation.get() + dx * 0.3)
-  }
-
-  const handlePointerUp = () => {
-    if (!isDragging.current) return
-    isDragging.current = false
-    inertiaAnimation.current = animate(rotation, rotation.get() + velocityX.current * 60, {
-      type: 'spring',
-      stiffness: 100,
-      damping: 30,
-      mass: 0.1,
-    })
-  }
 
   return (
     <div
+      ref={containerRef}
       style={{
         perspective: '1000px',
         transformStyle: 'preserve-3d',
@@ -94,22 +114,17 @@ function Carousel({ images, sectionTitle, onActiveIndexChange }: {
       }}
     >
       <motion.div
-        data-cursor="drag"
-        onPointerDown={handlePointerDown}
-        onPointerMove={handlePointerMove}
-        onPointerUp={handlePointerUp}
-        onPointerLeave={handlePointerUp}
+        data-cursor="view"
         style={{
           transform,
           width: cylinderWidth,
           height: CARD_HEIGHT,
           transformStyle: 'preserve-3d',
-          cursor: 'grab',
           position: 'relative',
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
-          touchAction: 'none',
+          touchAction: 'pan-y',
           userSelect: 'none',
         }}
       >
@@ -128,7 +143,7 @@ function Carousel({ images, sectionTitle, onActiveIndexChange }: {
               style={{
                 width: '100%',
                 height: '100%',
-                clipPath: 'inset(0 round 4px)',
+                clipPath: 'inset(0 round 6px)',
                 position: 'relative',
                 border: '1px solid var(--color-border)',
               }}
@@ -138,7 +153,7 @@ function Carousel({ images, sectionTitle, onActiveIndexChange }: {
                 alt={img.caption ?? sectionTitle}
                 fill
                 style={{ objectFit: 'cover' }}
-                sizes="200px"
+                sizes="220px"
               />
             </div>
           </div>
@@ -156,30 +171,13 @@ export default function CollectionCarousel({ images, sectionTitle }: CollectionC
     const img = images[0]
     return (
       <div style={{ display: 'flex', flexDirection: 'column', width: '100%', maxWidth: FACE_WIDTH * 2 }}>
-        <div style={{ position: 'relative', width: '100%', height: CARD_HEIGHT, border: '1px solid var(--color-border)', borderRadius: 4, overflow: 'hidden' }}>
-          <Image src={img.src} alt={img.caption ?? sectionTitle} fill style={{ objectFit: 'cover' }} sizes="400px" />
+        <div style={{ position: 'relative', width: '100%', height: CARD_HEIGHT, border: '1px solid var(--color-border)', borderRadius: 6, overflow: 'hidden' }}>
+          <Image src={img.src} alt={img.caption ?? sectionTitle} fill style={{ objectFit: 'cover' }} sizes="440px" />
         </div>
         {(img.caption || img.stage) && (
-          <div style={{
-            padding: '0.6rem 1rem',
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            fontFamily: 'Manrope, sans-serif',
-            fontSize: 'var(--text-label-sm)',
-            letterSpacing: 'var(--tracking-tight)',
-            textTransform: 'uppercase',
-            color: 'var(--color-muted)',
-            borderTop: '1px solid var(--color-border)',
-          }}>
-            <span>{img.caption}</span>
-            {img.stage && <span style={{
-              padding: '0.2rem 0.5rem',
-              border: '1px solid var(--color-border)',
-              fontSize: 'var(--text-label-xs)',
-              letterSpacing: 'var(--tracking-tight)',
-              color: 'var(--color-accent)',
-            }}>{img.stage}</span>}
+          <div style={{ padding: '0.75rem 0', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <span style={{ fontFamily: 'Manrope, sans-serif', fontSize: 'var(--text-label-sm)', color: 'var(--color-overlay-muted)', textTransform: 'uppercase', letterSpacing: 'var(--tracking-tight)' }}>{img.caption}</span>
+            {img.stage && <LiquidGlass style={{ fontSize: 'var(--text-label-xs)', color: 'var(--color-accent)' }}>{img.stage}</LiquidGlass>}
           </div>
         )}
       </div>
@@ -195,34 +193,28 @@ export default function CollectionCarousel({ images, sectionTitle }: CollectionC
         sectionTitle={sectionTitle}
         onActiveIndexChange={setActiveIndex}
       />
-      {activeImage && (activeImage.caption || activeImage.stage) && (
+      {activeImage && (
         <div
           style={{
-            padding: '0.6rem 1rem',
+            padding: '0.75rem 1rem 0',
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'center',
+          }}
+        >
+          <span style={{
             fontFamily: 'Manrope, sans-serif',
             fontSize: 'var(--text-label-sm)',
             letterSpacing: 'var(--tracking-tight)',
             textTransform: 'uppercase',
-            color: 'var(--color-muted)',
-            borderTop: '1px solid var(--color-border)',
-          }}
-        >
-          <span>{activeImage.caption}</span>
+            color: 'var(--color-overlay-muted)',
+          }}>
+            {activeImage.caption}
+          </span>
           {activeImage.stage && (
-            <span
-              style={{
-                padding: '0.2rem 0.5rem',
-                border: '1px solid var(--color-border)',
-                fontSize: 'var(--text-label-xs)',
-                letterSpacing: 'var(--tracking-tight)',
-                color: 'var(--color-accent)',
-              }}
-            >
+            <LiquidGlass style={{ fontSize: 'var(--text-label-xs)', color: 'var(--color-accent)' }}>
               {activeImage.stage}
-            </span>
+            </LiquidGlass>
           )}
         </div>
       )}
@@ -233,11 +225,11 @@ export default function CollectionCarousel({ images, sectionTitle }: CollectionC
           fontSize: 'var(--text-label-xs)',
           letterSpacing: 'var(--tracking-normal)',
           textTransform: 'uppercase',
-          color: 'var(--color-muted)',
-          paddingBottom: '0.5rem',
+          color: 'var(--color-overlay-dim)',
+          paddingTop: '0.5rem',
         }}
       >
-        drag to rotate
+        scroll to rotate
       </div>
     </div>
   )

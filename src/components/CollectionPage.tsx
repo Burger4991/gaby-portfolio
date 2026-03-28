@@ -74,7 +74,7 @@ export default function CollectionPage({ category }: { category: PortfolioCatego
                 fontWeight: 300,
                 fontSize: 'clamp(1.8rem, 3vw, 2.8rem)',
                 lineHeight: 1.1,
-                color: 'var(--color-text)',
+                color: 'var(--color-overlay-heading)',
                 margin: '0 0 1rem',
               }}
             >
@@ -86,7 +86,7 @@ export default function CollectionPage({ category }: { category: PortfolioCatego
                 fontFamily: 'Manrope, sans-serif',
                 fontSize: 'var(--text-body)',
                 lineHeight: 1.7,
-                color: 'var(--color-muted)',
+                color: 'var(--color-overlay-muted)',
                 margin: '0 0 1.25rem',
               }}
             >
@@ -100,7 +100,7 @@ export default function CollectionPage({ category }: { category: PortfolioCatego
                 background: 'color-mix(in srgb, var(--color-accent) 5%, transparent)',
                 fontSize: '0.8rem',
                 lineHeight: 1.6,
-                color: 'var(--color-text)',
+                color: 'var(--color-overlay-text)',
                 marginBottom: '1rem',
               }}
             >

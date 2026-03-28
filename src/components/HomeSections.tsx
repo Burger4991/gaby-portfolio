@@ -90,6 +90,7 @@ export default function HomeSections() {
   return (
     <FullScreenScrollFX
       sections={sections}
+      footer={<span>Gabriela Gamargo</span>}
     />
   )
 }

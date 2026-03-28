@@ -318,7 +318,7 @@ const FullScreenScrollFX = forwardRef<HTMLDivElement, FullScreenFXProps>(
                   style={{
                     position: 'absolute',
                     inset: 0,
-                    zIndex: 5,
+                    zIndex: 3,
                     opacity: i === 0 ? 1 : 0,
                     visibility: i === 0 ? 'visible' : 'hidden',
                     pointerEvents: i === 0 ? 'auto' : 'none',
@@ -355,7 +355,7 @@ const FullScreenScrollFX = forwardRef<HTMLDivElement, FullScreenFXProps>(
                       tempWordBucket.current = []
                       const isString = typeof s.title === 'string'
                       return (
-                        <div key={`C-${s.id ?? sIdx}`} className={`fx-featured ${sIdx === index ? 'active' : ''}`}>
+                        <div key={`C-${s.id ?? sIdx}`} className={`fx-featured ${sIdx === index ? 'active' : ''}${s.content ? ' has-content' : ''}`}>
                           <h3 className="fx-featured-title">
                             {isString ? splitWords(s.title as string) : s.title}
                           </h3>
@@ -409,10 +409,11 @@ const FullScreenScrollFX = forwardRef<HTMLDivElement, FullScreenFXProps>(
         </div>
 
         <style>{`
-          .fx { width: 100%; overflow: hidden; background: var(--color-bg); color: var(--color-text); font-family: 'Manrope', sans-serif; text-transform: uppercase; letter-spacing: -0.02em; }
+          .fx { width: 100%; overflow: hidden; background: var(--color-bg); color: var(--color-text); font-family: 'Manrope', sans-serif; letter-spacing: -0.02em; }
           .fx-fixed-section { height: ${Math.max(1, total + 1)}00vh; position: relative; }
           .fx-fixed { position: sticky; top: 0; height: 100vh; width: 100%; overflow: hidden; background: var(--color-bg); }
-          .fx-grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 1rem; padding: 0 2rem; position: relative; height: 100%; z-index: 2; }
+          .fx-grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 1rem; padding: 0 2rem; position: relative; height: 100%; z-index: 10; pointer-events: none; }
+          .fx-grid * { pointer-events: auto; }
           .fx-bgs { position: absolute; inset: 0; background: var(--color-overlay); z-index: 1; }
           .fx-bg { position: absolute; inset: 0; }
           .fx-bg-img { position: absolute; inset: -10% 0 -10% 0; width: 100%; height: 120%; object-fit: cover; filter: brightness(0.7); opacity: 0; will-change: transform, opacity; }
@@ -433,6 +434,7 @@ const FullScreenScrollFX = forwardRef<HTMLDivElement, FullScreenFXProps>(
           .fx-center { display: grid; place-items: center; text-align: center; height: 60vh; overflow: hidden; }
           .fx-featured { position: absolute; opacity: 0; visibility: hidden; }
           .fx-featured.active { opacity: 1; visibility: visible; }
+          .fx-featured.has-content { opacity: 0 !important; visibility: hidden !important; }
           .fx-featured-title { margin: 0; color: var(--color-overlay-heading); font-weight: 300; font-style: italic; letter-spacing: 0.02em; font-size: clamp(2.5rem, 6vw, 5rem); font-family: 'Cormorant Garamond', serif; }
           .fx-word-mask { display: inline-block; overflow: hidden; vertical-align: middle; }
           .fx-word { display: inline-block; vertical-align: middle; }
