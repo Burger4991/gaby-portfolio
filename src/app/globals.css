@@ -68,6 +68,36 @@ html[data-theme="light"] {
   --tracking-wide:    0.3em;
 }
 
+/* ─── Catppuccin Mocha ─── */
+html[data-theme="catppuccin"] {
+  --color-bg:           #1e1e2e;
+  --color-surface:      #313244;
+  --color-border:       #45475a;
+  --color-text:         #cdd6f4;
+  --color-muted:        #a6adc8;
+  --color-accent:       #cba6f7;
+  --color-accent-hover: #d8b5ff;
+  --color-card-bg:      #181825;
+  --color-overlay:      #1e1e2e;
+  --color-error:        #f38ba8;
+
+  --color-overlay-text:       rgba(205,214,244,0.85);
+  --color-overlay-heading:    #cdd6f4;
+  --color-overlay-muted:      rgba(166,173,200,0.7);
+  --color-overlay-dim:        rgba(205,214,244,0.3);
+  --color-overlay-gradient:   rgba(30,30,46,0.88);
+  --color-overlay-scrim:      rgba(30,30,46,0.6);
+
+  --text-label-xs:    0.55rem;
+  --text-label-sm:    0.62rem;
+  --text-label:       0.7rem;
+  --text-body:        0.875rem;
+
+  --tracking-tight:   0.1em;
+  --tracking-normal:  0.2em;
+  --tracking-wide:    0.3em;
+}
+
 /* ─── Base ─── */
 *, *::before, *::after { box-sizing: border-box; }
 

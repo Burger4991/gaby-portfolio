@@ -1,19 +1,33 @@
 // src/components/ThemeToggle.tsx
 'use client'
 
-import { Moon, Sun } from 'lucide-react'
+import { Moon, Sun, Palette } from 'lucide-react'
 import { useTheme } from './ThemeProvider'
+
+const ICONS = {
+  dark: Sun,       // show what clicking will cycle toward
+  light: Palette,
+  catppuccin: Moon,
+} as const
+
+const LABELS = {
+  dark: 'Switch to light mode',
+  light: 'Switch to Catppuccin mode',
+  catppuccin: 'Switch to dark mode',
+} as const
 
 export default function ThemeToggle() {
   const { theme, toggle } = useTheme()
+  const Icon = ICONS[theme]
+
   return (
     <button
       onClick={toggle}
-      aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
+      aria-label={LABELS[theme]}
       className="w-8 h-8 flex items-center justify-center transition-opacity duration-200 hover:opacity-70 cursor-pointer"
       style={{ color: 'var(--color-muted)' }}
     >
-      {theme === 'dark' ? <Sun size={16} /> : <Moon size={16} />}
+      <Icon size={16} />
     </button>
   )
 }

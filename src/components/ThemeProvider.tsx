@@ -3,7 +3,9 @@
 
 import { createContext, useContext, useEffect, useState } from 'react'
 
-type Theme = 'dark' | 'light'
+type Theme = 'dark' | 'light' | 'catppuccin'
+
+const THEMES: Theme[] = ['dark', 'light', 'catppuccin']
 
 const ThemeContext = createContext<{
   theme: Theme
@@ -14,16 +16,17 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [theme, setTheme] = useState<Theme>('dark')
 
   useEffect(() => {
-    const stored = localStorage.getItem('theme') as Theme | null
-    const initial = stored ?? 'dark'
+    const stored = localStorage.getItem('gaby-portfolio-theme') as Theme | null
+    const initial = stored && THEMES.includes(stored) ? stored : 'dark'
     setTheme(initial)
     document.documentElement.setAttribute('data-theme', initial)
   }, [])
 
   const toggle = () => {
     setTheme(prev => {
-      const next: Theme = prev === 'dark' ? 'light' : 'dark'
-      localStorage.setItem('theme', next)
+      const idx = THEMES.indexOf(prev)
+      const next = THEMES[(idx + 1) % THEMES.length]
+      localStorage.setItem('gaby-portfolio-theme', next)
       document.documentElement.setAttribute('data-theme', next)
       return next
     })
