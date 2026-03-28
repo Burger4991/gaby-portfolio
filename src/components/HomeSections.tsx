@@ -68,7 +68,10 @@ export default function HomeSections() {
       title: 'About Gaby',
       rightLabel: <span style={{ fontSize: 'var(--text-label-xs)', letterSpacing: 'var(--tracking-normal)' }}>Bio</span>,
       content: (
-        <div style={{ position: 'absolute', inset: 0, zIndex: 10, overflow: 'auto' }}>
+        <div
+          style={{ position: 'absolute', inset: 0, zIndex: 10, overflow: 'auto' }}
+          onWheel={(e) => e.stopPropagation()}
+        >
           <About />
         </div>
       ),
@@ -80,7 +83,10 @@ export default function HomeSections() {
       title: 'Get in Touch',
       rightLabel: <span style={{ fontSize: 'var(--text-label-xs)', letterSpacing: 'var(--tracking-normal)' }}>Contact</span>,
       content: (
-        <div style={{ position: 'absolute', inset: 0, zIndex: 10, overflow: 'auto' }}>
+        <div
+          style={{ position: 'absolute', inset: 0, zIndex: 10, overflow: 'auto' }}
+          onWheel={(e) => e.stopPropagation()}
+        >
           <Contact />
         </div>
       ),

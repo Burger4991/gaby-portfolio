@@ -26,6 +26,7 @@ export default function ImageAccordion() {
           <div
             key={category.id}
             data-cursor="view"
+            data-active={isActive ? '' : undefined}
             onMouseEnter={() => setActiveIdx(i)}
             onClick={() => setActiveIdx(i)}
             style={{
@@ -177,7 +178,7 @@ export default function ImageAccordion() {
             height: 120px !important;
             border-radius: 6px !important;
           }
-          .image-accordion > div[style*="flex: 5"] {
+          .image-accordion > div[data-active] {
             height: 300px !important;
           }
         }
