@@ -17,6 +17,8 @@ type Section = {
   leftLabel?: ReactNode
   title: string | ReactNode
   rightLabel?: ReactNode
+  /** If provided, renders this content over the background instead of the default title/nav layout */
+  content?: ReactNode
 }
 
 type FullScreenFXProps = {
@@ -59,6 +61,7 @@ const FullScreenScrollFX = forwardRef<HTMLDivElement, FullScreenFXProps>(
     const fixedRef = useRef<HTMLDivElement | null>(null)
     const fixedSectionRef = useRef<HTMLDivElement | null>(null)
     const bgRefs = useRef<HTMLImageElement[]>([])
+    const contentRefs = useRef<HTMLDivElement[]>([])
     const wordRefs = useRef<HTMLSpanElement[][]>([])
     const leftTrackRef = useRef<HTMLDivElement | null>(null)
     const rightTrackRef = useRef<HTMLDivElement | null>(null)
@@ -231,6 +234,12 @@ const FullScreenScrollFX = forwardRef<HTMLDivElement, FullScreenFXProps>(
         if (prevBg) gsap.to(prevBg, { opacity: 0, duration: D * 0.8, ease: 'power2.out' })
       }
 
+      // Animate content panels
+      const prevContent = contentRefs.current[from]
+      const newContent = contentRefs.current[to]
+      if (prevContent) gsap.to(prevContent, { opacity: 0, duration: D * 0.4, ease: 'power2.out', onComplete: () => { prevContent.style.visibility = 'hidden'; prevContent.style.pointerEvents = 'none' } })
+      if (newContent) { newContent.style.visibility = 'visible'; newContent.style.pointerEvents = 'auto'; gsap.fromTo(newContent, { opacity: 0 }, { opacity: 1, duration: D * 0.6, delay: D * 0.2, ease: 'power2.out' }) }
+
       measureAndCenterLists(to, true)
 
       leftItemRefs.current.forEach((el, i) => {
@@ -300,6 +309,24 @@ const FullScreenScrollFX = forwardRef<HTMLDivElement, FullScreenFXProps>(
                   </div>
                 ))}
               </div>
+
+              {/* Custom content panels — rendered over background when section has content */}
+              {sections.map((s, i) => s.content ? (
+                <div
+                  key={`content-${s.id ?? i}`}
+                  ref={(el) => { if (el) contentRefs.current[i] = el }}
+                  style={{
+                    position: 'absolute',
+                    inset: 0,
+                    zIndex: 5,
+                    opacity: i === 0 ? 1 : 0,
+                    visibility: i === 0 ? 'visible' : 'hidden',
+                    pointerEvents: i === 0 ? 'auto' : 'none',
+                  }}
+                >
+                  {s.content}
+                </div>
+              ) : null)}
 
               <div className="fx-grid">
                 {header && <div className="fx-header">{header}</div>}
