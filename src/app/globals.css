@@ -36,28 +36,27 @@ html:not([data-theme]) {
   --tracking-wide:    0.3em;
 }
 
-/* ─── Warm Ivory (light) ─── */
+/* ─── Catppuccin Frappé (light) ─── */
 html[data-theme="light"] {
-  --color-bg:           #F8F4EE;
-  --color-surface:      #F2EBE1;
-  --color-border:       #E5DDD3;
-  --color-text:         #1C1610;
-  --color-muted:        #9A8E84;
-  --color-accent:       #A0673A;
-  --color-accent-hover: #B5784A;
-  --color-card-bg:      #EDE7DF;
-  --color-overlay:      #F8F4EE;
-  --color-error:        #C62828;
+  --color-bg:           #303446;
+  --color-surface:      #414559;
+  --color-border:       #51576d;
+  --color-text:         #c6d0f5;
+  --color-muted:        #a5adce;
+  --color-accent:       #ca9ee6;
+  --color-accent-hover: #d8b1ef;
+  --color-card-bg:      #292c3c;
+  --color-overlay:      #303446;
+  --color-error:        #e78284;
 
-  /* Overlay context — same as dark since overlays are always dark */
-  --color-overlay-text:       rgba(255,255,255,0.85);
-  --color-overlay-heading:    #fff;
-  --color-overlay-muted:      rgba(255,255,255,0.55);
-  --color-overlay-dim:        rgba(255,255,255,0.3);
-  --color-overlay-gradient:   rgba(12,12,14,0.88);
-  --color-overlay-scrim:      rgba(12,12,14,0.6);
+  /* Overlay context — forced-dark panels */
+  --color-overlay-text:       rgba(198,208,245,0.85);
+  --color-overlay-heading:    #c6d0f5;
+  --color-overlay-muted:      rgba(165,173,206,0.7);
+  --color-overlay-dim:        rgba(198,208,245,0.3);
+  --color-overlay-gradient:   rgba(48,52,70,0.88);
+  --color-overlay-scrim:      rgba(48,52,70,0.6);
 
-  /* Type scale — same across themes */
   --text-label-xs:    0.55rem;
   --text-label-sm:    0.62rem;
   --text-label:       0.7rem;

@@ -11,8 +11,8 @@ const ICONS = {
 } as const
 
 const LABELS = {
-  dark: 'Switch to light mode',
-  light: 'Switch to Catppuccin mode',
+  dark: 'Switch to Frappé mode',
+  light: 'Switch to Mocha mode',
   catppuccin: 'Switch to dark mode',
 } as const
 
