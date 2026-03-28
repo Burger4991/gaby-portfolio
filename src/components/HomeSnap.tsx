@@ -63,28 +63,28 @@ export default function HomeSnap() {
     return () => { ctx?.revert() }
   }, [])
 
+  const panelBase: React.CSSProperties = {
+    position: 'absolute',
+    inset: 0,
+  }
+
   return (
     <div
       ref={containerRef}
       style={{ position: 'relative', height: '100vh', overflow: 'hidden' }}
     >
-      {/* Panel 1: Portfolio Accordion */}
+      {/* Panel 1: Portfolio Accordion — always visible first */}
       <div
         ref={(el) => { if (el) panelRefs.current[0] = el }}
         style={{
-          position: 'absolute',
-          inset: 0,
+          ...panelBase,
+          zIndex: 1,
           display: 'flex',
           flexDirection: 'column',
           background: 'var(--color-bg)',
         }}
       >
-        <div
-          style={{
-            padding: '3rem 2rem 1rem',
-            textAlign: 'center',
-          }}
-        >
+        <div style={{ padding: '2.5rem 2rem 0.75rem', textAlign: 'center' }}>
           <p
             style={{
               fontFamily: 'Manrope, sans-serif',
@@ -110,17 +110,18 @@ export default function HomeSnap() {
             Collections
           </h2>
         </div>
-        <div style={{ flex: 1, padding: '1rem 2rem 2rem', minHeight: 0 }}>
+        <div style={{ flex: 1, padding: '0.75rem 1.5rem 1.5rem', minHeight: 0 }}>
           <ImageAccordion />
         </div>
       </div>
 
-      {/* Panel 2: PullQuote */}
+      {/* Panel 2: PullQuote — starts offscreen below */}
       <div
         ref={(el) => { if (el) panelRefs.current[1] = el }}
         style={{
-          position: 'absolute',
-          inset: 0,
+          ...panelBase,
+          zIndex: 2,
+          transform: 'translateY(100%)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
@@ -130,12 +131,13 @@ export default function HomeSnap() {
         <PullQuote />
       </div>
 
-      {/* Panel 3: About */}
+      {/* Panel 3: About — starts offscreen below */}
       <div
         ref={(el) => { if (el) panelRefs.current[2] = el }}
         style={{
-          position: 'absolute',
-          inset: 0,
+          ...panelBase,
+          zIndex: 3,
+          transform: 'translateY(100%)',
           overflow: 'auto',
           background: 'var(--color-surface)',
         }}
@@ -143,12 +145,13 @@ export default function HomeSnap() {
         <About />
       </div>
 
-      {/* Panel 4: Contact */}
+      {/* Panel 4: Contact — starts offscreen below */}
       <div
         ref={(el) => { if (el) panelRefs.current[3] = el }}
         style={{
-          position: 'absolute',
-          inset: 0,
+          ...panelBase,
+          zIndex: 4,
+          transform: 'translateY(100%)',
           overflow: 'auto',
           background: 'var(--color-bg)',
         }}

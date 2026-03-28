@@ -16,7 +16,7 @@ export default function ImageAccordion() {
         display: 'flex',
         width: '100%',
         height: '100%',
-        gap: '4px',
+        gap: '6px',
         overflow: 'hidden',
       }}
     >
@@ -30,7 +30,7 @@ export default function ImageAccordion() {
             onClick={() => setActiveIdx(i)}
             style={{
               position: 'relative',
-              flex: isActive ? '5 1 0%' : '0.6 1 0%',
+              flex: isActive ? '5 1 0%' : '0.8 1 0%',
               transition: 'flex 0.7s cubic-bezier(0.4, 0, 0.2, 1)',
               overflow: 'hidden',
               borderRadius: '8px',
