@@ -3,9 +3,9 @@
 
 import { createContext, useContext, useEffect, useState } from 'react'
 
-type Theme = 'dark' | 'light' | 'catppuccin'
+type Theme = 'dark' | 'latte' | 'frappe' | 'catppuccin'
 
-const THEMES: Theme[] = ['dark', 'light', 'catppuccin']
+const THEMES: Theme[] = ['dark', 'latte', 'frappe', 'catppuccin']
 
 const ThemeContext = createContext<{
   theme: Theme

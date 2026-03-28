@@ -36,8 +36,39 @@ html:not([data-theme]) {
   --tracking-wide:    0.3em;
 }
 
-/* ─── Catppuccin Frappé (light) ─── */
-html[data-theme="light"] {
+/* ─── Catppuccin Latte (light) ─── */
+html[data-theme="latte"] {
+  --color-bg:           #eff1f5;
+  --color-surface:      #e6e9ef;
+  --color-border:       #ccd0da;
+  --color-text:         #4c4f69;
+  --color-muted:        #6c6f85;
+  --color-accent:       #8839ef;
+  --color-accent-hover: #9b4ff5;
+  --color-card-bg:      #dce0e8;
+  --color-overlay:      #eff1f5;
+  --color-error:        #d20f39;
+
+  /* Overlay context — overlays stay dark even on light theme */
+  --color-overlay-text:       rgba(255,255,255,0.85);
+  --color-overlay-heading:    #fff;
+  --color-overlay-muted:      rgba(255,255,255,0.55);
+  --color-overlay-dim:        rgba(255,255,255,0.3);
+  --color-overlay-gradient:   rgba(30,30,46,0.88);
+  --color-overlay-scrim:      rgba(30,30,46,0.6);
+
+  --text-label-xs:    0.55rem;
+  --text-label-sm:    0.62rem;
+  --text-label:       0.7rem;
+  --text-body:        0.875rem;
+
+  --tracking-tight:   0.1em;
+  --tracking-normal:  0.2em;
+  --tracking-wide:    0.3em;
+}
+
+/* ─── Catppuccin Frappé (mid-dark) ─── */
+html[data-theme="frappe"] {
   --color-bg:           #303446;
   --color-surface:      #414559;
   --color-border:       #51576d;

@@ -1,19 +1,21 @@
 // src/components/ThemeToggle.tsx
 'use client'
 
-import { Moon, Sun, Palette } from 'lucide-react'
+import { Moon, Sun, CloudSun, Palette } from 'lucide-react'
 import { useTheme } from './ThemeProvider'
 
 const ICONS = {
-  dark: Sun,       // show what clicking will cycle toward
-  light: Palette,
-  catppuccin: Moon,
+  dark: Sun,          // next: Latte (light)
+  latte: CloudSun,    // next: Frappé (mid-dark)
+  frappe: Palette,    // next: Mocha (deep dark)
+  catppuccin: Moon,   // next: Dark Luxury
 } as const
 
 const LABELS = {
-  dark: 'Switch to Frappé mode',
-  light: 'Switch to Mocha mode',
-  catppuccin: 'Switch to dark mode',
+  dark: 'Switch to Latte',
+  latte: 'Switch to Frappé',
+  frappe: 'Switch to Mocha',
+  catppuccin: 'Switch to Dark Luxury',
 } as const
 
 export default function ThemeToggle() {
