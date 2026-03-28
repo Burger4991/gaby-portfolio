@@ -6,6 +6,7 @@ import FullScreenScrollFX from './FullScreenScrollFX'
 import SpotlightCard from './SpotlightCard'
 import CollectionCarousel from './CollectionCarousel'
 import LiquidGlass from './LiquidGlass'
+import GlowingShadow from './GlowingShadow'
 
 /**
  * Collection page using FullScreenScrollFX for section navigation.
@@ -119,6 +120,11 @@ export default function CollectionPage({ category }: { category: PortfolioCatego
           </SpotlightCard>
         </div>
 
+        {/* Glowing divider between text and carousel */}
+        <div style={{ position: 'absolute', left: '40%', top: 0, bottom: 0, zIndex: 2 }}>
+          <GlowingShadow />
+        </div>
+
         {/* 60% — Carousel */}
         <div
           style={{
@@ -140,19 +146,10 @@ export default function CollectionPage({ category }: { category: PortfolioCatego
         sections={sections}
         header={
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem' }}>
-            <Link
-              href="/#portfolio"
-              data-cursor="link"
-              style={{
-                fontFamily: 'Manrope, sans-serif',
-                fontSize: 'var(--text-label-sm)',
-                letterSpacing: 'var(--tracking-wide)',
-                textTransform: 'uppercase',
-                color: 'var(--color-overlay-muted)',
-                textDecoration: 'none',
-              }}
-            >
-              ← Back
+            <Link href="/#portfolio" data-cursor="link" style={{ textDecoration: 'none' }}>
+              <LiquidGlass style={{ color: 'var(--color-overlay-muted)', fontSize: 'var(--text-label-sm)', letterSpacing: 'var(--tracking-wide)' }}>
+                ← Back
+              </LiquidGlass>
             </Link>
             <span style={{
               fontFamily: 'Cormorant Garamond, serif',

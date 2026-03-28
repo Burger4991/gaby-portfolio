@@ -69,16 +69,20 @@ export default function Contact() {
         </div>
         <div className="flex justify-center gap-6 mb-14">
           {[
-            { href: 'https://linkedin.com/in/gabrielagamargo', icon: <Linkedin size={20} />, label: 'LinkedIn' },
-            { href: 'https://instagram.com/gabrielagamargo', icon: <Instagram size={20} />, label: 'Instagram' },
+            { href: 'https://linkedin.com/in/gabrielagamargo', icon: <Linkedin size={18} />, label: 'LinkedIn' },
+            { href: 'https://instagram.com/gabrielagamargo', icon: <Instagram size={18} />, label: 'Instagram' },
           ].map(({ href, icon, label }) => (
-            <a key={label} href={href} target="_blank" rel="noopener noreferrer" aria-label={`Gaby on ${label}`}
-              className="w-11 h-11 flex items-center justify-center transition-colors duration-200 cursor-pointer"
-              style={{ color: 'var(--color-muted)' }}
-              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color = 'var(--color-accent)' }}
-              onMouseLeave={e => { (e.currentTarget as HTMLElement).style.color = 'var(--color-muted)' }}>
+            <LiquidGlass
+              key={label}
+              as="a"
+              href={href}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={`Gaby on ${label}`}
+              style={{ width: '2.5rem', height: '2.5rem', padding: 0, borderRadius: '50%', color: 'var(--color-muted)' }}
+            >
               {icon}
-            </a>
+            </LiquidGlass>
           ))}
         </div>
         <form className="text-left space-y-6" onSubmit={handleSubmit}>

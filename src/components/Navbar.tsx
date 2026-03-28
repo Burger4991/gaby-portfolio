@@ -5,6 +5,7 @@ import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import Link from 'next/link'
 import ThemeToggle from './ThemeToggle'
+import LiquidGlass from './LiquidGlass'
 import { categories } from '@/data/portfolioData'
 
 const links = [
@@ -121,18 +122,11 @@ export default function Navbar() {
                     href={href}
                     data-cursor="link"
                     onClick={() => setOpen(false)}
-                    style={{
-                      fontFamily: 'Manrope, sans-serif',
-                      fontSize: 'var(--text-label-sm)',
-                      letterSpacing: 'var(--tracking-wide)',
-                      textTransform: 'uppercase' as const,
-                      color: 'var(--color-accent)',
-                      textDecoration: 'none',
-                      borderBottom: '1px solid color-mix(in srgb, var(--color-accent) 35%, transparent)',
-                      paddingBottom: '1px',
-                    }}
+                    style={{ textDecoration: 'none' }}
                   >
-                    {label}
+                    <LiquidGlass style={{ color: 'var(--color-accent)', fontSize: 'var(--text-label-sm)', letterSpacing: 'var(--tracking-wide)' }}>
+                      {label}
+                    </LiquidGlass>
                   </Link>
                 ))}
               </motion.div>

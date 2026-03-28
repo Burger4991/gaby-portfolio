@@ -11,6 +11,8 @@ type LiquidGlassProps = React.HTMLAttributes<HTMLElement> & {
   download?: boolean
   type?: string
   disabled?: boolean
+  target?: string
+  rel?: string
 }
 
 /**

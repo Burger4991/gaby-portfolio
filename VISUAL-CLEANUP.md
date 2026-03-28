@@ -1,75 +1,50 @@
 # Visual Cleanup — Gaby Portfolio
 
 **Branch:** `feat/visual-cleanup`
-**Baseline:** `c24c33c` (last approved deployment)
-**Goal:** Clean, consistent visuals + copy aligned with original site
+**Spec:** `DESIGN-SPEC.md`
+**Brainstorm:** `docs/brainstorm/2026-03-28-portfolio-redesign.md`
 
 ---
 
-## Phase 1: Visual Audit & Fix (current)
+## Wave 1: Foundation — DONE
+- [x] 4 themes: Dark Luxury, Latte, Frappé, Mocha
+- [x] LiquidGlass component (frosted blur + glow)
+- [x] SpotlightCard component (pointer-tracking glow)
+- [x] Theme toggle (4-way cycle: Sun → CloudSun → Palette → Moon)
+- [x] Design tokens: overlay colors, type scale, tracking scale
+- [x] Replace 30+ hardcoded colors with tokens
+- [x] Remove dead code (ThreeDCarousel, ThemeContext.jsx)
 
-- [x] Run ui-visual-validator audit on all components
-- [x] Add design tokens: overlay colors, type scale, letter-spacing scale
-- [x] Replace all hardcoded colors with tokens (30+ instances fixed)
-- [x] Consolidate font sizes: 8 label sizes → 4 tokens (`--text-label-xs/sm/md/body`)
-- [x] Consolidate letter-spacing: 13 values → 3 tokens (`--tracking-tight/normal/wide`)
-- [x] Fix light-theme overlay gradients (Portfolio, FullScreenScrollFX)
-- [x] Fix low-contrast text (jump nav, carousel hints used border color for text → muted)
-- [x] Remove dead code (ThreeDCarousel.tsx — unused)
-- [x] Fix hardcoded error color in Contact → `--color-error` token
-- [ ] Run ui-ux-designer review for navigation + layout consistency
-- [ ] Ensure GlowCard, GlowingShadow integrate cleanly with baseline styles
+## Wave 2: Homepage — DONE
+- [x] FullScreenScrollFX as full-page navigator
+- [x] ImageAccordion for portfolio selection
+- [x] Content panels (PullQuote, About, Contact) inside scroll FX
+- [x] LiquidGlass on: Hero CTA, Contact buttons, About skill tags, BackToTop
+- [x] Fix z-index layering (nav > content > bg)
+- [x] Fix text-transform:uppercase leak
+- [x] Remove broken GSAP ScrollTrigger from PullQuote + About
 
-## Phase 2: Feature Integration
+## Wave 3: Collection Pages — PARTIAL
+- [x] FullScreenScrollFX per-section navigation
+- [x] 40/60 SpotlightCard + 3D carousel layout
+- [x] Carousel: scroll/swipe interaction (replaces drag)
+- [x] LiquidGlass stage pills under carousel images
+- [x] Overlay text tokens for readability over dark bg
+- [ ] **Glowing shadow dividers between panels**
+- [ ] **Loop scroll (last panel → first)**
 
-- [ ] Wire GlowCard into CollectionCarousel card faces
-- [ ] Wire GlowingShadow as section dividers on collection pages
-- [ ] Integrate FullScreenScrollFX on homepage (replace accordion)
-- [ ] CollectionScrollFX looping carousel (ON HOLD — decide later)
-- [ ] Validate all features work in both themes
+## Still Missing (from DESIGN-SPEC)
+- [ ] LiquidGlass on: nav menu items (fullscreen overlay)
+- [ ] LiquidGlass on: theme toggle button
+- [ ] LiquidGlass on: social icon buttons (Contact)
+- [ ] LiquidGlass on: collection page back link
+- [ ] Glowing shadow dividers on collection pages
+- [ ] Loop scroll on collection pages
+- [ ] Typography refinements (Cosmic Night inspiration)
+- [ ] GlowCard not yet used (SpotlightCard replaced it for text cards)
 
-## Phase 3: Copy Alignment
-
-- [ ] Audit all copy against gabrielagamargo.com (original site)
-- [ ] Replace any Claude-written descriptions with original copy
-- [ ] Verify resort/bridal descriptions match source
-- [ ] Final copy pass for tone consistency
-
-## Phase 4: Polish & Ship
-
-- [ ] Cross-browser check (Safari, Chrome, Firefox)
-- [ ] Mobile responsive audit
-- [ ] Performance check (no layout shifts, smooth animations)
-- [ ] Final visual review before PR
-
----
-
-## Design Tokens Added (globals.css)
-
-**Overlay tokens** (always dark, even in light theme):
-- `--color-overlay-text` / `--color-overlay-heading` / `--color-overlay-muted` / `--color-overlay-dim`
-- `--color-overlay-gradient` / `--color-overlay-scrim`
-- `--color-error`
-
-**Type scale:**
-- `--text-label-xs` (0.55rem) — hints, counters
-- `--text-label-sm` (0.62rem) — nav links, pills, captions
-- `--text-label` (0.7rem) — eyebrows, section labels
-- `--text-body` (0.875rem) — paragraph body
-
-**Tracking:**
-- `--tracking-tight` (0.1em) — compact labels
-- `--tracking-normal` (0.2em) — standard UI text
-- `--tracking-wide` (0.3em) — section headers, nav
-
-## Kept Features (from drifted branch)
-- GlowCard (pointer-tracking spotlight)
-- GlowingShadow (pulsing glow divider)
-- FullScreenScrollFX (GSAP scroll panels)
-- CollectionScrollFX (looping carousel) — ON HOLD
-
-## Discarded (from drifted branch)
-- Layout experiments (40/60 splits, 2fr/3fr grids)
-- Multiple carousel rewrites
-- Section divider experiments
-- ThreeDCarousel.tsx (dead code, removed)
+## Wave 4: Copy + Polish — NOT STARTED
+- [ ] Copy audit against gabrielagamargo.com
+- [ ] Flag changes for Gaby
+- [ ] Cross-browser / mobile / performance
+- [ ] Final review → PR to main

@@ -3,12 +3,13 @@
 
 import { Moon, Sun, CloudSun, Palette } from 'lucide-react'
 import { useTheme } from './ThemeProvider'
+import LiquidGlass from './LiquidGlass'
 
 const ICONS = {
-  dark: Sun,          // next: Latte (light)
-  latte: CloudSun,    // next: Frappé (mid-dark)
-  frappe: Palette,    // next: Mocha (deep dark)
-  catppuccin: Moon,   // next: Dark Luxury
+  dark: Sun,
+  latte: CloudSun,
+  frappe: Palette,
+  catppuccin: Moon,
 } as const
 
 const LABELS = {
@@ -23,13 +24,19 @@ export default function ThemeToggle() {
   const Icon = ICONS[theme]
 
   return (
-    <button
+    <LiquidGlass
+      as="button"
       onClick={toggle}
       aria-label={LABELS[theme]}
-      className="w-8 h-8 flex items-center justify-center transition-opacity duration-200 hover:opacity-70 cursor-pointer"
-      style={{ color: 'var(--color-muted)' }}
+      style={{
+        width: '2rem',
+        height: '2rem',
+        padding: 0,
+        color: 'var(--color-muted)',
+        borderRadius: '50%',
+      }}
     >
-      <Icon size={16} />
-    </button>
+      <Icon size={14} />
+    </LiquidGlass>
   )
 }
