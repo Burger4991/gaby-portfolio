@@ -38,6 +38,7 @@ export default function FullScreenScrollFX(props: FullScreenScrollFXProps) {
     let ctx: { revert: () => void } | null = null
 
     async function init() {
+      if (!container) return
       const { gsap } = await import('gsap')
       const { ScrollTrigger } = await import('gsap/ScrollTrigger')
       gsap.registerPlugin(ScrollTrigger)
