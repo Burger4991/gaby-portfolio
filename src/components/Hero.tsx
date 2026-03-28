@@ -1,5 +1,6 @@
 'use client'
 import ScrollExpandHero from './ScrollExpandHero'
+import LiquidGlass from './LiquidGlass'
 
 export default function Hero() {
   return (
@@ -27,22 +28,18 @@ export default function Hero() {
           <div><div style={{ fontSize: '1.5rem', color: 'var(--color-text)', fontFamily: 'Cormorant Garamond, serif', fontStyle: 'italic' }}>300K+</div>Units Sold</div>
           <div><div style={{ fontSize: '1.5rem', color: 'var(--color-text)', fontFamily: 'Cormorant Garamond, serif', fontStyle: 'italic' }}>∞</div>Details</div>
         </div>
-        <a
+        <LiquidGlass
+          as="a"
           href="#portfolio"
           style={{
-            display: 'inline-block',
             padding: '0.75rem 2.5rem',
-            border: '1px solid var(--color-accent)',
             color: 'var(--color-accent)',
-            fontFamily: 'Manrope, sans-serif',
             fontSize: 'var(--text-label)',
             letterSpacing: 'var(--tracking-wide)',
-            textTransform: 'uppercase',
-            textDecoration: 'none',
           }}
         >
           View Work
-        </a>
+        </LiquidGlass>
       </div>
     </ScrollExpandHero>
   )

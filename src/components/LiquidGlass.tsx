@@ -7,9 +7,8 @@ type LiquidGlassProps = {
   as?: 'button' | 'span' | 'a' | 'div'
   className?: string
   style?: React.CSSProperties
-  onClick?: (e: React.MouseEvent) => void
-  href?: string
-} & React.HTMLAttributes<HTMLElement>
+  [key: string]: unknown
+}
 
 /**
  * Liquid glass effect — frosted translucent element with blur backdrop

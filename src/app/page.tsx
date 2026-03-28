@@ -2,10 +2,7 @@ import Preloader from '@/components/Preloader'
 import Navbar from '@/components/Navbar'
 import Hero from '@/components/Hero'
 import Marquee from '@/components/Marquee'
-import Portfolio from '@/components/Portfolio'
-import PullQuote from '@/components/PullQuote'
-import About from '@/components/About'
-import Contact from '@/components/Contact'
+import HomeSnap from '@/components/HomeSnap'
 import BackToTop from '@/components/BackToTop'
 
 export default function Home() {
@@ -16,10 +13,7 @@ export default function Home() {
       <main>
         <Hero />
         <Marquee />
-        <Portfolio />
-        <PullQuote />
-        <About />
-        <Contact />
+        <HomeSnap />
       </main>
       <BackToTop />
     </>

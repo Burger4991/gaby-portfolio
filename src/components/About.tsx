@@ -3,6 +3,7 @@
 import { useEffect, useRef } from 'react'
 import Image from 'next/image'
 import { splitWords } from '@/lib/splitWords'
+import LiquidGlass from './LiquidGlass'
 
 const BIO_INTRO = "I'm Gabriela (Gaby) Gamargo, a fashion designer with 5 years of experience guiding women's collections from concept through creation — and 10+ years working in the apparel industry. Since high school, when I first took styling seriously and began learning sewing, fashion design has been my way of blending creativity with structure."
 
@@ -181,10 +182,9 @@ export default function About() {
           <p className="leading-relaxed text-base md:text-lg mb-8" style={{ color: 'var(--color-muted)' }}>{BIO_BODY}</p>
           <div className="flex flex-wrap gap-2">
             {SKILLS.map(skill => (
-              <span key={skill} className="px-3 py-1 text-xs tracking-[0.12em] uppercase"
-                style={{ border: '1px solid var(--color-border)', color: 'var(--color-muted)' }}>
+              <LiquidGlass key={skill} style={{ color: 'var(--color-muted)', padding: '0.25rem 0.65rem', fontSize: '0.7rem' }}>
                 {skill}
-              </span>
+              </LiquidGlass>
             ))}
           </div>
         </div>

@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { Linkedin, Instagram } from 'lucide-react'
 import { sendEmail } from '@/app/actions/sendEmail'
+import LiquidGlass from './LiquidGlass'
 
 type Status = 'idle' | 'loading' | 'success' | 'error'
 
@@ -50,16 +51,21 @@ export default function Contact() {
           Open to collaborations, commissions, and new opportunities.
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center mb-10">
-          <a href="mailto:hello@gabrielagamargo.com"
-            className="px-8 py-3.5 text-xs font-semibold tracking-[0.2em] uppercase transition-colors duration-300 cursor-pointer"
-            style={{ backgroundColor: 'var(--color-accent)', color: 'var(--color-bg)' }}>
+          <LiquidGlass
+            as="a"
+            href="mailto:hello@gabrielagamargo.com"
+            style={{ padding: '0.75rem 2rem', color: 'var(--color-accent)', fontWeight: 600 }}
+          >
             Say Hello
-          </a>
-          <a href="/resume.pdf" download
-            className="px-8 py-3.5 text-xs font-semibold tracking-[0.2em] uppercase transition-colors duration-300 cursor-pointer"
-            style={{ border: '1px solid var(--color-accent)', color: 'var(--color-accent)' }}>
+          </LiquidGlass>
+          <LiquidGlass
+            as="a"
+            href="/resume.pdf"
+            download
+            style={{ padding: '0.75rem 2rem', color: 'var(--color-accent)', fontWeight: 600 }}
+          >
             Download Resume
-          </a>
+          </LiquidGlass>
         </div>
         <div className="flex justify-center gap-6 mb-14">
           {[
@@ -128,13 +134,20 @@ export default function Contact() {
               {errorMessage}
             </p>
           )}
-          <button
+          <LiquidGlass
+            as="button"
             type="submit"
             disabled={status === 'loading'}
-            className="w-full py-4 text-xs font-semibold tracking-[0.25em] uppercase transition-colors duration-300 cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
-            style={{ backgroundColor: 'var(--color-accent)', color: 'var(--color-bg)' }}>
+            style={{
+              width: '100%',
+              padding: '1rem 2rem',
+              color: 'var(--color-accent)',
+              fontWeight: 600,
+              opacity: status === 'loading' ? 0.6 : 1,
+            }}
+          >
             {buttonLabel}
-          </button>
+          </LiquidGlass>
         </form>
         <p className="mt-16 text-xs tracking-wide" style={{ color: 'var(--color-muted)', opacity: 0.6 }}>
           © {new Date().getFullYear()} Gabriela Gamargo. All rights reserved.

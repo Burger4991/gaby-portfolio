@@ -17,8 +17,16 @@ export default function BackToTop() {
         <motion.button
           onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
           aria-label="Back to top"
-          className="fixed bottom-8 right-8 z-40 w-10 h-10 flex items-center justify-center cursor-pointer"
-          style={{ backgroundColor: 'var(--color-accent)', color: 'var(--color-bg)' }}
+          className="fixed bottom-8 right-8 z-40 w-11 h-11 flex items-center justify-center cursor-pointer"
+          style={{
+            borderRadius: '8px',
+            border: '1px solid color-mix(in srgb, var(--color-accent) 25%, transparent)',
+            background: 'color-mix(in srgb, var(--color-surface) 60%, transparent)',
+            backdropFilter: 'blur(12px) saturate(1.4)',
+            WebkitBackdropFilter: 'blur(12px) saturate(1.4)',
+            color: 'var(--color-accent)',
+            boxShadow: 'inset 0 1px 0 0 color-mix(in srgb, white 8%, transparent), 0 0 12px 0 color-mix(in srgb, var(--color-accent) 10%, transparent)',
+          }}
           initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: 12 }} transition={{ duration: 0.2 }}
         >
