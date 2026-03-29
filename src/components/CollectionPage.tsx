@@ -12,9 +12,14 @@ import LiquidGlass from './LiquidGlass'
  * Each section is a full-screen panel with 40% text card / 60% carousel.
  */
 export default function CollectionPage({ category }: { category: PortfolioCategory }) {
-  const sections = category.sections.map((section, i) => ({
-    id: section.id,
-    background: section.images[0]?.src ?? '',
+  const GRADIENT_ANGLES = [135, 160, 200, 170, 145, 190]
+
+  const sections = category.sections.map((section, i) => {
+    const angle = GRADIENT_ANGLES[i % GRADIENT_ANGLES.length]
+    return {
+      id: section.id,
+      background: '',
+      gradient: `linear-gradient(${angle}deg, var(--color-bg) 0%, var(--color-surface) 45%, var(--color-card-bg) 100%)`,
     leftLabel: (
       <span>
         {String(i + 1).padStart(2, '0')}
@@ -52,6 +57,11 @@ export default function CollectionPage({ category }: { category: PortfolioCatego
               padding: '2.5rem',
               maxWidth: '420px',
               width: '100%',
+              height: '380px',
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'center',
+              overflow: 'hidden',
             }}
           >
             <p
@@ -126,13 +136,14 @@ export default function CollectionPage({ category }: { category: PortfolioCatego
             alignItems: 'center',
             justifyContent: 'center',
             padding: '4rem 3rem 4rem 2rem',
+            height: '100%',
           }}
         >
           <CollectionCarousel images={section.images} sectionTitle={section.title} />
         </div>
       </div>
     ),
-  }))
+  }})
 
   return (
     <>
