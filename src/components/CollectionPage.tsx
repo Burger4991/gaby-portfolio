@@ -22,8 +22,11 @@ export default function CollectionPage({ category }: { category: PortfolioCatego
       gradient: `linear-gradient(${angle}deg, var(--color-bg) 0%, var(--color-surface) 45%, var(--color-card-bg) 100%)`,
     leftLabel: (
       <LiquidGlass style={{
-        fontSize: 'var(--text-label-sm)',
+        fontSize: 'var(--text-label-xs)',
         letterSpacing: 'var(--tracking-normal)',
+        maxWidth: '160px',
+        overflow: 'hidden',
+        textOverflow: 'ellipsis',
         whiteSpace: 'nowrap',
       }}>
         {section.title}
@@ -42,7 +45,10 @@ export default function CollectionPage({ category }: { category: PortfolioCatego
       <div
         style={{
           position: 'absolute',
-          inset: 0,
+          top: 0,
+          bottom: 0,
+          left: '20%',
+          right: '14%',
           zIndex: 10,
           display: 'grid',
           gridTemplateColumns: '40% 60%',
@@ -56,7 +62,7 @@ export default function CollectionPage({ category }: { category: PortfolioCatego
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            padding: '4rem 2rem 4rem 3rem',
+            padding: '2rem 1.5rem 2rem 2rem',
           }}
         >
           <SpotlightCard
@@ -64,11 +70,10 @@ export default function CollectionPage({ category }: { category: PortfolioCatego
               padding: '2.5rem',
               maxWidth: '420px',
               width: '100%',
-              height: '380px',
+              minHeight: '320px',
               display: 'flex',
               flexDirection: 'column',
               justifyContent: 'center',
-              overflow: 'hidden',
               backdropFilter: 'blur(12px) saturate(1.4)',
               WebkitBackdropFilter: 'blur(12px) saturate(1.4)',
               border: '1px solid color-mix(in srgb, var(--color-accent) 25%, transparent)',
@@ -187,6 +192,8 @@ export default function CollectionPage({ category }: { category: PortfolioCatego
       <style>{`
         @media (max-width: 768px) {
           .collection-split {
+            left: 0 !important;
+            right: 0 !important;
             grid-template-columns: 1fr !important;
             grid-template-rows: auto 1fr !important;
             overflow: auto !important;
