@@ -48,16 +48,22 @@ Source: `docs/brainstorm/2026-03-28-collection-page-redesign.md`
 - [x] Carousel: horizontal scroll only (vertical passes through to section nav)
 - [x] Image lightbox modal (SpotlightCard-styled cards, arrow nav, click-outside dismiss)
 
-## Wave 4: Polish — DONE
-- [x] Loop scroll on all pages (both directions)
-- [x] Dead file cleanup (Portfolio, SplitScrollCollection, Lightbox, splitWords, GlowingShadow)
+## Wave 4: Polish — IN PROGRESS
+- [x] Loop scroll (removed with FullScreenScrollFX — no longer applicable)
+- [x] Dead file cleanup (Portfolio, SplitScrollCollection, Lightbox, splitWords, GlowingShadow, FullScreenScrollFX)
 - [x] DESIGN-SPEC.md updated (4 themes, Wave 3.5 decisions)
-- [x] Copy audit documented (docs/copy-audit.md — all Claude-written, flagged for Gaby)
-- [x] Mobile layout fixed (stacked card+carousel, hidden nav, overflow fix)
-- [x] Code review fixes (active glow reset, body scroll lock, single-image lightbox)
-- [~] Typography refinements — deferred (current typography is fine)
-- [x] Final review → PR to main
+- [x] Copy audit documented (docs/copy-audit.md — Claude-enhanced copy OK)
+- [x] Removed FullScreenScrollFX entirely — normal scroll site-wide
+- [x] Desktop collection pages working (40/60 split, 3D carousel, lightbox)
+- [x] Dedicated mobile layout (MobileImageStrip component)
+- [ ] **Mobile swipe not working** — touch-action:pan-x insufficient
+- [ ] **Mobile accordion UX** — looks like plain cards, needs clearer interaction
+- [ ] Visual polish pass (gradients, spacing, typography)
+- [~] Typography refinements — deferred
+- [ ] Final review → PR to main
 
 ## Notes
-- Dead files removed: Portfolio.tsx, SplitScrollCollection.tsx, Lightbox.tsx, splitWords.ts, GlowingShadow.tsx
-- Copy audit at docs/copy-audit.md — Gaby should verify factual claims before launch
+- FullScreenScrollFX.tsx DELETED — don't try to import it
+- Desktop is in good shape, mobile needs work
+- PR #3 open: https://github.com/Burger4991/gaby-portfolio/pull/3
+- Use feature-dev workflow for all remaining features
