@@ -164,14 +164,21 @@ export default function CollectionPage({ category }: { category: PortfolioCatego
           .collection-section {
             grid-template-columns: 1fr !important;
             min-height: auto !important;
-            padding: 2rem 1rem !important;
-            gap: 1.5rem;
+            padding: 1.5rem 0.75rem !important;
+            gap: 1rem;
           }
           .collection-section > div {
-            padding: 1rem !important;
+            padding: 0.75rem !important;
+            min-width: 0 !important;
           }
           .collection-section > div:first-child > div {
             max-width: 100% !important;
+            width: 100% !important;
+            padding: 1.25rem !important;
+            box-sizing: border-box !important;
+          }
+          .collection-section > div:last-child {
+            overflow: hidden;
           }
         }
       `}</style>
