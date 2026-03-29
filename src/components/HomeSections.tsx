@@ -46,7 +46,7 @@ export default function HomeSections() {
             Collections
           </h2>
         </div>
-        <div style={{ flex: 1, padding: '0.75rem 1.5rem 1.5rem', minHeight: '60vh' }}>
+        <div style={{ padding: '0.75rem 1.5rem 1.5rem', height: '70vh' }}>
           <ImageAccordion />
         </div>
       </section>
