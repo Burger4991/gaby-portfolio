@@ -459,10 +459,6 @@ const FullScreenScrollFX = forwardRef<HTMLDivElement, FullScreenFXProps>(
           .fx-left-item.active::before, .fx-right-item.active::after { content: ''; position: absolute; top: 50%; transform: translateY(-50%); width: 5px; height: 5px; background: var(--color-accent); border-radius: 50%; }
           .fx-left-item.active::before { left: 0; }
           .fx-right-item.active::after { right: 0; }
-          .fx-left-item.active > span, .fx-right-item.active > span {
-            border-color: color-mix(in srgb, var(--color-accent) 50%, transparent) !important;
-            box-shadow: inset 0 1px 0 0 color-mix(in srgb, white 12%, transparent), 0 0 20px 0 color-mix(in srgb, var(--color-accent) 25%, transparent) !important;
-          }
           .fx-center { display: grid; place-items: center; text-align: center; height: 60vh; overflow: hidden; }
           .fx-featured { position: absolute; opacity: 0; visibility: hidden; }
           .fx-featured.active { opacity: 1; visibility: visible; }

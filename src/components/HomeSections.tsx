@@ -5,8 +5,6 @@ import ImageAccordion from './ImageAccordion'
 import PullQuote from './PullQuote'
 import About from './About'
 import Contact from './Contact'
-import LiquidGlass from './LiquidGlass'
-
 const GRADIENT_ANGLES = [135, 170, 200, 155]
 
 /**
@@ -20,9 +18,9 @@ export default function HomeSections() {
       id: 'portfolio',
       background: '',
       gradient: `linear-gradient(${GRADIENT_ANGLES[0]}deg, var(--color-bg) 0%, var(--color-surface) 45%, var(--color-card-bg) 100%)`,
-      leftLabel: <LiquidGlass style={{ fontSize: 'var(--text-label-xs)', letterSpacing: 'var(--tracking-normal)', whiteSpace: 'nowrap' }}>Selected Work</LiquidGlass>,
+      leftLabel: <span style={{ fontSize: 'var(--text-label-xs)', letterSpacing: 'var(--tracking-normal)', textTransform: 'uppercase' as const, whiteSpace: 'nowrap' }}>Selected Work</span>,
       title: 'Selected Work',
-      rightLabel: <LiquidGlass style={{ fontSize: 'var(--text-label-xs)', letterSpacing: 'var(--tracking-normal)' }}>Collections</LiquidGlass>,
+      rightLabel: <span style={{ fontSize: 'var(--text-label-xs)', letterSpacing: 'var(--tracking-normal)', textTransform: 'uppercase' as const }}>Collections</span>,
       content: (
         <div style={{ position: 'absolute', inset: 0, zIndex: 10, display: 'flex', flexDirection: 'column' }}>
           <div style={{ padding: '2.5rem 2rem 0.75rem', textAlign: 'center' }}>
@@ -57,9 +55,9 @@ export default function HomeSections() {
       id: 'pullquote',
       background: '',
       gradient: `linear-gradient(${GRADIENT_ANGLES[1]}deg, var(--color-bg) 0%, var(--color-surface) 45%, var(--color-card-bg) 100%)`,
-      leftLabel: <LiquidGlass style={{ fontSize: 'var(--text-label-xs)', letterSpacing: 'var(--tracking-normal)', whiteSpace: 'nowrap' }}>Philosophy</LiquidGlass>,
+      leftLabel: <span style={{ fontSize: 'var(--text-label-xs)', letterSpacing: 'var(--tracking-normal)', textTransform: 'uppercase' as const, whiteSpace: 'nowrap' }}>Philosophy</span>,
       title: 'Philosophy',
-      rightLabel: <LiquidGlass style={{ fontSize: 'var(--text-label-xs)', letterSpacing: 'var(--tracking-normal)' }}>Words</LiquidGlass>,
+      rightLabel: <span style={{ fontSize: 'var(--text-label-xs)', letterSpacing: 'var(--tracking-normal)', textTransform: 'uppercase' as const }}>Words</span>,
       content: (
         <div style={{ position: 'absolute', inset: 0, zIndex: 10, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
           <PullQuote />
@@ -70,9 +68,9 @@ export default function HomeSections() {
       id: 'about',
       background: '',
       gradient: `linear-gradient(${GRADIENT_ANGLES[2]}deg, var(--color-bg) 0%, var(--color-surface) 45%, var(--color-card-bg) 100%)`,
-      leftLabel: <LiquidGlass style={{ fontSize: 'var(--text-label-xs)', letterSpacing: 'var(--tracking-normal)', whiteSpace: 'nowrap' }}>About Gaby</LiquidGlass>,
+      leftLabel: <span style={{ fontSize: 'var(--text-label-xs)', letterSpacing: 'var(--tracking-normal)', textTransform: 'uppercase' as const, whiteSpace: 'nowrap' }}>About Gaby</span>,
       title: 'About Gaby',
-      rightLabel: <LiquidGlass style={{ fontSize: 'var(--text-label-xs)', letterSpacing: 'var(--tracking-normal)' }}>Bio</LiquidGlass>,
+      rightLabel: <span style={{ fontSize: 'var(--text-label-xs)', letterSpacing: 'var(--tracking-normal)', textTransform: 'uppercase' as const }}>Bio</span>,
       content: (
         <div
           style={{ position: 'absolute', inset: 0, zIndex: 10, overflow: 'auto' }}
@@ -86,9 +84,9 @@ export default function HomeSections() {
       id: 'contact',
       background: '',
       gradient: `linear-gradient(${GRADIENT_ANGLES[3]}deg, var(--color-bg) 0%, var(--color-surface) 45%, var(--color-card-bg) 100%)`,
-      leftLabel: <LiquidGlass style={{ fontSize: 'var(--text-label-xs)', letterSpacing: 'var(--tracking-normal)', whiteSpace: 'nowrap' }}>Get in Touch</LiquidGlass>,
+      leftLabel: <span style={{ fontSize: 'var(--text-label-xs)', letterSpacing: 'var(--tracking-normal)', textTransform: 'uppercase' as const, whiteSpace: 'nowrap' }}>Get in Touch</span>,
       title: 'Get in Touch',
-      rightLabel: <LiquidGlass style={{ fontSize: 'var(--text-label-xs)', letterSpacing: 'var(--tracking-normal)' }}>Contact</LiquidGlass>,
+      rightLabel: <span style={{ fontSize: 'var(--text-label-xs)', letterSpacing: 'var(--tracking-normal)', textTransform: 'uppercase' as const }}>Contact</span>,
       content: (
         <div
           style={{ position: 'absolute', inset: 0, zIndex: 10, overflow: 'auto' }}

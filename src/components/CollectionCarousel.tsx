@@ -9,7 +9,6 @@ import ImageLightbox from './ImageLightbox'
 
 const CARD_HEIGHT = 320
 const FACE_WIDTH = 220
-const STANDARD_FACE_COUNT = 5  // Fixed cylinder size regardless of image count
 
 type CollectionCarouselProps = {
   images: SectionImage[]
@@ -23,8 +22,8 @@ function Carousel({ images, sectionTitle, onActiveIndexChange, onImageClick }: {
   onImageClick: (i: number) => void
 }) {
   const faceCount = images.length
-  const cylinderWidth = STANDARD_FACE_COUNT * FACE_WIDTH
-  const faceWidth = cylinderWidth / faceCount
+  const cylinderWidth = faceCount * FACE_WIDTH
+  const faceWidth = FACE_WIDTH
   const radius = cylinderWidth / (2 * Math.PI)
   const rotation = useMotionValue(0)
   const transform = useTransform(rotation, (v) => `rotate3d(0, 1, 0, ${v}deg)`)
