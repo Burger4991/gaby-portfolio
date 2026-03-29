@@ -50,9 +50,7 @@ function Carousel({ images, sectionTitle, onActiveIndexChange, onImageClick }: {
 
     const handleWheel = (e: WheelEvent) => {
       e.preventDefault()
-      e.stopPropagation()
       inertiaAnimation.current?.stop()
-      // Use whichever axis has more movement
       const delta = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY
       rotation.set(rotation.get() - delta * 0.15)
     }
