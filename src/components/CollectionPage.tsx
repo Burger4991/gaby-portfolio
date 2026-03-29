@@ -6,7 +6,6 @@ import FullScreenScrollFX from './FullScreenScrollFX'
 import SpotlightCard from './SpotlightCard'
 import CollectionCarousel from './CollectionCarousel'
 import LiquidGlass from './LiquidGlass'
-import GlowingShadow from './GlowingShadow'
 
 /**
  * Collection page using FullScreenScrollFX for section navigation.
@@ -120,12 +119,7 @@ export default function CollectionPage({ category }: { category: PortfolioCatego
           </SpotlightCard>
         </div>
 
-        {/* Glowing divider between text and carousel */}
-        <div style={{ position: 'absolute', left: '40%', top: 0, bottom: 0, zIndex: 2 }}>
-          <GlowingShadow />
-        </div>
-
-        {/* 60% — Carousel */}
+{/* 60% — Carousel */}
         <div
           style={{
             display: 'flex',
