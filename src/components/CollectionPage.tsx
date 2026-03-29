@@ -31,7 +31,7 @@ function MobileImageStrip({ section }: { section: CollectionSection }) {
             onClick={() => setLightboxIndex(i)}
             style={{
               flexShrink: 0,
-              width: '85vw',
+              width: '90vw',
               aspectRatio: '3/4',
               borderRadius: '10px',
               overflow: 'hidden',
@@ -46,7 +46,7 @@ function MobileImageStrip({ section }: { section: CollectionSection }) {
               alt={img.caption ?? section.title}
               fill
               style={{ objectFit: 'cover' }}
-              sizes="85vw"
+              sizes="90vw"
             />
             {img.caption && (
               <div style={{
@@ -241,7 +241,7 @@ export default function CollectionPage({ category }: { category: PortfolioCatego
             </div>
 
             {/* Mobile: Image strip */}
-            <div className="collection-mobile-only" style={{ padding: '0 0.75rem' }}>
+            <div className="collection-mobile-only" style={{ width: '100%', overflow: 'hidden' }}>
               <MobileImageStrip section={section} />
             </div>
           </section>
