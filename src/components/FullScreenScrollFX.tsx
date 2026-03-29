@@ -197,7 +197,7 @@ const FullScreenScrollFX = forwardRef<HTMLDivElement, FullScreenFXProps>(
             goTo(total - 1, false)
           }
         }
-        fixed.addEventListener('wheel', handleEdgeWheel, { passive: false })
+        if (fixed) fixed.addEventListener('wheel', handleEdgeWheel, { passive: false })
 
         const ro = new ResizeObserver(() => {
           computePositions()
@@ -209,7 +209,7 @@ const FullScreenScrollFX = forwardRef<HTMLDivElement, FullScreenFXProps>(
         cleanup = () => {
           ro.disconnect()
           st.kill()
-          fixed.removeEventListener('wheel', handleEdgeWheel)
+          if (fixed) fixed.removeEventListener('wheel', handleEdgeWheel)
         }
       }
 
@@ -474,8 +474,9 @@ const FullScreenScrollFX = forwardRef<HTMLDivElement, FullScreenFXProps>(
           @media (max-width: 900px) {
             .fx-content { grid-template-columns: 1fr; row-gap: 3vh; place-items: center; }
             .fx-left, .fx-right, .fx-center { height: auto; }
-            .fx-left, .fx-right { justify-items: center; }
+            .fx-left, .fx-right { justify-items: center; display: none; }
             .fx-track { transform: none !important; }
+            .fx-header { padding-top: 3vh; font-size: clamp(1.2rem, 5vw, 3rem); }
           }
         `}</style>
       </div>

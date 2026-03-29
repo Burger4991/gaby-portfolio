@@ -190,13 +190,34 @@ export default function CollectionPage({ category }: { category: PortfolioCatego
       />
 
       <style>{`
-        @media (max-width: 768px) {
+        @media (max-width: 900px) {
           .collection-split {
             left: 0 !important;
             right: 0 !important;
             grid-template-columns: 1fr !important;
-            grid-template-rows: auto 1fr !important;
-            overflow: auto !important;
+            grid-template-rows: auto auto !important;
+            overflow-x: hidden !important;
+            overflow-y: auto !important;
+            padding: 0.75rem !important;
+            gap: 1rem;
+          }
+          .collection-split > div {
+            padding: 0.75rem !important;
+            max-width: 100% !important;
+            min-width: 0 !important;
+            width: 100% !important;
+            box-sizing: border-box !important;
+          }
+          .collection-split > div:first-child > div {
+            max-width: 100% !important;
+            width: 100% !important;
+            height: auto !important;
+            min-height: auto !important;
+            padding: 1.25rem !important;
+          }
+          .collection-split > div:last-child {
+            justify-content: center !important;
+            align-items: flex-start !important;
           }
         }
       `}</style>
