@@ -69,6 +69,14 @@ export default function CollectionPage({ category }: { category: PortfolioCatego
               flexDirection: 'column',
               justifyContent: 'center',
               overflow: 'hidden',
+              backdropFilter: 'blur(12px) saturate(1.4)',
+              WebkitBackdropFilter: 'blur(12px) saturate(1.4)',
+              border: '1px solid color-mix(in srgb, var(--color-accent) 25%, transparent)',
+              boxShadow: `
+                inset 0 1px 0 0 color-mix(in srgb, white 8%, transparent),
+                0 0 12px 0 color-mix(in srgb, var(--color-accent) 10%, transparent)
+              `,
+              background: 'color-mix(in srgb, var(--color-card-bg) 70%, transparent)',
             }}
           >
             <p
