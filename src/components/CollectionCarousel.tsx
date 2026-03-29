@@ -5,6 +5,7 @@ import { animate, motion, useMotionValue, useTransform } from 'framer-motion'
 import Image from 'next/image'
 import type { SectionImage } from '@/data/portfolioData'
 import LiquidGlass from './LiquidGlass'
+import ImageLightbox from './ImageLightbox'
 
 const CARD_HEIGHT = 320
 const FACE_WIDTH = 220
@@ -14,10 +15,11 @@ type CollectionCarouselProps = {
   sectionTitle: string
 }
 
-function Carousel({ images, sectionTitle, onActiveIndexChange }: {
+function Carousel({ images, sectionTitle, onActiveIndexChange, onImageClick }: {
   images: SectionImage[]
   sectionTitle: string
   onActiveIndexChange: (i: number) => void
+  onImageClick: (i: number) => void
 }) {
   const faceCount = images.length
   const cylinderWidth = faceCount * FACE_WIDTH
@@ -132,12 +134,14 @@ function Carousel({ images, sectionTitle, onActiveIndexChange }: {
         {images.map((img, i) => (
           <div
             key={i}
+            onClick={() => onImageClick(i)}
             style={{
               position: 'absolute',
               width: faceWidth,
               height: CARD_HEIGHT,
               transform: `rotateY(${i * (360 / faceCount)}deg) translateZ(${radius}px)`,
               padding: '0 6px',
+              cursor: 'pointer',
             }}
           >
             <div
@@ -166,6 +170,7 @@ function Carousel({ images, sectionTitle, onActiveIndexChange }: {
 
 export default function CollectionCarousel({ images, sectionTitle }: CollectionCarouselProps) {
   const [activeIndex, setActiveIndex] = useState(0)
+  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null)
   if (images.length === 0) return null
 
   if (images.length === 1) {
@@ -193,6 +198,7 @@ export default function CollectionCarousel({ images, sectionTitle }: CollectionC
         images={images}
         sectionTitle={sectionTitle}
         onActiveIndexChange={setActiveIndex}
+        onImageClick={(i: number) => setLightboxIndex(i)}
       />
       {activeImage && (
         <div
@@ -232,6 +238,13 @@ export default function CollectionCarousel({ images, sectionTitle }: CollectionC
       >
         swipe to rotate
       </div>
+      {lightboxIndex !== null && (
+        <ImageLightbox
+          images={images}
+          initialIndex={lightboxIndex}
+          onClose={() => setLightboxIndex(null)}
+        />
+      )}
     </div>
   )
 }
