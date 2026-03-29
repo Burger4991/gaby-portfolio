@@ -1,10 +1,92 @@
 'use client'
 
+import { useState } from 'react'
 import Link from 'next/link'
-import type { PortfolioCategory } from '@/data/portfolioData'
+import Image from 'next/image'
+import type { PortfolioCategory, CollectionSection } from '@/data/portfolioData'
 import SpotlightCard from './SpotlightCard'
 import CollectionCarousel from './CollectionCarousel'
 import LiquidGlass from './LiquidGlass'
+import ImageLightbox from './ImageLightbox'
+
+/** Mobile image strip — horizontal scroll, tap to enlarge */
+function MobileImageStrip({ section }: { section: CollectionSection }) {
+  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null)
+  return (
+    <>
+      <div style={{
+        display: 'flex',
+        gap: '0.5rem',
+        overflowX: 'auto',
+        padding: '0 0 0.75rem',
+        WebkitOverflowScrolling: 'touch',
+        scrollSnapType: 'x mandatory',
+      }}>
+        {section.images.map((img, i) => (
+          <div
+            key={i}
+            onClick={() => setLightboxIndex(i)}
+            style={{
+              flexShrink: 0,
+              width: '75vw',
+              maxWidth: '300px',
+              aspectRatio: '4/5',
+              borderRadius: '8px',
+              overflow: 'hidden',
+              position: 'relative',
+              cursor: 'pointer',
+              border: '1px solid var(--color-border)',
+              scrollSnapAlign: 'center',
+            }}
+          >
+            <Image
+              src={img.src}
+              alt={img.caption ?? section.title}
+              fill
+              style={{ objectFit: 'cover' }}
+              sizes="75vw"
+            />
+            {img.caption && (
+              <div style={{
+                position: 'absolute',
+                bottom: 0,
+                left: 0,
+                right: 0,
+                padding: '2rem 0.75rem 0.5rem',
+                background: 'linear-gradient(to top, rgba(0,0,0,0.6) 0%, transparent 100%)',
+                fontFamily: 'Manrope, sans-serif',
+                fontSize: 'var(--text-label-xs)',
+                color: 'rgba(255,255,255,0.85)',
+                textTransform: 'uppercase',
+                letterSpacing: 'var(--tracking-tight)',
+              }}>
+                {img.caption}
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
+      <p style={{
+        textAlign: 'center',
+        fontFamily: 'Manrope, sans-serif',
+        fontSize: 'var(--text-label-xs)',
+        color: 'var(--color-muted)',
+        textTransform: 'uppercase',
+        letterSpacing: 'var(--tracking-normal)',
+        margin: '0.25rem 0 0',
+      }}>
+        swipe · tap to enlarge
+      </p>
+      {lightboxIndex !== null && (
+        <ImageLightbox
+          images={section.images}
+          initialIndex={lightboxIndex}
+          onClose={() => setLightboxIndex(null)}
+        />
+      )}
+    </>
+  )
+}
 
 const GRADIENT_ANGLES = [135, 160, 200, 170, 145, 190]
 
@@ -145,8 +227,8 @@ export default function CollectionPage({ category }: { category: PortfolioCatego
               </SpotlightCard>
             </div>
 
-            {/* Carousel */}
-            <div style={{
+            {/* Desktop: 3D Carousel */}
+            <div className="collection-desktop-only" style={{
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
@@ -154,31 +236,38 @@ export default function CollectionPage({ category }: { category: PortfolioCatego
             }}>
               <CollectionCarousel images={section.images} sectionTitle={section.title} />
             </div>
+
+            {/* Mobile: Image strip */}
+            <div className="collection-mobile-only" style={{ padding: '0 0.75rem' }}>
+              <MobileImageStrip section={section} />
+            </div>
           </section>
         )
       })}
 
-      {/* Mobile responsive */}
+      {/* Responsive: show/hide desktop carousel vs mobile strip */}
       <style>{`
+        .collection-mobile-only { display: none; }
+        .collection-desktop-only { display: flex; }
+
         @media (max-width: 768px) {
+          .collection-mobile-only { display: block !important; }
+          .collection-desktop-only { display: none !important; }
           .collection-section {
-            grid-template-columns: 1fr !important;
+            display: flex !important;
+            flex-direction: column !important;
             min-height: auto !important;
-            padding: 1.5rem 0.75rem !important;
+            padding: 1.5rem 0 !important;
             gap: 1rem;
           }
-          .collection-section > div {
-            padding: 0.75rem !important;
-            min-width: 0 !important;
+          .collection-section > div:first-child {
+            padding: 0 1rem !important;
           }
           .collection-section > div:first-child > div {
             max-width: 100% !important;
             width: 100% !important;
             padding: 1.25rem !important;
             box-sizing: border-box !important;
-          }
-          .collection-section > div:last-child {
-            overflow: hidden;
           }
         }
       `}</style>
