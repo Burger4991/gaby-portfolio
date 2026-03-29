@@ -5,6 +5,9 @@ import ImageAccordion from './ImageAccordion'
 import PullQuote from './PullQuote'
 import About from './About'
 import Contact from './Contact'
+import LiquidGlass from './LiquidGlass'
+
+const GRADIENT_ANGLES = [135, 170, 200, 155]
 
 /**
  * FullScreenScrollFX wraps the entire homepage below the hero.
@@ -15,10 +18,11 @@ export default function HomeSections() {
   const sections = [
     {
       id: 'portfolio',
-      background: '/assets/resort/stephanie-gottlieb/969c394b624e05384f21c85fb925ab57.png',
-      leftLabel: <span>01</span>,
+      background: '',
+      gradient: `linear-gradient(${GRADIENT_ANGLES[0]}deg, var(--color-bg) 0%, var(--color-surface) 45%, var(--color-card-bg) 100%)`,
+      leftLabel: <LiquidGlass style={{ fontSize: 'var(--text-label-xs)', letterSpacing: 'var(--tracking-normal)', whiteSpace: 'nowrap' }}>Selected Work</LiquidGlass>,
       title: 'Selected Work',
-      rightLabel: <span style={{ fontSize: 'var(--text-label-xs)', letterSpacing: 'var(--tracking-normal)' }}>Collections</span>,
+      rightLabel: <LiquidGlass style={{ fontSize: 'var(--text-label-xs)', letterSpacing: 'var(--tracking-normal)' }}>Collections</LiquidGlass>,
       content: (
         <div style={{ position: 'absolute', inset: 0, zIndex: 10, display: 'flex', flexDirection: 'column' }}>
           <div style={{ padding: '2.5rem 2rem 0.75rem', textAlign: 'center' }}>
@@ -51,10 +55,11 @@ export default function HomeSections() {
     },
     {
       id: 'pullquote',
-      background: '/assets/cutsew/vogue-mexico/068e4e0d4268c7a00ec3f0c3acf58faa.jpg',
-      leftLabel: <span>02</span>,
+      background: '',
+      gradient: `linear-gradient(${GRADIENT_ANGLES[1]}deg, var(--color-bg) 0%, var(--color-surface) 45%, var(--color-card-bg) 100%)`,
+      leftLabel: <LiquidGlass style={{ fontSize: 'var(--text-label-xs)', letterSpacing: 'var(--tracking-normal)', whiteSpace: 'nowrap' }}>Philosophy</LiquidGlass>,
       title: 'Philosophy',
-      rightLabel: <span style={{ fontSize: 'var(--text-label-xs)', letterSpacing: 'var(--tracking-normal)' }}>Words</span>,
+      rightLabel: <LiquidGlass style={{ fontSize: 'var(--text-label-xs)', letterSpacing: 'var(--tracking-normal)' }}>Words</LiquidGlass>,
       content: (
         <div style={{ position: 'absolute', inset: 0, zIndex: 10, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
           <PullQuote />
@@ -63,10 +68,11 @@ export default function HomeSections() {
     },
     {
       id: 'about',
-      background: '/assets/about/e84a9c6fe50fb3b0cc4b4bd758826a65.jpg',
-      leftLabel: <span>03</span>,
+      background: '',
+      gradient: `linear-gradient(${GRADIENT_ANGLES[2]}deg, var(--color-bg) 0%, var(--color-surface) 45%, var(--color-card-bg) 100%)`,
+      leftLabel: <LiquidGlass style={{ fontSize: 'var(--text-label-xs)', letterSpacing: 'var(--tracking-normal)', whiteSpace: 'nowrap' }}>About Gaby</LiquidGlass>,
       title: 'About Gaby',
-      rightLabel: <span style={{ fontSize: 'var(--text-label-xs)', letterSpacing: 'var(--tracking-normal)' }}>Bio</span>,
+      rightLabel: <LiquidGlass style={{ fontSize: 'var(--text-label-xs)', letterSpacing: 'var(--tracking-normal)' }}>Bio</LiquidGlass>,
       content: (
         <div
           style={{ position: 'absolute', inset: 0, zIndex: 10, overflow: 'auto' }}
@@ -78,10 +84,11 @@ export default function HomeSections() {
     },
     {
       id: 'contact',
-      background: '/assets/bridal/resort-bride/1376b5b9dfa2bdf90ff056336a096f79.jpg',
-      leftLabel: <span>04</span>,
+      background: '',
+      gradient: `linear-gradient(${GRADIENT_ANGLES[3]}deg, var(--color-bg) 0%, var(--color-surface) 45%, var(--color-card-bg) 100%)`,
+      leftLabel: <LiquidGlass style={{ fontSize: 'var(--text-label-xs)', letterSpacing: 'var(--tracking-normal)', whiteSpace: 'nowrap' }}>Get in Touch</LiquidGlass>,
       title: 'Get in Touch',
-      rightLabel: <span style={{ fontSize: 'var(--text-label-xs)', letterSpacing: 'var(--tracking-normal)' }}>Contact</span>,
+      rightLabel: <LiquidGlass style={{ fontSize: 'var(--text-label-xs)', letterSpacing: 'var(--tracking-normal)' }}>Contact</LiquidGlass>,
       content: (
         <div
           style={{ position: 'absolute', inset: 0, zIndex: 10, overflow: 'auto' }}
