@@ -8,7 +8,7 @@
 
 ## Vision
 
-Premium fashion portfolio with cohesive visual system: full-screen snap scroll navigation, liquid glass UI elements, spotlight cards, and 3D carousel with scroll interaction. Three themes.
+Premium fashion portfolio with cohesive visual system: full-screen snap scroll navigation, liquid glass UI elements, spotlight cards, and 3D carousel with horizontal scroll interaction. Four themes (Dark Luxury, Catppuccin Latte, Frappe, Mocha).
 
 ## Page Architecture
 
@@ -34,8 +34,12 @@ Full-screen snap scroll through sub-sections:
   - Interaction: scroll/swipe to rotate (not drag)
   - Active image shows liquid glass stage pill underneath
   - Caption text below
-- **Glowing shadow dividers** between panels
-- **Loop scroll:** after last section, loops back to first
+- **No dividers** — clean split, no GlowingShadow needed
+- **Gradient backgrounds** — theme-derived gradients per section (no background images)
+- **LiquidGlass nav pills** — section names in left nav, labels in right nav, stronger glow on active
+- **LiquidGlass on text cards** — frosted glass aesthetic on SpotlightCard
+- **Click-to-enlarge** — carousel images open a modal lightbox with arrow navigation
+- **Loop scroll:** after last section, loops back to first (both directions, all pages)
 - Reference: https://21st.dev/community/components/Scottclayton3d/full-screen-scroll-fx/default
 
 ## UI Component System
@@ -43,52 +47,45 @@ Full-screen snap scroll through sub-sections:
 ### Liquid Glass (site-wide interactive element style)
 Applied to: buttons, pills, stage labels, CTAs, theme toggle, nav items, skill tags, back-to-top
 - Reference: https://21st.dev/community/components/aliimam/liquid-glass-button/default
-- Must work across all 3 themes with adapted opacity/blur
+- Must work across all 4 themes with adapted opacity/blur
+- `active` prop for stronger glow on active nav items
 
 ### Spotlight Card
 Text content cards on collection pages
 - Reference: https://21st.dev/community/components/easemize/spotlight-card/default
 - Pointer-tracking glow effect on border/shadow
 
-### Glowing Shadow Divider
-Section dividers on collection pages (already staged as component)
+### Image Lightbox
+Modal for enlarged carousel images
+- SpotlightCard-styled image card
+- LiquidGlass arrow buttons and close button
+- Keyboard navigation (arrows, Escape)
+- Body scroll locked when open
 
 ### 3D Carousel (updated)
 - Keep cylindrical 3D geometry
-- Change interaction: scroll/swipe triggers rotation (not pointer drag)
+- Interaction: horizontal scroll/swipe only (vertical passes through to section nav)
 - Stage pill (liquid glass) appears under active image
 - Caption text below pill
+- Click any image to open lightbox
 
 ## Theme System
 
-3 themes, toggled via cycle button:
+4 themes, toggled via cycle button (Sun → CloudSun → Palette → Moon):
 
-### 1. Dark Luxury (default) — KEEP CURRENT
-```
---color-bg:           #0C0C0E
---color-surface:      #111116
---color-border:       #1F1F25
---color-text:         #EDE8DF
---color-muted:        #5C5349
---color-accent:       #B8965A
---color-accent-hover: #CCA96A
---color-card-bg:      #18181E
-```
+### 1. Dark Luxury (default)
+Gold accent on near-black. `--color-accent: #B8965A`
 
-### 2. Warm Ivory (light) — KEEP CURRENT
-```
---color-bg:           #F8F4EE
---color-surface:      #F2EBE1
---color-border:       #E5DDD3
---color-text:         #1C1610
---color-muted:        #9A8E84
---color-accent:       #A0673A
---color-accent-hover: #B5784A
---color-card-bg:      #EDE7DF
-```
+### 2. Catppuccin Latte (light)
+Purple accent on warm gray. `--color-accent: #8839ef`
 
-### 3. Catppuccin (new)
-Tokens TBD — reference: https://21st.dev/community/themes/catppuccin
+### 3. Catppuccin Frappe (mid-dark)
+Lavender accent on deep blue-gray. `--color-accent: #ca9ee6`
+
+### 4. Catppuccin Mocha (dark)
+Mauve accent on dark cocoa. `--color-accent: #cba6f7`
+
+Full token definitions in `globals.css`. Warm Ivory theme was replaced by the three Catppuccin variants.
 
 ## Typography
 
@@ -108,30 +105,31 @@ Refinements inspired by Cosmic Night (https://21st.dev/community/themes/cosmic-n
 
 ## Implementation Waves
 
-### Wave 1: Foundation
-- [ ] Add Catppuccin theme tokens
-- [ ] Build Liquid Glass component
-- [ ] Build Spotlight Card component
-- [ ] Update theme toggle → 3-way cycle
-- [ ] Typography refinements
-- [ ] **CHECKPOINT: deploy + review**
+### Wave 1: Foundation — DONE
+- [x] 4 themes: Dark Luxury, Latte, Frappe, Mocha
+- [x] Build Liquid Glass component (with active prop)
+- [x] Build Spotlight Card component
+- [x] Update theme toggle → 4-way cycle
+- [x] Design tokens: overlay colors, type scale, tracking scale
 
-### Wave 2: Homepage
-- [ ] Replace Portfolio accordion with Interactive Image Accordion
-- [ ] Wrap homepage sections in FullScreenScrollFX
-- [ ] Apply liquid glass to all CTAs, buttons, nav
-- [ ] **CHECKPOINT: deploy + review**
+### Wave 2: Homepage — DONE
+- [x] Replace Portfolio accordion with Interactive Image Accordion
+- [x] Wrap homepage sections in FullScreenScrollFX
+- [x] Apply liquid glass to all CTAs, buttons, nav
 
-### Wave 3: Collection Pages
-- [ ] Full-screen snap scroll per section
-- [ ] 40/60 spotlight card + 3D carousel layout
-- [ ] Carousel: scroll/swipe interaction
-- [ ] Liquid glass stage pills under active image
-- [ ] Glowing shadow dividers
-- [ ] Loop scroll
-- [ ] **CHECKPOINT: deploy + review**
+### Wave 3: Collection Pages — DONE
+- [x] Full-screen snap scroll per section
+- [x] 40/60 spotlight card + 3D carousel layout
+- [x] Carousel: horizontal scroll/swipe interaction
+- [x] Liquid glass stage pills under active image
+- [x] Gradient backgrounds (replaced background images)
+- [x] LiquidGlass nav pills (section names) + text cards
+- [x] Image lightbox modal (click-to-enlarge)
+- [x] Loop scroll (all pages, both directions)
+- [x] Dead file cleanup
 
-### Wave 4: Copy + Polish
+### Wave 4: Copy + Polish — IN PROGRESS
+- [ ] Typography refinements (Cosmic Night inspiration)
 - [ ] Copy audit against original site
 - [ ] Flag changes for Gaby
 - [ ] Cross-browser / mobile / performance
@@ -148,11 +146,16 @@ Refinements inspired by Cosmic Night (https://21st.dev/community/themes/cosmic-n
 | 5 | Liquid glass site-wide | Cohesive premium UI language |
 | 6 | Spotlight card for text sections | Better presence at full-screen scale |
 | 7 | Stage pills under carousel images | Labels match the image they describe |
-| 8 | 3 themes (Dark, Light, Catppuccin) | User likes current dark; Catppuccin adds personality |
+| 8 | 4 themes (Dark Luxury + 3 Catppuccin) | Warm Ivory replaced by Latte/Frappe/Mocha |
 | 9 | Typography refine, not replace | Cormorant + Manrope already fit |
 | 10 | Copy: original base + improvements, Gaby approves | Best of both, she has final say |
-| 11 | Loop scroll on collection pages | Continuous browsing |
+| 11 | Loop scroll on all pages, both directions | Continuous browsing |
 | 12 | 4-wave delivery with checkpoints | Prevents drift |
+| 13 | Remove background images → gradient bgs | Carousel images should be sole visual focus |
+| 14 | Remove GlowingShadow divider | Clean split, divider was visual noise |
+| 15 | LiquidGlass on nav pills + text cards | Consistent frosted glass language |
+| 16 | Carousel horizontal scroll only | Prevents vertical scroll hijack |
+| 17 | Click-to-enlarge image lightbox | Browsable SpotlightCard-styled modal |
 
 ## 21st.dev References
 
