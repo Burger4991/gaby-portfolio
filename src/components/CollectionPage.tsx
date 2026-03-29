@@ -16,11 +16,14 @@ function MobileImageStrip({ section }: { section: CollectionSection }) {
     <>
       <div style={{
         display: 'flex',
-        gap: '0.5rem',
-        overflowX: 'auto',
-        padding: '0 0 0.75rem',
+        gap: '0.75rem',
+        overflowX: 'scroll',
+        overflowY: 'hidden',
+        padding: '0 1rem 0.75rem',
         WebkitOverflowScrolling: 'touch',
         scrollSnapType: 'x mandatory',
+        scrollbarWidth: 'none',
+        msOverflowStyle: 'none',
       }}>
         {section.images.map((img, i) => (
           <div
@@ -28,15 +31,14 @@ function MobileImageStrip({ section }: { section: CollectionSection }) {
             onClick={() => setLightboxIndex(i)}
             style={{
               flexShrink: 0,
-              width: '75vw',
-              maxWidth: '300px',
-              aspectRatio: '4/5',
-              borderRadius: '8px',
+              width: '85vw',
+              aspectRatio: '3/4',
+              borderRadius: '10px',
               overflow: 'hidden',
               position: 'relative',
               cursor: 'pointer',
               border: '1px solid var(--color-border)',
-              scrollSnapAlign: 'center',
+              scrollSnapAlign: 'start',
             }}
           >
             <Image
@@ -44,7 +46,7 @@ function MobileImageStrip({ section }: { section: CollectionSection }) {
               alt={img.caption ?? section.title}
               fill
               style={{ objectFit: 'cover' }}
-              sizes="75vw"
+              sizes="85vw"
             />
             {img.caption && (
               <div style={{
@@ -52,11 +54,11 @@ function MobileImageStrip({ section }: { section: CollectionSection }) {
                 bottom: 0,
                 left: 0,
                 right: 0,
-                padding: '2rem 0.75rem 0.5rem',
-                background: 'linear-gradient(to top, rgba(0,0,0,0.6) 0%, transparent 100%)',
+                padding: '2.5rem 0.75rem 0.75rem',
+                background: 'linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 100%)',
                 fontFamily: 'Manrope, sans-serif',
-                fontSize: 'var(--text-label-xs)',
-                color: 'rgba(255,255,255,0.85)',
+                fontSize: 'var(--text-label-sm)',
+                color: 'rgba(255,255,255,0.9)',
                 textTransform: 'uppercase',
                 letterSpacing: 'var(--tracking-tight)',
               }}>
@@ -66,6 +68,7 @@ function MobileImageStrip({ section }: { section: CollectionSection }) {
           </div>
         ))}
       </div>
+      <style>{`.collection-mobile-only div::-webkit-scrollbar { display: none; }`}</style>
       <p style={{
         textAlign: 'center',
         fontFamily: 'Manrope, sans-serif',
