@@ -47,11 +47,12 @@ function Carousel({ images, sectionTitle, onActiveIndexChange }: {
     if (!el) return
 
     const handleWheel = (e: WheelEvent) => {
+      // Only intercept horizontal scroll — let vertical pass through to section nav
+      if (Math.abs(e.deltaX) < Math.abs(e.deltaY)) return
       e.preventDefault()
       e.stopPropagation()
       inertiaAnimation.current?.stop()
-      const delta = e.deltaY !== 0 ? e.deltaY : e.deltaX
-      rotation.set(rotation.get() - delta * 0.15)
+      rotation.set(rotation.get() - e.deltaX * 0.15)
     }
 
     let touchStartX = 0
@@ -229,7 +230,7 @@ export default function CollectionCarousel({ images, sectionTitle }: CollectionC
           paddingTop: '0.5rem',
         }}
       >
-        scroll to rotate
+        swipe to rotate
       </div>
     </div>
   )
