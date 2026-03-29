@@ -14,6 +14,7 @@ import React, {
 type Section = {
   id?: string
   background: string
+  gradient?: string  // CSS gradient string — if provided, replaces background image
   leftLabel?: ReactNode
   title: string | ReactNode
   rightLabel?: ReactNode
@@ -298,13 +299,21 @@ const FullScreenScrollFX = forwardRef<HTMLDivElement, FullScreenFXProps>(
               <div className="fx-bgs" aria-hidden="true">
                 {sections.map((s, i) => (
                   <div className="fx-bg" key={s.id ?? i}>
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      ref={(el) => { if (el) bgRefs.current[i] = el }}
-                      src={s.background}
-                      alt=""
-                      className="fx-bg-img"
-                    />
+                    {s.gradient ? (
+                      <div
+                        ref={(el) => { if (el) bgRefs.current[i] = el as unknown as HTMLImageElement }}
+                        className="fx-bg-gradient"
+                        style={{ background: s.gradient }}
+                      />
+                    ) : (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img
+                        ref={(el) => { if (el) bgRefs.current[i] = el }}
+                        src={s.background}
+                        alt=""
+                        className="fx-bg-img"
+                      />
+                    )}
                     <div className="fx-bg-overlay" />
                   </div>
                 ))}
@@ -417,6 +426,7 @@ const FullScreenScrollFX = forwardRef<HTMLDivElement, FullScreenFXProps>(
           .fx-bgs { position: absolute; inset: 0; background: var(--color-overlay); z-index: 1; }
           .fx-bg { position: absolute; inset: 0; }
           .fx-bg-img { position: absolute; inset: -10% 0 -10% 0; width: 100%; height: 120%; object-fit: cover; filter: brightness(0.7); opacity: 0; will-change: transform, opacity; }
+          .fx-bg-gradient { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; will-change: opacity; }
           .fx-bg-overlay { position: absolute; inset: 0; background: var(--color-overlay-scrim); }
           .fx-header { grid-column: 1 / 13; align-self: start; padding-top: 6vh; font-size: clamp(2rem, 9vw, 9rem); line-height: 0.86; text-align: center; color: var(--color-overlay-text); }
           .fx-content { grid-column: 1 / 13; position: absolute; inset: 0; display: grid; grid-template-columns: 1fr 1.3fr 1fr; align-items: center; height: 100%; padding: 0 2rem; }
