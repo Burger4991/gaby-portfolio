@@ -184,6 +184,21 @@ const FullScreenScrollFX = forwardRef<HTMLDivElement, FullScreenFXProps>(
           },
         })
 
+        // Edge-wrap: wheel at first/last section wraps around
+        const handleEdgeWheel = (e: WheelEvent) => {
+          if (isAnimatingRef.current || isSnappingRef.current) return
+          const atLast = lastIndexRef.current === total - 1
+          const atFirst = lastIndexRef.current === 0
+          if (atLast && e.deltaY > 30) {
+            e.preventDefault()
+            goTo(0, false)
+          } else if (atFirst && e.deltaY < -30) {
+            e.preventDefault()
+            goTo(total - 1, false)
+          }
+        }
+        fixed.addEventListener('wheel', handleEdgeWheel, { passive: false })
+
         const ro = new ResizeObserver(() => {
           computePositions()
           measureAndCenterLists(lastIndexRef.current, false)
@@ -194,6 +209,7 @@ const FullScreenScrollFX = forwardRef<HTMLDivElement, FullScreenFXProps>(
         cleanup = () => {
           ro.disconnect()
           st.kill()
+          fixed.removeEventListener('wheel', handleEdgeWheel)
         }
       }
 
@@ -205,7 +221,9 @@ const FullScreenScrollFX = forwardRef<HTMLDivElement, FullScreenFXProps>(
     const changeSection = async (to: number) => {
       if (to === lastIndexRef.current || isAnimatingRef.current) return
       const from = lastIndexRef.current
-      const down = to > from
+      const isWrapForward = from === total - 1 && to === 0
+      const isWrapBackward = from === 0 && to === total - 1
+      const down = isWrapForward ? true : isWrapBackward ? false : to > from
       isAnimatingRef.current = true
 
       setIndex(to)
@@ -256,10 +274,10 @@ const FullScreenScrollFX = forwardRef<HTMLDivElement, FullScreenFXProps>(
     }
 
     const goTo = (to: number, withScroll = true) => {
-      const clamped = clamp(to, 0, total - 1)
+      const wrapped = ((to % total) + total) % total
       isSnappingRef.current = true
-      changeSection(clamped)
-      const pos = sectionTopRef.current[clamped]
+      changeSection(wrapped)
+      const pos = sectionTopRef.current[wrapped]
       const snapMs = durations.snap ?? 800
       if (withScroll && typeof window !== 'undefined') {
         window.scrollTo({ top: pos, behavior: 'smooth' })
