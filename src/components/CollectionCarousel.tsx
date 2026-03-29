@@ -176,17 +176,29 @@ export default function CollectionCarousel({ images, sectionTitle }: CollectionC
   if (images.length === 1) {
     const img = images[0]
     return (
-      <div style={{ display: 'flex', flexDirection: 'column', width: '100%', maxWidth: FACE_WIDTH * 2 }}>
-        <div style={{ position: 'relative', width: '100%', height: CARD_HEIGHT, border: '1px solid var(--color-border)', borderRadius: 6, overflow: 'hidden' }}>
-          <Image src={img.src} alt={img.caption ?? sectionTitle} fill style={{ objectFit: 'cover' }} sizes="440px" />
-        </div>
-        {(img.caption || img.stage) && (
-          <div style={{ padding: '0.75rem 0', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <span style={{ fontFamily: 'Manrope, sans-serif', fontSize: 'var(--text-label-sm)', color: 'var(--color-overlay-muted)', textTransform: 'uppercase', letterSpacing: 'var(--tracking-tight)' }}>{img.caption}</span>
-            {img.stage && <LiquidGlass style={{ fontSize: 'var(--text-label-xs)', color: 'var(--color-accent)' }}>{img.stage}</LiquidGlass>}
+      <>
+        <div style={{ display: 'flex', flexDirection: 'column', width: '100%', maxWidth: FACE_WIDTH * 2 }}>
+          <div
+            onClick={() => setLightboxIndex(0)}
+            style={{ position: 'relative', width: '100%', height: CARD_HEIGHT, border: '1px solid var(--color-border)', borderRadius: 6, overflow: 'hidden', cursor: 'pointer' }}
+          >
+            <Image src={img.src} alt={img.caption ?? sectionTitle} fill style={{ objectFit: 'cover' }} sizes="440px" />
           </div>
+          {(img.caption || img.stage) && (
+            <div style={{ padding: '0.75rem 0', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <span style={{ fontFamily: 'Manrope, sans-serif', fontSize: 'var(--text-label-sm)', color: 'var(--color-overlay-muted)', textTransform: 'uppercase', letterSpacing: 'var(--tracking-tight)' }}>{img.caption}</span>
+              {img.stage && <LiquidGlass style={{ fontSize: 'var(--text-label-xs)', color: 'var(--color-accent)' }}>{img.stage}</LiquidGlass>}
+            </div>
+          )}
+        </div>
+        {lightboxIndex !== null && (
+          <ImageLightbox
+            images={images}
+            initialIndex={lightboxIndex}
+            onClose={() => setLightboxIndex(null)}
+          />
         )}
-      </div>
+      </>
     )
   }
 

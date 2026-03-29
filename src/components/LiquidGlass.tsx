@@ -63,10 +63,10 @@ const LiquidGlass = forwardRef<HTMLElement, LiquidGlassProps>(
         }}
         onMouseLeave={(e: React.MouseEvent<HTMLElement>) => {
           const el = e.currentTarget
-          el.style.borderColor = 'color-mix(in srgb, var(--color-accent) 25%, transparent)'
+          el.style.borderColor = `color-mix(in srgb, var(--color-accent) ${active ? '50%' : '25%'}, transparent)`
           el.style.boxShadow = `
-            inset 0 1px 0 0 color-mix(in srgb, white 8%, transparent),
-            0 0 12px 0 color-mix(in srgb, var(--color-accent) 10%, transparent)
+            inset 0 1px 0 0 color-mix(in srgb, white ${active ? '12%' : '8%'}, transparent),
+            0 0 ${active ? '20px' : '12px'} 0 color-mix(in srgb, var(--color-accent) ${active ? '25%' : '10%'}, transparent)
           `
         }}
         {...props}

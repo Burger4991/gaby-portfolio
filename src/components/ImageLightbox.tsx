@@ -26,7 +26,11 @@ export default function ImageLightbox({ images, initialIndex, onClose }: ImageLi
       if (e.key === 'ArrowRight') next()
     }
     window.addEventListener('keydown', handleKey)
-    return () => window.removeEventListener('keydown', handleKey)
+    document.body.style.overflow = 'hidden'
+    return () => {
+      window.removeEventListener('keydown', handleKey)
+      document.body.style.overflow = ''
+    }
   }, [onClose, prev, next])
 
   return (
