@@ -7,6 +7,7 @@ type LiquidGlassProps = React.HTMLAttributes<HTMLElement> & {
   as?: 'button' | 'span' | 'a' | 'div'
   className?: string
   style?: React.CSSProperties
+  active?: boolean
   href?: string
   download?: boolean
   type?: string
@@ -20,7 +21,7 @@ type LiquidGlassProps = React.HTMLAttributes<HTMLElement> & {
  * and subtle border glow. Used for pills, buttons, tags, CTAs site-wide.
  */
 const LiquidGlass = forwardRef<HTMLElement, LiquidGlassProps>(
-  ({ children, as = 'span', className = '', style, ...props }, ref) => {
+  ({ children, as = 'span', className = '', style, active, ...props }, ref) => {
     const Tag = as as React.ElementType
 
     return (
@@ -34,7 +35,7 @@ const LiquidGlass = forwardRef<HTMLElement, LiquidGlassProps>(
           gap: '0.4rem',
           padding: '0.35rem 0.85rem',
           borderRadius: '6px',
-          border: '1px solid color-mix(in srgb, var(--color-accent) 25%, transparent)',
+          border: `1px solid color-mix(in srgb, var(--color-accent) ${active ? '50%' : '25%'}, transparent)`,
           background: 'color-mix(in srgb, var(--color-surface) 60%, transparent)',
           backdropFilter: 'blur(12px) saturate(1.4)',
           WebkitBackdropFilter: 'blur(12px) saturate(1.4)',
@@ -46,8 +47,8 @@ const LiquidGlass = forwardRef<HTMLElement, LiquidGlassProps>(
           textDecoration: 'none',
           transition: 'border-color 0.25s ease, background 0.25s ease, box-shadow 0.25s ease',
           boxShadow: `
-            inset 0 1px 0 0 color-mix(in srgb, white 8%, transparent),
-            0 0 12px 0 color-mix(in srgb, var(--color-accent) 10%, transparent)
+            inset 0 1px 0 0 color-mix(in srgb, white ${active ? '12%' : '8%'}, transparent),
+            0 0 ${active ? '20px' : '12px'} 0 color-mix(in srgb, var(--color-accent) ${active ? '25%' : '10%'}, transparent)
           `,
           cursor: as === 'button' || as === 'a' ? 'pointer' : 'default',
           ...style,

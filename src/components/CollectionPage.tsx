@@ -21,15 +21,22 @@ export default function CollectionPage({ category }: { category: PortfolioCatego
       background: '',
       gradient: `linear-gradient(${angle}deg, var(--color-bg) 0%, var(--color-surface) 45%, var(--color-card-bg) 100%)`,
     leftLabel: (
-      <span>
-        {String(i + 1).padStart(2, '0')}
-      </span>
+      <LiquidGlass style={{
+        fontSize: 'var(--text-label-sm)',
+        letterSpacing: 'var(--tracking-normal)',
+        whiteSpace: 'nowrap',
+      }}>
+        {section.title}
+      </LiquidGlass>
     ),
     title: section.title,
     rightLabel: (
-      <span style={{ fontSize: 'var(--text-label-xs)', letterSpacing: 'var(--tracking-normal)' }}>
+      <LiquidGlass style={{
+        fontSize: 'var(--text-label-xs)',
+        letterSpacing: 'var(--tracking-normal)',
+      }}>
         {section.pills[0] ?? ''}
-      </span>
+      </LiquidGlass>
     ),
     content: (
       <div
