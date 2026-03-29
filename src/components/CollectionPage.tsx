@@ -14,17 +14,20 @@ function MobileImageStrip({ section }: { section: CollectionSection }) {
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null)
   return (
     <>
-      <div style={{
-        display: 'flex',
-        gap: '0.75rem',
-        overflowX: 'scroll',
-        overflowY: 'hidden',
-        padding: '0 1rem 0.75rem',
-        WebkitOverflowScrolling: 'touch',
-        scrollSnapType: 'x mandatory',
-        scrollbarWidth: 'none',
-        msOverflowStyle: 'none',
-      }}>
+      <div
+        className="mobile-image-strip"
+        style={{
+          display: 'flex',
+          gap: '0.75rem',
+          overflowX: 'scroll',
+          overflowY: 'hidden',
+          padding: '0 1rem 0.75rem',
+          WebkitOverflowScrolling: 'touch',
+          scrollSnapType: 'x mandatory',
+          scrollbarWidth: 'none',
+          touchAction: 'pan-x',
+        }}
+      >
         {section.images.map((img, i) => (
           <div
             key={i}
@@ -68,7 +71,11 @@ function MobileImageStrip({ section }: { section: CollectionSection }) {
           </div>
         ))}
       </div>
-      <style>{`.collection-mobile-only div::-webkit-scrollbar { display: none; }`}</style>
+      <style>{`
+        .mobile-image-strip::-webkit-scrollbar { display: none; }
+        .mobile-image-strip { -ms-overflow-style: none; }
+        .mobile-image-strip > * { touch-action: pan-x; }
+      `}</style>
       <p style={{
         textAlign: 'center',
         fontFamily: 'Manrope, sans-serif',
