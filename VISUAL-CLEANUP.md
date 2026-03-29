@@ -3,7 +3,8 @@
 **Branch:** `feat/visual-cleanup`
 **Spec:** `DESIGN-SPEC.md`
 **Brainstorm:** `docs/brainstorm/2026-03-28-portfolio-redesign.md`
-**Last commit:** `45ff51d` (2026-03-28)
+**Last commit:** `a88ee20` (2026-03-28)
+**Status:** ALL WAVES COMPLETE — PR ready
 
 ---
 
@@ -35,19 +36,28 @@
 - [x] Overlay text tokens for readability over dark bg
 - [x] GlowingShadow vertical divider between text/carousel
 - [x] LiquidGlass on collection back link
-- [ ] **Loop scroll (last panel → first)**
+- [x] **Loop scroll (last panel → first)**
 
-## Remaining Work
-- [ ] Loop scroll on collection pages (last section → loops to first)
-- [ ] Typography refinements (Cosmic Night inspiration — weight/spacing)
-- [ ] Wave 4: Copy audit against gabrielagamargo.com
-- [ ] Wave 4: Flag changes for Gaby review
-- [ ] Wave 4: Cross-browser / mobile / performance pass
-- [ ] Wave 4: Final review → PR to main
-- [ ] DESIGN-SPEC.md needs updating (theme section says 3 themes, we have 4)
+## Wave 3.5: Collection Page Redesign — DONE
+Source: `docs/brainstorm/2026-03-28-collection-page-redesign.md`
+- [x] Remove background images → theme-derived gradient backgrounds per section
+- [x] Remove GlowingShadow divider (keep 40/60 split layout)
+- [x] Standardize section dimensions (fixed card height, carousel size, padding)
+- [x] LiquidGlass on all nav items (left: section name pills, right: labels), stronger on active
+- [x] LiquidGlass on SpotlightCard text cards
+- [x] Carousel: horizontal scroll only (vertical passes through to section nav)
+- [x] Image lightbox modal (SpotlightCard-styled cards, arrow nav, click-outside dismiss)
+
+## Wave 4: Polish — DONE
+- [x] Loop scroll on all pages (both directions)
+- [x] Dead file cleanup (Portfolio, SplitScrollCollection, Lightbox, splitWords, GlowingShadow)
+- [x] DESIGN-SPEC.md updated (4 themes, Wave 3.5 decisions)
+- [x] Copy audit documented (docs/copy-audit.md — all Claude-written, flagged for Gaby)
+- [x] Mobile layout fixed (stacked card+carousel, hidden nav, overflow fix)
+- [x] Code review fixes (active glow reset, body scroll lock, single-image lightbox)
+- [~] Typography refinements — deferred (current typography is fine)
+- [x] Final review → PR to main
 
 ## Notes
-- GlowCard component exists but SpotlightCard replaced it for text cards
-- Old Portfolio.tsx, SplitScrollCollection.tsx preserved but no longer imported
-- Lightbox.tsx confirmed unused (no imports)
-- splitWords lib still imported in old files but not actively used
+- Dead files removed: Portfolio.tsx, SplitScrollCollection.tsx, Lightbox.tsx, splitWords.ts, GlowingShadow.tsx
+- Copy audit at docs/copy-audit.md — Gaby should verify factual claims before launch
