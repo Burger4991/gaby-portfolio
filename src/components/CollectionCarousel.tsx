@@ -49,9 +49,11 @@ function Carousel({ images, sectionTitle, onActiveIndexChange, onImageClick }: {
     if (!el) return
 
     const handleWheel = (e: WheelEvent) => {
-      e.preventDefault()
       inertiaAnimation.current?.stop()
+      // Both axes rotate the carousel, but only prevent default scroll
+      // when horizontal dominates (so vertical page scroll still works)
       const delta = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY
+      if (Math.abs(e.deltaX) >= Math.abs(e.deltaY)) e.preventDefault()
       rotation.set(rotation.get() - delta * 0.15)
     }
 

@@ -49,8 +49,9 @@ export default function ImageLightbox({ images, initialIndex, onClose }: ImageLi
       }}
     >
       <div
+        className="lightbox-inner"
         onClick={(e) => e.stopPropagation()}
-        style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', maxWidth: '900px', width: '100%' }}
+        style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', maxWidth: '1100px', width: '100%', maxHeight: '90vh' }}
       >
         {/* Prev arrow — LiquidGlass button */}
         <LiquidGlass
@@ -66,16 +67,16 @@ export default function ImageLightbox({ images, initialIndex, onClose }: ImageLi
         <SpotlightCard
           style={{
             flex: 1,
-            padding: '1rem',
-            backdropFilter: 'blur(12px) saturate(1.4)',
-            WebkitBackdropFilter: 'blur(12px) saturate(1.4)',
-            border: '1px solid color-mix(in srgb, var(--color-accent) 25%, transparent)',
-            background: 'color-mix(in srgb, var(--color-card-bg) 70%, transparent)',
-            boxShadow: 'inset 0 1px 0 0 color-mix(in srgb, white 8%, transparent), 0 0 20px 0 color-mix(in srgb, var(--color-accent) 15%, transparent)',
+            padding: '1.25rem',
+            backdropFilter: 'blur(16px) saturate(1.5)',
+            WebkitBackdropFilter: 'blur(16px) saturate(1.5)',
+            border: '1px solid color-mix(in srgb, var(--color-accent) 30%, transparent)',
+            background: 'color-mix(in srgb, var(--color-card-bg) 65%, transparent)',
+            boxShadow: 'inset 0 1px 0 0 color-mix(in srgb, white 10%, transparent), 0 0 30px 0 color-mix(in srgb, var(--color-accent) 20%, transparent)',
           }}
         >
-          <div style={{ position: 'relative', width: '100%', aspectRatio: '4/5', borderRadius: '8px', overflow: 'hidden' }}>
-            <Image src={image.src} alt={image.caption ?? ''} fill style={{ objectFit: 'cover' }} sizes="(max-width: 900px) 90vw, 800px" />
+          <div style={{ position: 'relative', width: '100%', aspectRatio: '3/4', borderRadius: '10px', overflow: 'hidden' }}>
+            <Image src={image.src} alt={image.caption ?? ''} fill style={{ objectFit: 'cover' }} sizes="(max-width: 900px) 90vw, 1000px" />
           </div>
           {(image.caption || image.stage) && (
             <div style={{
@@ -105,7 +106,7 @@ export default function ImageLightbox({ images, initialIndex, onClose }: ImageLi
           )}
         </SpotlightCard>
 
-        {/* Next arrow — LiquidGlass button */}
+        {/* Next arrow — LiquidGlass button (desktop) */}
         <LiquidGlass
           as="button"
           onClick={next}
@@ -114,6 +115,22 @@ export default function ImageLightbox({ images, initialIndex, onClose }: ImageLi
         >
           &#8250;
         </LiquidGlass>
+
+        {/* Mobile nav — shown below image on small screens */}
+        <div
+          className="lightbox-nav-mobile"
+          style={{ display: 'none', gap: '1rem', justifyContent: 'center', padding: '0.5rem 0' }}
+        >
+          <LiquidGlass as="button" onClick={prev} style={{ fontSize: '1.2rem', padding: '0.5rem 1.25rem', color: 'var(--color-overlay-text)' }} aria-label="Previous image">
+            &#8249;
+          </LiquidGlass>
+          <span style={{ fontFamily: 'Manrope, sans-serif', fontSize: 'var(--text-label-xs)', color: 'var(--color-overlay-dim)', alignSelf: 'center', letterSpacing: 'var(--tracking-normal)' }}>
+            {index + 1} / {images.length}
+          </span>
+          <LiquidGlass as="button" onClick={next} style={{ fontSize: '1.2rem', padding: '0.5rem 1.25rem', color: 'var(--color-overlay-text)' }} aria-label="Next image">
+            &#8250;
+          </LiquidGlass>
+        </div>
       </div>
 
       {/* Close button */}
@@ -129,6 +146,23 @@ export default function ImageLightbox({ images, initialIndex, onClose }: ImageLi
       >
         &#10005;
       </LiquidGlass>
+
+      <style>{`
+        @media (max-width: 768px) {
+          .lightbox-inner {
+            flex-direction: column !important;
+            gap: 1rem !important;
+            max-width: 100% !important;
+            padding: 0 !important;
+          }
+          .lightbox-inner > button {
+            display: none !important;
+          }
+          .lightbox-nav-mobile {
+            display: flex !important;
+          }
+        }
+      `}</style>
     </div>
   )
 }
