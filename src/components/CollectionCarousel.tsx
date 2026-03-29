@@ -49,12 +49,12 @@ function Carousel({ images, sectionTitle, onActiveIndexChange, onImageClick }: {
     if (!el) return
 
     const handleWheel = (e: WheelEvent) => {
-      // Only intercept horizontal scroll — let vertical pass through to section nav
-      if (Math.abs(e.deltaX) < Math.abs(e.deltaY)) return
       e.preventDefault()
       e.stopPropagation()
       inertiaAnimation.current?.stop()
-      rotation.set(rotation.get() - e.deltaX * 0.15)
+      // Use whichever axis has more movement
+      const delta = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY
+      rotation.set(rotation.get() - delta * 0.15)
     }
 
     let touchStartX = 0
@@ -248,7 +248,7 @@ export default function CollectionCarousel({ images, sectionTitle }: CollectionC
           paddingTop: '0.5rem',
         }}
       >
-        swipe to rotate
+        scroll to rotate
       </div>
       {lightboxIndex !== null && (
         <ImageLightbox

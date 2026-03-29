@@ -46,8 +46,8 @@ export default function CollectionPage({ category }: { category: PortfolioCatego
           position: 'absolute',
           top: 0,
           bottom: 0,
-          left: '20%',
-          right: '14%',
+          left: 0,
+          right: 0,
           zIndex: 10,
           display: 'grid',
           gridTemplateColumns: '40% 60%',
@@ -189,6 +189,8 @@ export default function CollectionPage({ category }: { category: PortfolioCatego
       />
 
       <style>{`
+        .fx-left, .fx-right { display: none !important; }
+        .fx-center { display: none !important; }
         @media (max-width: 900px) {
           .collection-split {
             left: 0 !important;
