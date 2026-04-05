@@ -7,7 +7,7 @@ import type { SectionImage } from '@/data/portfolioData'
 import LiquidGlass from './LiquidGlass'
 import ImageLightbox from './ImageLightbox'
 
-const CARD_HEIGHT = 340
+const CARD_HEIGHT = 320
 const FACE_WIDTH = 300
 
 type CollectionCarouselProps = {
@@ -158,7 +158,7 @@ function Carousel({ images, sectionTitle, onActiveIndexChange, onImageClick }: {
                 alt={img.caption ?? sectionTitle}
                 fill
                 style={{ objectFit: 'cover' }}
-                sizes="220px"
+                sizes="300px"
               />
             </div>
           </div>

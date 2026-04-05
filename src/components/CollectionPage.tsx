@@ -246,7 +246,9 @@ export default function CollectionPage({ category }: { category: PortfolioCatego
               justifyContent: 'center',
               padding: '4rem 3rem',
             }}>
-              <CollectionCarousel images={section.images} sectionTitle={section.title} />
+              <div style={{ height: '420px', overflow: 'hidden', display: 'flex', flexDirection: 'column', justifyContent: 'flex-start' }}>
+                <CollectionCarousel images={section.images} sectionTitle={section.title} />
+              </div>
             </div>
 
             {/* Mobile: Image strip */}
