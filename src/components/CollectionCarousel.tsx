@@ -8,7 +8,7 @@ import LiquidGlass from './LiquidGlass'
 import ImageLightbox from './ImageLightbox'
 
 const CARD_HEIGHT = 340
-const FACE_WIDTH = 240
+const FACE_WIDTH = 300
 
 type CollectionCarouselProps = {
   images: SectionImage[]
@@ -187,7 +187,9 @@ export default function CollectionCarousel({ images, sectionTitle }: CollectionC
           {(img.caption || img.stage) && (
             <div style={{ padding: '0.75rem 0', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               {img.caption && (!img.stage || img.caption.toLowerCase().replace(/[^a-z]/g, '') !== img.stage.toLowerCase().replace(/[^a-z]/g, '')) && (
-                <span style={{ fontFamily: 'Manrope, sans-serif', fontSize: 'var(--text-label-sm)', color: 'var(--color-overlay-muted)', textTransform: 'uppercase', letterSpacing: 'var(--tracking-tight)' }}>{img.caption}</span>
+                <span style={{ fontFamily: 'Manrope, sans-serif', fontSize: 'var(--text-label-sm)', color: 'var(--color-overlay-muted)', textTransform: 'uppercase', letterSpacing: 'var(--tracking-tight)' }}>
+                  {img.caption}
+                </span>
               )}
               {img.stage && <LiquidGlass style={{ fontSize: 'var(--text-label-xs)', color: 'var(--color-accent)', marginLeft: 'auto' }}>{img.stage}</LiquidGlass>}
             </div>
@@ -217,7 +219,7 @@ export default function CollectionCarousel({ images, sectionTitle }: CollectionC
       {activeImage && (
         <div
           style={{
-            padding: '0.75rem 1rem 0',
+            padding: '0.75rem 0',
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'center',

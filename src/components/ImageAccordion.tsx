@@ -44,7 +44,6 @@ export default function ImageAccordion() {
               fill
               style={{
                 objectFit: 'cover',
-                transform: isActive ? 'scale(1.05)' : 'scale(1.15)',
                 transition: 'transform 0.7s cubic-bezier(0.4, 0, 0.2, 1)',
               }}
               sizes="(max-width: 768px) 100vw, 50vw"

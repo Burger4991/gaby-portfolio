@@ -169,8 +169,10 @@ export default function CollectionPage({ category }: { category: PortfolioCatego
               <SpotlightCard
                 style={{
                   padding: '2.5rem',
-                  maxWidth: '420px',
-                  width: '100%',
+                  width: '420px',
+                  minWidth: '0',
+                  height: '420px',
+                  overflow: 'hidden',
                   backdropFilter: 'blur(12px) saturate(1.4)',
                   WebkitBackdropFilter: 'blur(12px) saturate(1.4)',
                   border: '1px solid color-mix(in srgb, var(--color-accent) 25%, transparent)',
