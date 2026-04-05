@@ -65,6 +65,11 @@ html[data-theme="latte"] {
   --tracking-tight:   0.1em;
   --tracking-normal:  0.2em;
   --tracking-wide:    0.3em;
+
+  /* Collection page gradient — light theme needs symmetrical stops (not darker at end) */
+  --color-gradient-start: #eff1f5;
+  --color-gradient-mid:   #e6e9ef;
+  --color-gradient-end:   #eff1f5;
 }
 
 /* ─── Catppuccin Frappé (mid-dark) ─── */

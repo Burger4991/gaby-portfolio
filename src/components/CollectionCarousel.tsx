@@ -7,8 +7,8 @@ import type { SectionImage } from '@/data/portfolioData'
 import LiquidGlass from './LiquidGlass'
 import ImageLightbox from './ImageLightbox'
 
-const CARD_HEIGHT = 320
-const FACE_WIDTH = 220
+const CARD_HEIGHT = 340
+const FACE_WIDTH = 240
 
 type CollectionCarouselProps = {
   images: SectionImage[]
@@ -106,7 +106,7 @@ function Carousel({ images, sectionTitle, onActiveIndexChange, onImageClick }: {
     <div
       ref={containerRef}
       style={{
-        perspective: '1000px',
+        perspective: '1400px',
         transformStyle: 'preserve-3d',
         willChange: 'transform',
         width: '100%',
@@ -186,8 +186,10 @@ export default function CollectionCarousel({ images, sectionTitle }: CollectionC
           </div>
           {(img.caption || img.stage) && (
             <div style={{ padding: '0.75rem 0', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <span style={{ fontFamily: 'Manrope, sans-serif', fontSize: 'var(--text-label-sm)', color: 'var(--color-overlay-muted)', textTransform: 'uppercase', letterSpacing: 'var(--tracking-tight)' }}>{img.caption}</span>
-              {img.stage && <LiquidGlass style={{ fontSize: 'var(--text-label-xs)', color: 'var(--color-accent)' }}>{img.stage}</LiquidGlass>}
+              {img.caption && (!img.stage || img.caption.toLowerCase().replace(/[^a-z]/g, '') !== img.stage.toLowerCase().replace(/[^a-z]/g, '')) && (
+                <span style={{ fontFamily: 'Manrope, sans-serif', fontSize: 'var(--text-label-sm)', color: 'var(--color-overlay-muted)', textTransform: 'uppercase', letterSpacing: 'var(--tracking-tight)' }}>{img.caption}</span>
+              )}
+              {img.stage && <LiquidGlass style={{ fontSize: 'var(--text-label-xs)', color: 'var(--color-accent)', marginLeft: 'auto' }}>{img.stage}</LiquidGlass>}
             </div>
           )}
         </div>
@@ -221,17 +223,19 @@ export default function CollectionCarousel({ images, sectionTitle }: CollectionC
             alignItems: 'center',
           }}
         >
-          <span style={{
-            fontFamily: 'Manrope, sans-serif',
-            fontSize: 'var(--text-label-sm)',
-            letterSpacing: 'var(--tracking-tight)',
-            textTransform: 'uppercase',
-            color: 'var(--color-overlay-muted)',
-          }}>
-            {activeImage.caption}
-          </span>
+          {activeImage.caption && (!activeImage.stage || activeImage.caption.toLowerCase().replace(/[^a-z]/g, '') !== activeImage.stage.toLowerCase().replace(/[^a-z]/g, '')) && (
+            <span style={{
+              fontFamily: 'Manrope, sans-serif',
+              fontSize: 'var(--text-label-sm)',
+              letterSpacing: 'var(--tracking-tight)',
+              textTransform: 'uppercase',
+              color: 'var(--color-overlay-muted)',
+            }}>
+              {activeImage.caption}
+            </span>
+          )}
           {activeImage.stage && (
-            <LiquidGlass style={{ fontSize: 'var(--text-label-xs)', color: 'var(--color-accent)' }}>
+            <LiquidGlass style={{ fontSize: 'var(--text-label-xs)', color: 'var(--color-accent)', marginLeft: 'auto' }}>
               {activeImage.stage}
             </LiquidGlass>
           )}

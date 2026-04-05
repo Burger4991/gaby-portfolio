@@ -154,7 +154,7 @@ export default function CollectionPage({ category }: { category: PortfolioCatego
               minHeight: '100vh',
               display: 'grid',
               gridTemplateColumns: '40% 60%',
-              background: `linear-gradient(${angle}deg, var(--color-bg) 0%, var(--color-surface) 45%, var(--color-card-bg) 100%)`,
+              background: `linear-gradient(${angle}deg, var(--color-gradient-start, var(--color-bg)) 0%, var(--color-gradient-mid, var(--color-surface)) 45%, var(--color-gradient-end, var(--color-card-bg)) 100%)`,
               borderBottom: '1px solid var(--color-border)',
             }}
             className="collection-section"
@@ -164,7 +164,7 @@ export default function CollectionPage({ category }: { category: PortfolioCatego
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              padding: '4rem 2rem',
+              padding: '4rem 2rem 4rem 3rem',
             }}>
               <SpotlightCard
                 style={{
