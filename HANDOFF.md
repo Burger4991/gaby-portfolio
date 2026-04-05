@@ -1,36 +1,27 @@
-# Handoff — 2026-03-29
+# Handoff — 2026-04-05
 
 ## What we were doing
-Major session: brainstormed collection page redesign, implemented Wave 3.5 + Wave 4, then pivoted to removing FullScreenScrollFX entirely due to irreconcilable scroll conflicts between section navigation and carousel interaction. Simplified to normal vertical scroll site-wide.
+Session B viewed the live Vercel preview (gaby-portfolio-beta.vercel.app) via computer use screenshots and tackled 4 desktop visual polish items identified from the live site. Session A ran in parallel, building a UI component playground.
 
 ## Where we left off
-Desktop collection pages work well (40/60 split, 3D carousel, lightbox). Mobile has issues:
-- **Image strip swipe doesn't work** on mobile despite touch-action:pan-x fix — needs further debugging on actual device
-- **Homepage accordion** works but mobile layout (vertical stack) looks like plain cards, not interactive accordion
-- **Lightbox** works on both desktop and mobile (arrows + keyboard nav)
-- **Desktop is in good shape** — user confirmed "web version is fine for now"
+4 fixes committed and pushed to `feat/visual-cleanup` (`5216404`). Desktop is cleaner. Mobile issues (swipe, accordion) still unresolved and are the remaining blocker for PR #3.
 
 ## This session's decisions
-- Removed FullScreenScrollFX from entire site — root cause of all scroll/overlap/nav conflicts
-- Collection pages: normal vertical scroll, 40/60 grid on desktop, dedicated MobileImageStrip on mobile
-- Homepage: simple stacked sections with gradient backgrounds, accordion with 70vh container
-- Lightbox: larger cards (1100px max, 3/4 aspect), SpotlightCard glow, mobile nav below image
-- LiquidGlass stays on: Back button, text cards, stage pills, lightbox buttons (NOT on nav labels)
-- Copy can be enhanced by Claude (doesn't need to match original site exactly)
-- Feature-dev workflow is the standard for all portfolio work going forward
+- **Caption/stage dedup**: caption hides when it matches stage (lowercase alphanumeric comparison) — carousel label row stays clean without touching data
+- **Carousel geometry**: perspective 1000→1400px, cards 220×320→240×340 — gentler 3D, side images more visible
+- **SpotlightCard padding**: container left padding 2→3rem — card no longer hugs left edge on narrow desktops
+- **Latte gradient**: symmetrical end-stop (bg→surface→bg) via `--color-gradient-*` tokens; other themes use CSS var() fallback and are unchanged
 
 ## What's next
-1. **Fix mobile image strip swipe** — the touch-action:pan-x approach isn't working. May need a JS-based swipe handler or different approach entirely
-2. **Mobile accordion** — make it feel more interactive (bigger active panel, clearer tap affordance)
-3. **Visual polish pass** — gradients, spacing, typography refinements on both mobile and desktop
-4. **Test on real devices** — Playwright mobile viewport doesn't catch all touch behavior issues
-5. **Merge PR #3** when mobile issues resolved
+1. **Sync with Session A** — merge playground work with these fixes into a single push (or separate PR)
+2. **Fix mobile swipe** — `touch-action: pan-x` not working on real device; likely needs JS gesture handler (`react-swipeable` or pointer events)
+3. **Mobile accordion UX** — vertical stack looks like plain cards, needs clearer tap affordance and bigger active state
+4. **Test on real device** via Vercel incognito preview
+5. **Merge PR #3** when mobile resolved
 
 ## Watch out for
-- Mobile Safari swipe gestures conflict with horizontal scroll — `touch-action: pan-x` may not be enough
-- The 3D carousel `preventDefault` on wheel events blocks page scroll on desktop — current fix only prevents default on horizontal scroll
-- Vercel preview caching — user needs incognito to see latest changes
-- `FullScreenScrollFX.tsx` is deleted — don't try to import it
+- Only 3 files staged in this commit — `HANDOFF.md`, `ImageAccordion.tsx`, `.superpowers/brainstorm/` deletions are still unstaged (Session A's work)
+- Vercel caches aggressively — always test in incognito
 
 ## Project state → see PROJECT.md
-Phase: implementing | Resume at: fix mobile collection page experience
+Phase: implementing | Resume at: mobile swipe fix (MobileImageStrip in CollectionPage.tsx)

@@ -171,15 +171,15 @@ export default function ImageAccordion() {
           .image-accordion {
             flex-direction: column !important;
             height: auto !important;
-            gap: 3px !important;
+            gap: 4px !important;
           }
           .image-accordion > div {
             flex: none !important;
-            height: 120px !important;
+            height: 80px !important;
             border-radius: 6px !important;
           }
           .image-accordion > div[data-active] {
-            height: 300px !important;
+            height: 400px !important;
           }
         }
       `}</style>
