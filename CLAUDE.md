@@ -34,3 +34,17 @@ GABY_EMAIL=...   # recipient address for contact form submissions
 ## Architecture
 
 See [`docs/architecture.md`](docs/architecture.md) — routing, data layer, theme system, animation stack (GSAP + Framer Motion), key components, fonts, and styling approach.
+
+## Agent skills
+
+### Issue tracker
+
+Issues live in this repo's GitHub Issues, managed via the `gh` CLI. See `docs/agents/issue-tracker.md`.
+
+### Triage labels
+
+Default Pocock vocabulary (`needs-triage`, `needs-info`, `ready-for-agent`, `ready-for-human`, `wontfix`). See `docs/agents/triage-labels.md`.
+
+### Domain docs
+
+Single-context layout. See `docs/agents/domain.md`.
