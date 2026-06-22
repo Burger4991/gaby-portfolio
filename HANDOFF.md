@@ -27,3 +27,7 @@ Direct component fixes on `feat/visual-cleanup` — tackling visual issues ident
 
 ## Project state → see PROJECT.md
 Phase: implementing | Resume at: mobile swipe fix (MobileImageStrip in CollectionPage.tsx)
+
+---
+Session ended without /wrap — 2026-04-21 02:37
+Use /load in your next session.

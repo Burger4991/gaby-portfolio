@@ -21,13 +21,13 @@ RESEND_API_KEY=...
 GABY_EMAIL=...   # recipient address for contact form submissions
 ```
 
-`from` address in `sendEmail.ts` is currently `onboarding@resend.dev` (Resend dev default) — swap to a verified domain for production.
+Contact form `from` address must be a verified Resend domain in production — see `src/app/actions/sendEmail.ts`.
 
 ## Landmines
 
 **Next.js pinned to 15 — do not upgrade to 16+.** Next.js 16 Turbopack production builds omit the `work/[slug]` page entry file, causing collection pages to 404 in production (compilation succeeds but `generateStaticParams` collection fails). ESLint runs with `ignoreDuringBuilds: true` due to ESLint 9 + legacy `.eslintrc.json` incompatibility in Next.js 15's build lint step — lint manually with `npm run lint`.
 
-**Single source of truth for content:** all portfolio data lives in `src/data/portfolioData.ts`. Editing copy, images, sections, or categories means editing this file only. Image assets in `public/assets/` organized by category.
+**Single source of truth for content:** all portfolio data lives in `src/data/portfolioData.ts`. Editing copy, images, sections, or categories means editing this file only. Image paths are root-relative URLs (`/assets/...`) served from `public/assets/` — that is the canonical asset dir. `src/assets/` is a dead duplicate (same category folders, never imported); do not edit it.
 
 **Theme tokens:** always use `var(--color-*)` rather than hardcoded colors. Tokens defined in `globals.css` on `html[data-theme]`.
 

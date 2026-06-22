@@ -1,60 +1,107 @@
-1
+# Gaby Portfolio — Layout Playground Implementation Plan
+
+> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
+
+**Goal:** Build a self-contained `playground/index.html` for the gaby-portfolio redesign that enables drag-and-drop section reordering, live spacing/typography/theme controls, component variant switching, responsive preview, and design snapshot export — all without a build step.
+
+**Architecture:** Single HTML file (`playground/index.html`) with inline CSS and JS. Three-panel shell (collapsible left sidebar with 11 control panels, fluid canvas, collapsible right inspector). Vanilla JS state object drives all rendering via `applyState()`. CSS custom properties mirror production token names exactly for 1:1 export. HTML5 Drag API for block reordering.
+
+**Tech Stack:** Vanilla HTML/CSS/JS, Google Fonts (Cormorant Garamond + Manrope), HTML5 Drag API, `<input type="range">` and `<input type="color">` controls, `localStorage` for snapshots, `Blob` + `URL.createObjectURL` for JSON export.
+
+**Spec:** `docs/superpowers/specs/2026-04-05-playground-design.md`
+
+---
+
+## Task 0: Move Repo from Desktop to Documents/Tech
+
+**Files:**
+- Move: `~/Desktop/gaby-portfolio/` → `~/Documents/Tech/gaby-portfolio/`
+- Modify: `~/Documents/Tech/PROJECT.md`
+- Modify: `~/Documents/Tech/HANDOFF.md`
+
+- [ ] **Step 1: Confirm git remote before moving**
+
+```bash
+cd ~/Desktop/gaby-portfolio && git remote -v
+```
+Expected output includes `github.com/Burger4991/GC_Website` or similar. Note the remote URL.
+
+- [ ] **Step 2: Move the repo**
+
+```bash
+mv ~/Desktop/gaby-portfolio ~/Documents/Tech/gaby-portfolio
+```
+
+- [ ] **Step 3: Verify git still works**
+
+```bash
+cd ~/Documents/Tech/gaby-portfolio && git status && git log --oneline -3
+```
+Expected: clean status, last 3 commits visible.
+
+- [ ] **Step 4: Update PROJECT.md path entry**
+
+In `~/Documents/Tech/PROJECT.md`, find the GC_Website / gaby-portfolio entry and update path to `gaby-portfolio/` (new folder under Tech/). Add a note that `GC_Website/` is the separate Google Classroom site.
+
+- [ ] **Step 5: Update HANDOFF.md**
+
+In `~/Documents/Tech/HANDOFF.md`, update any references to `~/Desktop/gaby-portfolio` to `~/Documents/Tech/gaby-portfolio`.
+
+- [ ] **Step 6: Commit**
+
+```bash
+cd ~/Documents/Tech/gaby-portfolio
+git add -A
+git commit -m "chore: formalize repo location — moved from Desktop to Documents/Tech"
+```
+
+---
+
+## Task 1: Shell Structure + Theme Tokens
+
+**Files:**
+- Create: `playground/index.html`
+
+- [ ] **Step 1: Create `playground/` directory and `index.html`**
+
+```bash
+mkdir -p ~/Documents/Tech/gaby-portfolio/playground
+```
+
+Create `playground/index.html` with the full shell:
+
+```html
 <!DOCTYPE html>
 <html lang="en" data-theme="dark">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Gaby Portfolio — Layout Playground</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link
-    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Manrope:wght@300;400;500;600;700&display=swap"
-    rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
     /* ─── Production theme tokens (mirror src/app/globals.css exactly) ─── */
-    html[data-theme="dark"],
-    html:not([data-theme]) {
-      --color-bg: #0C0C0E;
-      --color-surface: #111116;
-      --color-border: #1F1F25;
-      --color-text: #EDE8DF;
-      --color-muted: #5C5349;
-      --color-accent: #B8965A;
-      --color-accent-hover: #CCA96A;
-      --color-card-bg: #18181E;
+    html[data-theme="dark"], html:not([data-theme]) {
+      --color-bg: #0C0C0E; --color-surface: #111116; --color-border: #1F1F25;
+      --color-text: #EDE8DF; --color-muted: #5C5349; --color-accent: #B8965A;
+      --color-accent-hover: #CCA96A; --color-card-bg: #18181E;
+      --color-text-label-xs: 0.55rem; --color-text-label: 0.7rem;
+      --color-text-body: 0.875rem; --color-tracking-wide: 0.3em;
     }
-
     html[data-theme="latte"] {
-      --color-bg: #eff1f5;
-      --color-surface: #e6e9ef;
-      --color-border: #ccd0da;
-      --color-text: #4c4f69;
-      --color-muted: #6c6f85;
-      --color-accent: #8839ef;
-      --color-accent-hover: #9b4ff5;
-      --color-card-bg: #dce0e8;
+      --color-bg: #eff1f5; --color-surface: #e6e9ef; --color-border: #ccd0da;
+      --color-text: #4c4f69; --color-muted: #6c6f85; --color-accent: #8839ef;
+      --color-accent-hover: #9b4ff5; --color-card-bg: #dce0e8;
     }
-
     html[data-theme="frappe"] {
-      --color-bg: #303446;
-      --color-surface: #414559;
-      --color-border: #51576d;
-      --color-text: #c6d0f5;
-      --color-muted: #a5adce;
-      --color-accent: #ca9ee6;
-      --color-accent-hover: #d8b1ef;
-      --color-card-bg: #292c3c;
+      --color-bg: #303446; --color-surface: #414559; --color-border: #51576d;
+      --color-text: #c6d0f5; --color-muted: #a5adce; --color-accent: #ca9ee6;
+      --color-accent-hover: #d8b1ef; --color-card-bg: #292c3c;
     }
-
     html[data-theme="catppuccin"] {
-      --color-bg: #1e1e2e;
-      --color-surface: #313244;
-      --color-border: #45475a;
-      --color-text: #cdd6f4;
-      --color-muted: #a6adc8;
-      --color-accent: #cba6f7;
-      --color-accent-hover: #d8b5ff;
-      --color-card-bg: #181825;
+      --color-bg: #1e1e2e; --color-surface: #313244; --color-border: #45475a;
+      --color-text: #cdd6f4; --color-muted: #a6adc8; --color-accent: #cba6f7;
+      --color-accent-hover: #d8b5ff; --color-card-bg: #181825;
     }
 
     /* ─── UI Chrome Tokens (not canvas, not production) ─── */
@@ -66,20 +113,10 @@
       --ui-muted: #666;
       --ui-accent: #B8965A;
       --ui-hover: #1a1a1a;
-      --text-label-xs: 0.55rem;
-      --text-label: 0.7rem;
-      --text-body: 0.875rem;
-      --tracking-wide: 0.3em;
     }
 
     /* ─── Reset ─── */
-    *,
-    *::before,
-    *::after {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     /* ─── Shell ─── */
     body {
@@ -105,26 +142,14 @@
       position: relative;
       flex-shrink: 0;
     }
-
-    #left-panel.collapsed {
-      width: 0;
-      min-width: 0;
-    }
-
+    #left-panel.collapsed { width: 0; min-width: 0; }
     #left-panel-inner {
       flex: 1;
       overflow-y: auto;
       overflow-x: hidden;
     }
-
-    #left-panel-inner::-webkit-scrollbar {
-      width: 4px;
-    }
-
-    #left-panel-inner::-webkit-scrollbar-thumb {
-      background: #333;
-      border-radius: 2px;
-    }
+    #left-panel-inner::-webkit-scrollbar { width: 4px; }
+    #left-panel-inner::-webkit-scrollbar-thumb { background: #333; border-radius: 2px; }
 
     /* ─── Canvas Area ─── */
     #canvas-area {
@@ -146,7 +171,6 @@
       border-bottom: 1px solid var(--ui-border);
       flex-shrink: 0;
     }
-
     .tab-btn {
       padding: 0.25rem 0.75rem;
       background: none;
@@ -161,16 +185,8 @@
       height: 100%;
       transition: color 0.15s;
     }
-
-    .tab-btn:hover {
-      color: var(--ui-text);
-    }
-
-    .tab-btn.active {
-      color: var(--ui-text);
-      border-bottom-color: var(--ui-accent);
-    }
-
+    .tab-btn:hover { color: var(--ui-text); }
+    .tab-btn.active { color: var(--ui-text); border-bottom-color: var(--ui-accent); }
     #canvas-topbar-right {
       margin-left: auto;
       display: flex;
@@ -185,15 +201,8 @@
       overflow-x: hidden;
       background: #1c1c1c;
     }
-
-    #canvas-scroll::-webkit-scrollbar {
-      width: 6px;
-    }
-
-    #canvas-scroll::-webkit-scrollbar-thumb {
-      background: #333;
-      border-radius: 3px;
-    }
+    #canvas-scroll::-webkit-scrollbar { width: 6px; }
+    #canvas-scroll::-webkit-scrollbar-thumb { background: #333; border-radius: 3px; }
 
     /* ─── Canvas Inner ─── */
     #canvas {
@@ -229,12 +238,7 @@
       position: relative;
       flex-shrink: 0;
     }
-
-    #right-panel.collapsed {
-      width: 0;
-      min-width: 0;
-    }
-
+    #right-panel.collapsed { width: 0; min-width: 0; }
     #right-panel-inner {
       width: 240px;
       height: 100%;
@@ -260,22 +264,9 @@
       z-index: 20;
       transition: color 0.15s;
     }
-
-    .panel-toggle:hover {
-      color: var(--ui-text);
-    }
-
-    #left-toggle {
-      right: -16px;
-      border-radius: 0 4px 4px 0;
-      border-left: none;
-    }
-
-    #right-toggle {
-      left: -16px;
-      border-radius: 4px 0 0 4px;
-      border-right: none;
-    }
+    .panel-toggle:hover { color: var(--ui-text); }
+    #left-toggle { right: -16px; border-radius: 0 4px 4px 0; border-left: none; }
+    #right-toggle { left: -16px; border-radius: 4px 0 0 4px; border-right: none; }
 
     /* ─── Panel Headers ─── */
     .panel-title {
@@ -293,7 +284,6 @@
     .ctrl-panel {
       border-bottom: 1px solid var(--ui-border);
     }
-
     .ctrl-panel-header {
       padding: 0.5rem 0.75rem;
       font-size: 10px;
@@ -308,28 +298,14 @@
       user-select: none;
       transition: color 0.15s;
     }
-
-    .ctrl-panel-header:hover {
-      color: var(--ui-text);
-    }
-
-    .ctrl-panel-header .chevron {
-      transition: transform 0.2s;
-      font-size: 8px;
-    }
-
-    .ctrl-panel.open .ctrl-panel-header .chevron {
-      transform: rotate(180deg);
-    }
-
+    .ctrl-panel-header:hover { color: var(--ui-text); }
+    .ctrl-panel-header .chevron { transition: transform 0.2s; font-size: 8px; }
+    .ctrl-panel.open .ctrl-panel-header .chevron { transform: rotate(180deg); }
     .ctrl-panel-body {
       display: none;
       padding: 0.5rem 0.75rem 0.75rem;
     }
-
-    .ctrl-panel.open .ctrl-panel-body {
-      display: block;
-    }
+    .ctrl-panel.open .ctrl-panel-body { display: block; }
 
     /* ─── Control Widgets ─── */
     .ctrl-row {
@@ -338,7 +314,6 @@
       gap: 0.4rem;
       margin-bottom: 0.45rem;
     }
-
     .ctrl-label {
       font-size: 10px;
       color: var(--ui-muted);
@@ -346,7 +321,6 @@
       flex-shrink: 0;
       min-width: 80px;
     }
-
     .ctrl-val {
       font-size: 10px;
       color: var(--ui-text);
@@ -354,14 +328,12 @@
       text-align: right;
       font-variant-numeric: tabular-nums;
     }
-
     input[type="range"] {
       flex: 1;
       height: 3px;
       accent-color: var(--ui-accent);
       cursor: pointer;
     }
-
     input[type="color"] {
       width: 24px;
       height: 20px;
@@ -371,7 +343,6 @@
       padding: 0;
       border-radius: 3px;
     }
-
     select {
       flex: 1;
       background: #1a1a1a;
@@ -383,14 +354,12 @@
       border-radius: 3px;
       cursor: pointer;
     }
-
     .ctrl-btn-group {
       display: flex;
       gap: 3px;
       flex-wrap: wrap;
       margin-bottom: 0.45rem;
     }
-
     .ctrl-btn {
       background: #1a1a1a;
       border: 1px solid var(--ui-border);
@@ -403,24 +372,17 @@
       letter-spacing: 0.05em;
       transition: all 0.15s;
     }
-
-    .ctrl-btn:hover {
-      color: var(--ui-text);
-      border-color: #444;
-    }
-
+    .ctrl-btn:hover { color: var(--ui-text); border-color: #444; }
     .ctrl-btn.active {
       background: color-mix(in srgb, var(--ui-accent) 15%, transparent);
       border-color: var(--ui-accent);
       color: var(--ui-accent);
     }
-
     .ctrl-divider {
       height: 1px;
       background: var(--ui-border);
       margin: 0.5rem 0;
     }
-
     .ctrl-section-label {
       font-size: 9px;
       text-transform: uppercase;
@@ -429,9 +391,7 @@
       margin-bottom: 0.35rem;
       opacity: 0.7;
     }
-
-    input[type="text"],
-    textarea {
+    input[type="text"], textarea {
       background: #1a1a1a;
       border: 1px solid var(--ui-border);
       color: var(--ui-text);
@@ -441,11 +401,7 @@
       border-radius: 3px;
       width: 100%;
     }
-
-    textarea {
-      resize: vertical;
-      min-height: 48px;
-    }
+    textarea { resize: vertical; min-height: 48px; }
 
     /* ─── Scale Preview Bars ─── */
     .scale-preview {
@@ -454,20 +410,17 @@
       gap: 2px;
       margin-bottom: 0.45rem;
     }
-
     .scale-bar-row {
       display: flex;
       align-items: center;
       gap: 4px;
     }
-
     .scale-bar {
       height: 6px;
       background: color-mix(in srgb, var(--ui-accent) 40%, transparent);
       border-radius: 1px;
       min-width: 2px;
     }
-
     .scale-bar-label {
       font-size: 8px;
       color: var(--ui-muted);
@@ -482,18 +435,12 @@
       gap: 0.3rem;
       margin-bottom: 0.45rem;
     }
-
     .color-row {
       display: flex;
       align-items: center;
       gap: 0.3rem;
     }
-
-    .color-row label {
-      font-size: 9px;
-      color: var(--ui-muted);
-      flex: 1;
-    }
+    .color-row label { font-size: 9px; color: var(--ui-muted); flex: 1; }
 
     /* ─── Theme Tabs ─── */
     .theme-tabs {
@@ -501,7 +448,6 @@
       gap: 2px;
       margin-bottom: 0.5rem;
     }
-
     .theme-tab {
       flex: 1;
       padding: 3px 0;
@@ -515,11 +461,7 @@
       letter-spacing: 0.05em;
       transition: all 0.15s;
     }
-
-    .theme-tab.active {
-      border-color: var(--ui-accent);
-      color: var(--ui-accent);
-    }
+    .theme-tab.active { border-color: var(--ui-accent); color: var(--ui-accent); }
 
     /* ─── Type Specimen Strip ─── */
     .type-specimen {
@@ -530,7 +472,6 @@
       margin-bottom: 0.45rem;
       overflow: hidden;
     }
-
     .type-specimen .specimen-h1 {
       font-family: 'Cormorant Garamond', serif;
       font-style: italic;
@@ -538,13 +479,11 @@
       line-height: 1;
       color: var(--color-text, #EDE8DF);
     }
-
     .type-specimen .specimen-body {
       font-family: 'Manrope', sans-serif;
       color: color-mix(in srgb, var(--color-text, #EDE8DF) 70%, transparent);
       margin-top: 4px;
     }
-
     .type-specimen .specimen-label {
       font-family: 'Manrope', sans-serif;
       text-transform: uppercase;
@@ -559,7 +498,6 @@
       gap: 2px;
       margin-bottom: 0.45rem;
     }
-
     .order-item {
       display: flex;
       align-items: center;
@@ -573,20 +511,9 @@
       color: var(--ui-text);
       user-select: none;
     }
-
-    .order-item:active {
-      cursor: grabbing;
-    }
-
-    .order-item.drag-over {
-      border-color: var(--ui-accent);
-      background: color-mix(in srgb, var(--ui-accent) 10%, transparent);
-    }
-
-    .order-item .drag-dot {
-      color: var(--ui-muted);
-      font-size: 8px;
-    }
+    .order-item:active { cursor: grabbing; }
+    .order-item.drag-over { border-color: var(--ui-accent); background: color-mix(in srgb, var(--ui-accent) 10%, transparent); }
+    .order-item .drag-dot { color: var(--ui-muted); font-size: 8px; }
 
     /* ─── Snapshot List ─── */
     .snapshot-list {
@@ -595,7 +522,6 @@
       gap: 3px;
       margin-bottom: 0.45rem;
     }
-
     .snapshot-item {
       display: flex;
       align-items: center;
@@ -607,12 +533,7 @@
       font-size: 9px;
       color: var(--ui-text);
     }
-
-    .snapshot-item .snap-actions {
-      display: flex;
-      gap: 3px;
-    }
-
+    .snapshot-item .snap-actions { display: flex; gap: 3px; }
     .snap-btn {
       background: none;
       border: none;
@@ -621,10 +542,7 @@
       font-size: 9px;
       padding: 0 2px;
     }
-
-    .snap-btn:hover {
-      color: var(--ui-accent);
-    }
+    .snap-btn:hover { color: var(--ui-accent); }
 
     /* ─── Canvas Blocks ─── */
     .canvas-block {
@@ -634,19 +552,9 @@
       transition: border-color 0.15s;
       cursor: pointer;
     }
-
-    .canvas-block:hover {
-      border-color: color-mix(in srgb, var(--ui-accent) 30%, transparent);
-    }
-
-    .canvas-block.selected {
-      border-color: var(--ui-accent);
-    }
-
-    .canvas-block.drag-over-block {
-      border-color: var(--ui-accent);
-      border-style: dashed;
-    }
+    .canvas-block:hover { border-color: color-mix(in srgb, var(--ui-accent) 30%, transparent); }
+    .canvas-block.selected { border-color: var(--ui-accent); }
+    .canvas-block.drag-over-block { border-color: var(--ui-accent); border-style: dashed; }
 
     .block-handle {
       position: absolute;
@@ -654,7 +562,7 @@
       left: 0;
       right: 0;
       height: 20px;
-      background: color-mix(in srgb, var(--ui-accent) 10%, rgba(0, 0, 0, 0.5));
+      background: color-mix(in srgb, var(--ui-accent) 10%, rgba(0,0,0,0.5));
       display: flex;
       align-items: center;
       padding: 0 8px;
@@ -664,27 +572,19 @@
       opacity: 0;
       transition: opacity 0.15s;
     }
-
-    .canvas-block:hover .block-handle {
-      opacity: 1;
-    }
-
+    .canvas-block:hover .block-handle { opacity: 1; }
     .block-handle-label {
       font-size: 9px;
       font-weight: 600;
       letter-spacing: 0.12em;
       text-transform: uppercase;
-      color: rgba(255, 255, 255, 0.7);
+      color: rgba(255,255,255,0.7);
     }
-
     .block-handle-grip {
       font-size: 10px;
-      color: rgba(255, 255, 255, 0.4);
+      color: rgba(255,255,255,0.4);
     }
-
-    .canvas-block.pinned .block-handle {
-      cursor: default;
-    }
+    .canvas-block.pinned .block-handle { cursor: default; }
 
     /* ─── Block: Navbar ─── */
     .block-navbar {
@@ -695,37 +595,31 @@
       background: var(--color-bg);
       border-bottom: 1px solid var(--color-border);
     }
-
     .block-navbar.variant-persistent {
       padding: 0.75rem 2.5rem;
     }
-
     .navbar-logo {
       font-family: 'Cormorant Garamond', serif;
       font-size: 1.1rem;
       letter-spacing: 0.2em;
       color: var(--color-text);
     }
-
     .navbar-hamburger {
       display: flex;
       flex-direction: column;
       gap: 5px;
       cursor: pointer;
     }
-
     .navbar-hamburger span {
       display: block;
       width: 20px;
       height: 1px;
       background: var(--color-text);
     }
-
     .navbar-links {
       display: none;
       gap: 2rem;
     }
-
     .navbar-links a {
       font-size: 0.7rem;
       letter-spacing: 0.2em;
@@ -733,20 +627,11 @@
       color: var(--color-muted);
       text-decoration: none;
     }
-
-    .block-navbar.variant-persistent .navbar-links {
-      display: flex;
-    }
-
-    .block-navbar.variant-persistent .navbar-hamburger {
-      display: none;
-    }
-
+    .block-navbar.variant-persistent .navbar-links { display: flex; }
+    .block-navbar.variant-persistent .navbar-hamburger { display: none; }
     .block-navbar.variant-bottom {
       position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
+      bottom: 0; left: 0; right: 0;
       top: auto;
       border-top: 1px solid var(--color-border);
       border-bottom: none;
@@ -763,15 +648,12 @@
       overflow: hidden;
       background: var(--color-bg);
     }
-
     .block-hero.variant-split {
       flex-direction: row;
     }
-
     .block-hero.variant-minimal {
       min-height: 60vh;
     }
-
     .hero-image-placeholder {
       position: absolute;
       inset: 0;
@@ -780,21 +662,18 @@
       align-items: center;
       justify-content: center;
     }
-
     .hero-image-placeholder img {
       width: 100%;
       height: 100%;
       object-fit: cover;
       opacity: 0.4;
     }
-
     .hero-content {
       position: relative;
       z-index: 2;
       text-align: center;
       padding: 2rem;
     }
-
     .hero-eyebrow {
       font-size: 0.7rem;
       letter-spacing: 0.3em;
@@ -803,7 +682,6 @@
       margin-bottom: 1rem;
       font-family: 'Manrope', sans-serif;
     }
-
     .hero-title {
       font-family: 'Cormorant Garamond', serif;
       font-style: italic;
@@ -811,7 +689,6 @@
       line-height: 1;
       color: var(--color-text);
     }
-
     .hero-stats {
       display: flex;
       gap: 2.5rem;
@@ -819,7 +696,6 @@
       margin-top: 2rem;
       flex-wrap: wrap;
     }
-
     .hero-stat-num {
       font-family: 'Cormorant Garamond', serif;
       font-style: italic;
@@ -827,14 +703,12 @@
       color: var(--color-text);
       display: block;
     }
-
     .hero-stat-label {
       font-size: 0.62rem;
       letter-spacing: 0.2em;
       text-transform: uppercase;
       color: var(--color-muted);
     }
-
     .hero-cta {
       display: inline-block;
       margin-top: 2rem;
@@ -848,10 +722,7 @@
       font-family: 'Manrope', sans-serif;
       transition: background 0.2s;
     }
-
-    .hero-cta:hover {
-      background: color-mix(in srgb, var(--color-accent) 15%, transparent);
-    }
+    .hero-cta:hover { background: color-mix(in srgb, var(--color-accent) 15%, transparent); }
 
     /* ─── Block: Marquee ─── */
     .block-marquee {
@@ -861,27 +732,16 @@
       background: var(--color-bg);
       overflow: hidden;
     }
-
     .marquee-track {
       display: flex;
       white-space: nowrap;
       animation: marquee 30s linear infinite;
     }
-
-    .marquee-track:hover {
-      animation-play-state: paused;
-    }
-
+    .marquee-track:hover { animation-play-state: paused; }
     @keyframes marquee {
-      from {
-        transform: translateX(0);
-      }
-
-      to {
-        transform: translateX(-50%);
-      }
+      from { transform: translateX(0); }
+      to { transform: translateX(-50%); }
     }
-
     .marquee-item {
       font-size: 0.7rem;
       font-weight: 600;
@@ -890,7 +750,6 @@
       color: var(--color-muted);
       padding: 0 2rem;
     }
-
     .marquee-sep {
       color: var(--color-accent);
       padding: 0 0.5rem;
@@ -901,7 +760,6 @@
       background: var(--color-bg);
       padding: 2.5rem 2rem 1.5rem;
     }
-
     .portfolio-eyebrow {
       font-size: 0.7rem;
       letter-spacing: 0.3em;
@@ -910,7 +768,6 @@
       margin-bottom: 0.5rem;
       font-family: 'Manrope', sans-serif;
     }
-
     .portfolio-heading {
       font-family: 'Cormorant Garamond', serif;
       font-style: italic;
@@ -918,14 +775,12 @@
       color: var(--color-text);
       margin-bottom: 0.75rem;
     }
-
     /* Accordion variant */
     .portfolio-accordion {
       display: flex;
       height: 70vh;
       gap: 6px;
     }
-
     .accordion-panel {
       flex: 0.8;
       position: relative;
@@ -935,18 +790,13 @@
       transition: flex 0.4s ease;
       background: var(--color-surface);
     }
-
-    .accordion-panel.active {
-      flex: 5;
-    }
-
+    .accordion-panel.active { flex: 5; }
     .accordion-panel-img {
       position: absolute;
       inset: 0;
       background: linear-gradient(135deg, var(--color-surface), var(--color-card-bg));
       opacity: 0.6;
     }
-
     .accordion-panel-label {
       position: absolute;
       bottom: 1.5rem;
@@ -956,25 +806,22 @@
       font-style: italic;
       font-weight: 300;
       font-size: clamp(1rem, 2vw, 2rem);
-      color: rgba(255, 255, 255, 0.9);
+      color: rgba(255,255,255,0.9);
       writing-mode: vertical-lr;
       transform: rotate(180deg);
       transition: writing-mode 0.3s, transform 0.3s;
     }
-
     .accordion-panel.active .accordion-panel-label {
       writing-mode: horizontal-tb;
       transform: none;
       font-size: clamp(1.8rem, 3vw, 3rem);
     }
-
     /* Card Grid variant */
     .portfolio-cards {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 1rem;
     }
-
     .portfolio-card {
       aspect-ratio: 3/2;
       background: var(--color-surface);
@@ -987,17 +834,12 @@
       cursor: pointer;
       transition: transform 0.2s;
     }
-
-    .portfolio-card:hover {
-      transform: scale(0.99);
-    }
-
+    .portfolio-card:hover { transform: scale(0.99); }
     .portfolio-card-overlay {
       position: absolute;
       inset: 0;
-      background: linear-gradient(to top, rgba(0, 0, 0, 0.7) 0%, transparent 60%);
+      background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 60%);
     }
-
     .portfolio-card-label {
       position: relative;
       z-index: 1;
@@ -1006,7 +848,6 @@
       font-size: 1.3rem;
       color: #fff;
     }
-
     /* Strip variant */
     .portfolio-strip {
       display: flex;
@@ -1014,15 +855,8 @@
       overflow-x: auto;
       padding-bottom: 0.5rem;
     }
-
-    .portfolio-strip::-webkit-scrollbar {
-      height: 3px;
-    }
-
-    .portfolio-strip::-webkit-scrollbar-thumb {
-      background: var(--color-border);
-    }
-
+    .portfolio-strip::-webkit-scrollbar { height: 3px; }
+    .portfolio-strip::-webkit-scrollbar-thumb { background: var(--color-border); }
     .portfolio-strip-item {
       flex-shrink: 0;
       width: 240px;
@@ -1035,7 +869,6 @@
       position: relative;
       overflow: hidden;
     }
-
     /* Tabs variant */
     .portfolio-tabs-nav {
       display: flex;
@@ -1043,7 +876,6 @@
       border-bottom: 1px solid var(--color-border);
       margin-bottom: 1rem;
     }
-
     .portfolio-tab-btn {
       padding: 0.75rem 1.5rem;
       background: none;
@@ -1057,12 +889,7 @@
       cursor: pointer;
       margin-bottom: -1px;
     }
-
-    .portfolio-tab-btn.active {
-      color: var(--color-text);
-      border-bottom-color: var(--color-accent);
-    }
-
+    .portfolio-tab-btn.active { color: var(--color-text); border-bottom-color: var(--color-accent); }
     .portfolio-tabs-content {
       aspect-ratio: 16/7;
       background: var(--color-surface);
@@ -1079,26 +906,22 @@
       align-items: center;
       justify-content: center;
     }
-
     .pullquote-inner {
       max-width: 896px;
       margin: 0 auto;
       text-align: center;
       padding: 5rem 1.5rem;
     }
-
     .block-pullquote.variant-left-accent .pullquote-inner {
       text-align: left;
       max-width: 700px;
       padding-left: 2rem;
       border-left: 2px solid var(--color-accent);
     }
-
     .block-pullquote.variant-edge-bleed {
       margin-top: -4rem;
       padding-top: 4rem;
     }
-
     .pullquote-text {
       font-family: 'Cormorant Garamond', serif;
       font-style: italic;
@@ -1106,7 +929,6 @@
       line-height: 1.3;
       color: var(--color-text);
     }
-
     .pullquote-attr {
       font-size: 0.7rem;
       letter-spacing: 0.3em;
@@ -1121,14 +943,12 @@
       background: var(--color-bg);
       padding: 6rem 2.5rem;
     }
-
     .about-inner {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 5rem;
       align-items: center;
     }
-
     .about-eyebrow {
       font-size: 0.7rem;
       letter-spacing: 0.4em;
@@ -1137,7 +957,6 @@
       margin-bottom: 1rem;
       font-family: 'Manrope', sans-serif;
     }
-
     .about-heading {
       font-family: 'Cormorant Garamond', serif;
       font-style: italic;
@@ -1146,20 +965,17 @@
       color: var(--color-text);
       margin-bottom: 1.5rem;
     }
-
     .about-body {
       color: var(--color-muted);
       line-height: 1.7;
       font-size: 1rem;
       margin-bottom: 1.5rem;
     }
-
     .about-skills {
       display: flex;
       flex-wrap: wrap;
       gap: 0.5rem;
     }
-
     .skill-pill {
       padding: 0.25rem 0.65rem;
       border: 1px solid var(--color-border);
@@ -1169,7 +985,6 @@
       font-family: 'Manrope', sans-serif;
       letter-spacing: 0.05em;
     }
-
     .about-image {
       aspect-ratio: 4/5;
       background: linear-gradient(160deg, var(--color-surface), var(--color-card-bg));
@@ -1187,13 +1002,11 @@
       background: var(--color-bg);
       padding: 6rem 2.5rem;
     }
-
     .contact-inner {
       max-width: 672px;
       margin: 0 auto;
       text-align: center;
     }
-
     .contact-eyebrow {
       font-size: 0.7rem;
       letter-spacing: 0.4em;
@@ -1202,7 +1015,6 @@
       margin-bottom: 1rem;
       font-family: 'Manrope', sans-serif;
     }
-
     .contact-heading {
       font-family: 'Cormorant Garamond', serif;
       font-weight: 300;
@@ -1210,7 +1022,6 @@
       color: var(--color-text);
       margin-bottom: 1rem;
     }
-
     .contact-ctas {
       display: flex;
       gap: 1rem;
@@ -1218,7 +1029,6 @@
       margin-bottom: 2rem;
       flex-wrap: wrap;
     }
-
     .contact-cta {
       padding: 0.75rem 2rem;
       border: 1px solid var(--color-accent);
@@ -1230,16 +1040,13 @@
       cursor: pointer;
       background: none;
     }
-
     .contact-form {
       display: flex;
       flex-direction: column;
       gap: 1rem;
       text-align: left;
     }
-
-    .form-field input,
-    .form-field textarea {
+    .form-field input, .form-field textarea {
       background: var(--color-surface);
       border: 1px solid var(--color-border);
       color: var(--color-text);
@@ -1249,12 +1056,7 @@
       width: 100%;
       border-radius: 0;
     }
-
-    .form-field textarea {
-      height: 100px;
-      resize: vertical;
-    }
-
+    .form-field textarea { height: 100px; resize: vertical; }
     .form-label {
       font-size: 0.62rem;
       letter-spacing: 0.15em;
@@ -1272,7 +1074,6 @@
       padding: 2rem;
       text-align: center;
     }
-
     .footer-text {
       font-size: 0.62rem;
       letter-spacing: 0.2em;
@@ -1284,8 +1085,7 @@
     /* ─── Scroll Progress Bar ─── */
     #progress-bar {
       position: fixed;
-      top: 0;
-      left: 0;
+      top: 0; left: 0;
       height: 2px;
       background: var(--color-accent, #B8965A);
       width: 0%;
@@ -1293,7 +1093,6 @@
       transition: width 0.1s;
       pointer-events: none;
     }
-
     #section-dots {
       position: fixed;
       right: 1rem;
@@ -1305,17 +1104,13 @@
       z-index: 9999;
       pointer-events: none;
     }
-
     .section-dot {
       width: 6px;
       height: 6px;
       border-radius: 50%;
       background: var(--color-border, #333);
     }
-
-    .section-dot.active {
-      background: var(--color-accent, #B8965A);
-    }
+    .section-dot.active { background: var(--color-accent, #B8965A); }
 
     /* ─── Collection Mode Blocks ─── */
     .block-collection-header {
@@ -1329,7 +1124,6 @@
       top: 0;
       z-index: 10;
     }
-
     .collection-header-back {
       font-size: 0.62rem;
       letter-spacing: 0.2em;
@@ -1338,7 +1132,6 @@
       cursor: pointer;
       font-family: 'Manrope', sans-serif;
     }
-
     .collection-header-title {
       font-family: 'Cormorant Garamond', serif;
       font-style: italic;
@@ -1351,14 +1144,12 @@
       min-height: 100vh;
       background: var(--color-bg);
     }
-
     .collection-text-side {
       padding: 4rem 2rem;
       display: flex;
       align-items: center;
       justify-content: center;
     }
-
     .spotlight-card {
       max-width: 420px;
       padding: 2.5rem;
@@ -1366,7 +1157,6 @@
       border: 1px solid var(--color-border);
       border-radius: 12px;
     }
-
     .spotlight-card-eyebrow {
       font-size: 0.62rem;
       letter-spacing: 0.2em;
@@ -1375,7 +1165,6 @@
       margin-bottom: 0.75rem;
       font-family: 'Manrope', sans-serif;
     }
-
     .spotlight-card-title {
       font-family: 'Cormorant Garamond', serif;
       font-style: italic;
@@ -1384,20 +1173,17 @@
       color: var(--color-text);
       margin-bottom: 1rem;
     }
-
     .spotlight-card-desc {
       font-size: 0.875rem;
       color: var(--color-muted);
       line-height: 1.6;
       margin-bottom: 1rem;
     }
-
     .spotlight-card-pills {
       display: flex;
       flex-wrap: wrap;
       gap: 0.35rem;
     }
-
     .spotlight-pill {
       padding: 0.2rem 0.6rem;
       border: 1px solid var(--color-border);
@@ -1406,14 +1192,12 @@
       color: var(--color-muted);
       font-family: 'Manrope', sans-serif;
     }
-
     .collection-image-side {
       padding: 4rem 3rem;
       display: flex;
       align-items: center;
       justify-content: center;
     }
-
     .carousel-placeholder {
       border: 1px solid var(--color-border);
       background: var(--color-surface);
@@ -1428,7 +1212,6 @@
       font-size: 0.7rem;
       letter-spacing: 0.1em;
     }
-
     .carousel-3d-icon {
       font-size: 2rem;
       opacity: 0.3;
@@ -1440,34 +1223,26 @@
       grid-template-columns: repeat(3, 1fr);
       gap: 0.5rem;
     }
-
     .masonry-item {
       background: var(--color-surface);
       border-radius: 4px;
     }
-
-    .masonry-item:nth-child(2) {
-      grid-row: span 2;
-    }
-
+    .masonry-item:nth-child(2) { grid-row: span 2; }
     .filmstrip {
       display: flex;
       gap: 0.5rem;
       overflow-x: auto;
     }
-
     .filmstrip-item {
       flex-shrink: 0;
       background: var(--color-surface);
       border-radius: 4px;
     }
-
     .tiled-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 0.5rem;
     }
-
     .tiled-item {
       background: var(--color-surface);
       border-radius: 4px;
@@ -1477,18 +1252,14 @@
     #lightbox {
       position: fixed;
       inset: 0;
-      background: rgba(0, 0, 0, 0.9);
+      background: rgba(0,0,0,0.9);
       z-index: 9999;
       display: none;
       align-items: center;
       justify-content: center;
       padding: 2rem;
     }
-
-    #lightbox.open {
-      display: flex;
-    }
-
+    #lightbox.open { display: flex; }
     .lightbox-inner {
       display: flex;
       align-items: center;
@@ -1496,14 +1267,12 @@
       max-width: 1100px;
       max-height: 90vh;
     }
-
     .lightbox-img-wrap {
       background: var(--color-surface, #111116);
       border-radius: 8px;
       overflow: hidden;
       flex-shrink: 0;
     }
-
     .lightbox-img-placeholder {
       width: 300px;
       background: linear-gradient(135deg, var(--color-surface, #111116), var(--color-card-bg, #18181E));
@@ -1514,13 +1283,12 @@
       font-size: 0.7rem;
       letter-spacing: 0.1em;
     }
-
     .lightbox-close {
       position: absolute;
       top: 1rem;
       right: 1rem;
       background: none;
-      border: 1px solid rgba(255, 255, 255, 0.2);
+      border: 1px solid rgba(255,255,255,0.2);
       color: #fff;
       width: 2rem;
       height: 2rem;
@@ -1534,7 +1302,6 @@
       padding: 0.5rem 0.75rem;
       border-bottom: 1px solid var(--ui-border);
     }
-
     .inspector-block-name {
       font-size: 11px;
       font-weight: 600;
@@ -1543,7 +1310,6 @@
       letter-spacing: 0.08em;
       text-transform: uppercase;
     }
-
     .inspector-empty {
       padding: 1rem 0.75rem;
       font-size: 11px;
@@ -1555,24 +1321,19 @@
     #all-themes-overlay {
       position: fixed;
       inset: 0;
-      background: rgba(0, 0, 0, 0.95);
+      background: rgba(0,0,0,0.95);
       z-index: 9998;
       display: none;
       overflow-y: auto;
       padding: 1rem;
     }
-
-    #all-themes-overlay.open {
-      display: block;
-    }
-
+    #all-themes-overlay.open { display: block; }
     .all-themes-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
       padding: 0 0.5rem 1rem;
     }
-
     .all-themes-title {
       font-size: 11px;
       font-weight: 600;
@@ -1580,19 +1341,16 @@
       text-transform: uppercase;
       color: var(--ui-muted);
     }
-
     .all-themes-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 1rem;
     }
-
     .theme-preview-frame {
       border: 1px solid var(--ui-border);
       border-radius: 4px;
       overflow: hidden;
     }
-
     .theme-preview-label {
       font-size: 9px;
       letter-spacing: 0.1em;
@@ -1614,7 +1372,6 @@
       align-items: flex-end;
       z-index: 100;
     }
-
     .canvas-float-btn {
       padding: 0.35rem 0.85rem;
       background: color-mix(in srgb, var(--color-bg) 70%, transparent);
@@ -1629,7 +1386,6 @@
     }
   </style>
 </head>
-
 <body>
   <!-- Lightbox (global overlay) -->
   <div id="lightbox">
@@ -1678,19 +1434,17 @@
     <button class="panel-toggle" id="right-toggle" onclick="togglePanel('right')">›</button>
     <div id="right-panel-inner">
       <div class="panel-title">Inspector</div>
-      <div id="inspector-content">
-        <div class="inspector-empty">Click a block to inspect</div>
-      </div>
+      <div id="inspector-content"><div class="inspector-empty">Click a block to inspect</div></div>
     </div>
   </div>
 
   <script>
     // ─── State ───────────────────────────────────────────────────
     const THEMES = {
-      dark: { bg: '#0C0C0E', surface: '#111116', border: '#1F1F25', text: '#EDE8DF', muted: '#5C5349', accent: '#B8965A', cardBg: '#18181E', glowIntensity: 1, blurAmount: 12 },
-      latte: { bg: '#eff1f5', surface: '#e6e9ef', border: '#ccd0da', text: '#4c4f69', muted: '#6c6f85', accent: '#8839ef', cardBg: '#dce0e8', glowIntensity: 0.5, blurAmount: 8 },
-      frappe: { bg: '#303446', surface: '#414559', border: '#51576d', text: '#c6d0f5', muted: '#a5adce', accent: '#ca9ee6', cardBg: '#292c3c', glowIntensity: 0.7, blurAmount: 10 },
-      catppuccin: { bg: '#1e1e2e', surface: '#313244', border: '#45475a', text: '#cdd6f4', muted: '#a6adc8', accent: '#cba6f7', cardBg: '#181825', glowIntensity: 0.8, blurAmount: 10 },
+      dark:        { bg:'#0C0C0E', surface:'#111116', border:'#1F1F25', text:'#EDE8DF', muted:'#5C5349', accent:'#B8965A', cardBg:'#18181E', glowIntensity:1, blurAmount:12 },
+      latte:       { bg:'#eff1f5', surface:'#e6e9ef', border:'#ccd0da', text:'#4c4f69', muted:'#6c6f85', accent:'#8839ef', cardBg:'#dce0e8', glowIntensity:0.5, blurAmount:8 },
+      frappe:      { bg:'#303446', surface:'#414559', border:'#51576d', text:'#c6d0f5', muted:'#a5adce', accent:'#ca9ee6', cardBg:'#292c3c', glowIntensity:0.7, blurAmount:10 },
+      catppuccin:  { bg:'#1e1e2e', surface:'#313244', border:'#45475a', text:'#cdd6f4', muted:'#a6adc8', accent:'#cba6f7', cardBg:'#181825', glowIntensity:0.8, blurAmount:10 },
     };
 
     const DEFAULT_STATE = {
@@ -1698,8 +1452,8 @@
       // P1: Layout Grid
       containerWidth: 1440,
       containerFullBleed: true,
-      sectionOrder: ['hero', 'marquee', 'portfolio', 'pullquote', 'about', 'contact'],
-      sectionHeights: { hero: '100vh', marquee: 'auto', portfolio: '100vh', pullquote: '100vh', about: 'auto', contact: 'auto' },
+      sectionOrder: ['hero','marquee','portfolio','pullquote','about','contact'],
+      sectionHeights: { hero:'100vh', marquee:'auto', portfolio:'100vh', pullquote:'100vh', about:'auto', contact:'auto' },
       // P2: Spacing
       baseUnit: 8,
       sectionPaddingV: 6,
@@ -1757,11 +1511,11 @@
     try {
       const saved = localStorage.getItem('gaby-playground-state');
       if (saved) state = Object.assign(state, JSON.parse(saved));
-    } catch (e) { }
+    } catch(e) {}
 
     function setState(patch) {
       Object.assign(state, patch);
-      try { localStorage.setItem('gaby-playground-state', JSON.stringify(state)); } catch (e) { }
+      try { localStorage.setItem('gaby-playground-state', JSON.stringify(state)); } catch(e) {}
       applyState();
     }
 
@@ -1788,7 +1542,7 @@
       frame.style.setProperty('--color-muted', theme.muted);
       frame.style.setProperty('--color-accent', theme.accent);
       frame.style.setProperty('--color-card-bg', theme.cardBg);
-      frame.style.setProperty('--color-accent-hover', theme.accentHover || theme.accent);
+      frame.style.setProperty('--color-accent-hover', theme.accent);
       frame.style.background = theme.bg;
       frame.style.color = theme.text;
     }
@@ -1859,8 +1613,8 @@
           ${footerHTML}
         </div>
         <div class="canvas-float-group">
-          <button class="canvas-float-btn" onclick="document.getElementById('canvas-scroll').scrollTo({top:0,behavior:'smooth'})">↑ Top</button>
-          <button class="canvas-float-btn" id="theme-float-btn" onclick="cycleTheme()" title="Cycle theme">${themeEmoji()}</button>
+          <button class="canvas-float-btn">↑ Top</button>
+          <button class="canvas-float-btn">🌙</button>
         </div>
       `;
     }
@@ -1923,32 +1677,32 @@
     }
 
     function renderMarqueeBlock(theme) {
-      const items = ['Resort &amp; Activewear', 'Bridal &amp; Eveningwear', 'Hand Illustrations', 'Cut &amp; Sew Knits'];
-      const doubled = [...items, ...items].map(i => `<span class="marquee-item">${i}<span class="marquee-sep">/</span></span>`).join('');
+      const items = ['Resort &amp; Activewear','Bridal &amp; Eveningwear','Hand Illustrations','Cut &amp; Sew Knits'];
+      const doubled = [...items,...items].map(i=>`<span class="marquee-item">${i}<span class="marquee-sep">/</span></span>`).join('');
       return `<div class="block-marquee"><div class="marquee-track">${doubled}</div></div>`;
     }
 
     function renderPortfolioBlock(theme, secPadV, secPadH) {
       const v = state.accordionVariant;
-      const cats = ['Resort &amp; Activewear', 'Cut &amp; Sew Knits', 'Bridal &amp; Eveningwear', 'Hand Illustrations'];
+      const cats = ['Resort &amp; Activewear','Cut &amp; Sew Knits','Bridal &amp; Eveningwear','Hand Illustrations'];
       let inner = '';
       if (v === 'accordion') {
-        inner = `<div class="portfolio-accordion">${cats.map((c, i) => `<div class="accordion-panel${i === 0 ? ' active' : ''}" onclick="this.parentNode.querySelectorAll('.accordion-panel').forEach(p=>p.classList.remove('active'));this.classList.add('active')">
+        inner = `<div class="portfolio-accordion">${cats.map((c,i)=>`<div class="accordion-panel${i===0?' active':''}" onclick="this.parentNode.querySelectorAll('.accordion-panel').forEach(p=>p.classList.remove('active'));this.classList.add('active')">
           <div class="accordion-panel-img"></div>
           <div class="accordion-panel-label">${c}</div>
         </div>`).join('')}</div>`;
       } else if (v === 'cards') {
-        inner = `<div class="portfolio-cards">${cats.map(c => `<div class="portfolio-card">
+        inner = `<div class="portfolio-cards">${cats.map(c=>`<div class="portfolio-card">
           <div class="portfolio-card-overlay"></div>
           <div class="portfolio-card-label">${c}</div>
         </div>`).join('')}</div>`;
       } else if (v === 'strip') {
-        inner = `<div class="portfolio-strip">${cats.map(c => `<div class="portfolio-strip-item">
+        inner = `<div class="portfolio-strip">${cats.map(c=>`<div class="portfolio-strip-item">
           <div class="portfolio-card-overlay"></div>
           <div class="portfolio-card-label" style="position:relative;z-index:1;font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.2rem;color:#fff">${c}</div>
         </div>`).join('')}</div>`;
       } else if (v === 'tabs') {
-        inner = `<div class="portfolio-tabs-nav">${cats.map((c, i) => `<button class="portfolio-tab-btn${i === 0 ? ' active' : ''}">${c}</button>`).join('')}</div>
+        inner = `<div class="portfolio-tabs-nav">${cats.map((c,i)=>`<button class="portfolio-tab-btn${i===0?' active':''}">${c}</button>`).join('')}</div>
         <div class="portfolio-tabs-content"><span style="font-size:0.7rem;color:var(--color-muted);letter-spacing:0.1em">[ Selected Collection Preview ]</span></div>`;
       }
       return `<div class="block-portfolio" style="padding:${secPadV} ${secPadH}">
@@ -1972,15 +1726,15 @@
     }
 
     function renderAboutBlock(theme, secPadV, secPadH, titleSize) {
-      const skills = ['Creative Direction', 'Trend Forecasting', 'Technical Design', 'Fit &amp; Grading', 'QC', 'Product Development', 'Adobe Illustrator', 'CLO 3D', 'PROMEAI'];
+      const skills = ['Creative Direction','Trend Forecasting','Technical Design','Fit &amp; Grading','QC','Product Development','Adobe Illustrator','CLO 3D','PROMEAI'];
       return `<div class="block-about" style="padding:${secPadV} ${secPadH}">
-        <div class="about-inner" style="max-width:${state.containerFullBleed ? '1200px' : state.containerWidth + 'px'};margin:0 auto">
+        <div class="about-inner" style="max-width:${state.containerFullBleed?'1200px':state.containerWidth+'px'};margin:0 auto">
           <div>
             <div class="about-eyebrow">About</div>
             <h2 class="about-heading" style="font-size:clamp(2rem,4vw,3.5rem)">The Designer</h2>
             <p class="about-body">Miami-based fashion designer with 10+ years in the industry. Studied at FIDM in Los Angeles and grew into Head of Design at Pitusa. Bilingual (EN/ES).</p>
             <p class="about-body" style="margin-bottom:1.5rem">Specializing in resort, activewear, bridal, and eveningwear with a focus on sustainable sourcing and global vendor relationships.</p>
-            <div class="about-skills">${skills.map(s => `<span class="skill-pill">${s}</span>`).join('')}</div>
+            <div class="about-skills">${skills.map(s=>`<span class="skill-pill">${s}</span>`).join('')}</div>
           </div>
           <div class="about-image">Portrait</div>
         </div>
@@ -2022,12 +1776,12 @@
       const n = state.collectionSectionCount;
 
       const sampleSections = [
-        { eyebrow: 'Resort 2025', title: 'Stephanie Gottlieb Collab', desc: 'Resort-ready pieces developed in collaboration with Stephanie Gottlieb for her flagship collection.', pills: ['Direction', 'Moodboard', 'Tech Packs', 'Sampling', 'Final'] },
-        { eyebrow: 'AW\'23', title: 'Chunky Knits', desc: 'Cozy, oversized knit silhouettes developed for the AW\'23 collection. Sourced from Peruvian artisans.', pills: ['Concept', 'Yarn Sourcing', 'Tech Packs', 'QC'] },
-        { eyebrow: 'Vogue Mexico Feature', title: 'Resort 2025', desc: 'Featured in Vogue Mexico and presented at Miami Swim Week. Resort collection with hand-painted details.', pills: ['Direction', 'Sampling', 'Press', 'Runway'] },
+        { eyebrow: 'Resort 2025', title: 'Stephanie Gottlieb Collab', desc: 'Resort-ready pieces developed in collaboration with Stephanie Gottlieb for her flagship collection.', pills: ['Direction','Moodboard','Tech Packs','Sampling','Final'] },
+        { eyebrow: 'AW\'23', title: 'Chunky Knits', desc: 'Cozy, oversized knit silhouettes developed for the AW\'23 collection. Sourced from Peruvian artisans.', pills: ['Concept','Yarn Sourcing','Tech Packs','QC'] },
+        { eyebrow: 'Vogue Mexico Feature', title: 'Resort 2025', desc: 'Featured in Vogue Mexico and presented at Miami Swim Week. Resort collection with hand-painted details.', pills: ['Direction','Sampling','Press','Runway'] },
       ];
 
-      let sectionsHTML = Array.from({ length: Math.min(n, sampleSections.length) }, (_, i) => {
+      let sectionsHTML = Array.from({length: Math.min(n, sampleSections.length)}, (_, i) => {
         const s = sampleSections[i];
         const carouselContent = renderImageSide(theme, i);
         return `<div class="block-collection-section" style="grid-template-columns:${cols};min-height:100vh">
@@ -2036,7 +1790,7 @@
               <div class="spotlight-card-eyebrow">${s.eyebrow}</div>
               <div class="spotlight-card-title">${s.title}</div>
               <div class="spotlight-card-desc">${s.desc}</div>
-              <div class="spotlight-card-pills">${s.pills.map(p => `<span class="spotlight-pill">${p}</span>`).join('')}</div>
+              <div class="spotlight-card-pills">${s.pills.map(p=>`<span class="spotlight-pill">${p}</span>`).join('')}</div>
             </div>
           </div>
           <div class="collection-image-side">${carouselContent}</div>
@@ -2059,45 +1813,31 @@
       const v = state.imageLayout;
       const h = state.carouselHeight;
       const w = state.carouselFaceWidth;
-      if (v === 'carousel') return `<div class="carousel-placeholder" style="width:${w * 3}px;height:${h}px">
+      if (v === 'carousel') return `<div class="carousel-placeholder" style="width:${w*3}px;height:${h}px">
         <div class="carousel-3d-icon">⟳</div>
         <span>3D Carousel · ${w}×${h}px</span>
         <span style="opacity:0.4">scroll to rotate</span>
       </div>`;
       if (v === 'masonry') return `<div class="masonry-grid" style="width:100%;max-width:500px">
-        ${[1, 2, 3, 4, 5].map(i => `<div class="masonry-item" style="height:${150 + Math.random() * 80}px;background:color-mix(in srgb,var(--color-accent) ${10 + i * 5}%,var(--color-surface))"></div>`).join('')}
+        ${[1,2,3,4,5].map(i=>`<div class="masonry-item" style="height:${150+Math.random()*80}px;background:color-mix(in srgb,var(--color-accent) ${10+i*5}%,var(--color-surface))"></div>`).join('')}
       </div>`;
       if (v === 'filmstrip') return `<div class="filmstrip" style="width:100%;max-width:500px">
-        ${[1, 2, 3, 4].map(i => `<div class="filmstrip-item" style="width:200px;height:${h}px;background:var(--color-surface)"></div>`).join('')}
+        ${[1,2,3,4].map(i=>`<div class="filmstrip-item" style="width:200px;height:${h}px;background:var(--color-surface)"></div>`).join('')}
       </div>`;
       if (v === 'tiled') return `<div class="tiled-grid" style="width:100%;max-width:500px">
-        ${[1, 2, 3, 4].map(i => `<div class="tiled-item" style="height:200px;background:var(--color-surface)"></div>`).join('')}
+        ${[1,2,3,4].map(i=>`<div class="tiled-item" style="height:200px;background:var(--color-surface)"></div>`).join('')}
       </div>`;
-      return `<div class="carousel-placeholder" style="width:300px;height:200px"><span>—</span></div>`;
     }
 
     function applyScrollIndicator() {
       let pb = document.getElementById('progress-bar');
       let sd = document.getElementById('section-dots');
-      if (!pb) { pb = document.createElement('div'); pb.id = 'progress-bar'; document.body.appendChild(pb); }
-      if (!sd) { sd = document.createElement('div'); sd.id = 'section-dots'; document.body.appendChild(sd); }
+      if (!pb) { pb = document.createElement('div'); pb.id='progress-bar'; document.body.appendChild(pb); }
+      if (!sd) { sd = document.createElement('div'); sd.id='section-dots'; document.body.appendChild(sd); }
       pb.style.display = state.scrollIndicator === 'progress' ? 'block' : 'none';
       sd.style.display = state.scrollIndicator === 'dots' ? 'flex' : 'none';
       if (state.scrollIndicator === 'dots') {
-        sd.innerHTML = state.sectionOrder.map((_, i) => `<div class="section-dot${i === 0 ? ' active' : ''}"></div>`).join('');
-      }
-      let bc = document.getElementById('section-breadcrumb');
-      if (!bc) {
-        bc = document.createElement('div');
-        bc.id = 'section-breadcrumb';
-        bc.style.cssText = 'position:fixed;top:48px;left:50%;transform:translateX(-50%);display:none;align-items:center;gap:6px;z-index:9999;background:rgba(0,0,0,0.7);padding:4px 12px;border-radius:12px;backdrop-filter:blur(8px);pointer-events:none;';
-        document.body.appendChild(bc);
-      }
-      bc.style.display = state.scrollIndicator === 'breadcrumb' ? 'flex' : 'none';
-      if (state.scrollIndicator === 'breadcrumb') {
-        bc.innerHTML = state.sectionOrder.map((k, i) =>
-          `<span style="font-family:'Manrope',sans-serif;font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:${i === 0 ? '#B8965A' : 'rgba(255,255,255,0.4)'}">${k}</span>${i < state.sectionOrder.length - 1 ? '<span style="color:rgba(255,255,255,0.2);font-size:8px">›</span>' : ''}`
-        ).join('');
+        sd.innerHTML = state.sectionOrder.map((_,i)=>`<div class="section-dot${i===0?' active':''}"></div>`).join('');
       }
     }
 
@@ -2137,10 +1877,10 @@
       const container = document.getElementById('inspector-content');
       if (!id) { container.innerHTML = '<div class="inspector-empty">Click a block to inspect</div>'; return; }
       const variants = {
-        hero: ['scroll-expand', 'static', 'split', 'minimal'],
-        portfolio: ['accordion', 'cards', 'strip', 'tabs'],
-        pullquote: ['centered', 'left-accent', 'edge-bleed', 'hidden'],
-        navbar: ['hamburger', 'persistent', 'sidebar', 'bottom'],
+        hero: ['scroll-expand','static','split','minimal'],
+        portfolio: ['accordion','cards','strip','tabs'],
+        pullquote: ['centered','left-accent','edge-bleed','hidden'],
+        navbar: ['hamburger','persistent','sidebar','bottom'],
       };
       const blockVariants = variants[id];
       const currentVariant = {
@@ -2157,20 +1897,20 @@
           <div class="inspector-block-name">${id}</div>
           ${blockVariants ? `<div class="ctrl-section-label">Variant</div>
           <div class="ctrl-btn-group">
-            ${blockVariants.map(v => `<button class="ctrl-btn${currentVariant === v ? ' active' : ''}" onclick="setVariant('${id}','${v}')">${v}</button>`).join('')}
+            ${blockVariants.map(v=>`<button class="ctrl-btn${currentVariant===v?' active':''}" onclick="setVariant('${id}','${v}')">${v}</button>`).join('')}
           </div>` : ''}
           <div class="ctrl-row" style="margin-top:0.4rem">
             <span class="ctrl-label">Visible</span>
-            <input type="checkbox" ${visibility ? 'checked' : ''} onchange="setBlockVisibility('${id}',this.checked)" style="cursor:pointer">
+            <input type="checkbox" ${visibility?'checked':''} onchange="setBlockVisibility('${id}',this.checked)" style="cursor:pointer">
           </div>
           <div class="ctrl-section-label" style="margin-top:0.5rem">Padding Override</div>
           <div class="ctrl-row">
             <span class="ctrl-label">V pad</span>
-            <input type="text" value="${state.blockPaddingOverrides[id]?.v || ''}" placeholder="auto" oninput="setBlockPadding('${id}','v',this.value)" style="width:60px;flex:none">
+            <input type="text" value="${state.blockPaddingOverrides[id]?.v||''}" placeholder="auto" oninput="setBlockPadding('${id}','v',this.value)" style="width:60px;flex:none">
           </div>
           <div class="ctrl-row">
             <span class="ctrl-label">H pad</span>
-            <input type="text" value="${state.blockPaddingOverrides[id]?.h || ''}" placeholder="auto" oninput="setBlockPadding('${id}','h',this.value)" style="width:60px;flex:none">
+            <input type="text" value="${state.blockPaddingOverrides[id]?.h||''}" placeholder="auto" oninput="setBlockPadding('${id}','h',this.value)" style="width:60px;flex:none">
           </div>
           <div class="ctrl-section-label" style="margin-top:0.5rem">Notes</div>
           <textarea oninput="setBlockNote('${id}',this.value)" style="margin-bottom:0">${notes}</textarea>
@@ -2179,7 +1919,7 @@
     }
 
     function setVariant(blockId, variant) {
-      const variantKeys = { hero: 'heroVariant', portfolio: 'accordionVariant', pullquote: 'pullQuoteVariant', navbar: 'navbarVariant' };
+      const variantKeys = { hero:'heroVariant', portfolio:'accordionVariant', pullquote:'pullQuoteVariant', navbar:'navbarVariant' };
       const key = variantKeys[blockId];
       if (key) { setState({ [key]: variant }); renderInspector(blockId); }
     }
@@ -2193,22 +1933,20 @@
       const overrides = Object.assign({}, state.blockPaddingOverrides);
       overrides[id] = Object.assign({}, overrides[id], { [axis]: val });
       state.blockPaddingOverrides = overrides;
-      try { localStorage.setItem('gaby-playground-state', JSON.stringify(state)); } catch (e) { }
-      applyState();
+      try { localStorage.setItem('gaby-playground-state', JSON.stringify(state)); } catch(e) {}
     }
     function setBlockNote(id, text) {
       const notes = Object.assign({}, state.blockNotes);
       notes[id] = text;
       state.blockNotes = notes;
-      try { localStorage.setItem('gaby-playground-state', JSON.stringify(state)); } catch (e) { }
-      applyState();
+      try { localStorage.setItem('gaby-playground-state', JSON.stringify(state)); } catch(e) {}
     }
 
     // ─── Lightbox ────────────────────────────────────────────────
     function openLightbox() {
       const ar = state.lightboxAspect;
-      const arMap = { '3/4': [300, 400], '16/9': [400, 225], '1/1': [350, 350], '4/5': [320, 400], 'source': [400, 300] };
-      const [w, h] = arMap[ar] || [300, 400];
+      const arMap = { '3/4': [300,400], '16/9': [400,225], '1/1': [350,350], '4/5': [320,400], 'source': [400,300] };
+      const [w,h] = arMap[ar] || [300,400];
       document.getElementById('lightbox-inner').innerHTML = `
         <div class="lightbox-img-wrap">
           <div class="lightbox-img-placeholder" style="width:${w}px;height:${h}px">
@@ -2220,21 +1958,12 @@
     }
     function closeLightbox() { document.getElementById('lightbox').classList.remove('open'); }
 
-    function themeEmoji() {
-      return { dark: '🌙', latte: '☀️', frappe: '🎨', catppuccin: '🌸' }[state.activeTheme] || '🌙';
-    }
-    function cycleTheme() {
-      const order = ['dark', 'latte', 'frappe', 'catppuccin'];
-      const idx = order.indexOf(state.activeTheme);
-      setState({ activeTheme: order[(idx + 1) % order.length] });
-    }
-
     // ─── All-Themes View ─────────────────────────────────────────
     function toggleAllThemes(show) {
       const overlay = document.getElementById('all-themes-overlay');
       if (show) {
         const grid = document.getElementById('all-themes-grid');
-        const themeNames = { dark: 'Dark Luxury', latte: 'Catppuccin Latte', frappe: 'Catppuccin Frappe', catppuccin: 'Catppuccin Mocha' };
+        const themeNames = { dark:'Dark Luxury', latte:'Catppuccin Latte', frappe:'Catppuccin Frappe', catppuccin:'Catppuccin Mocha' };
         grid.innerHTML = Object.entries(themeNames).map(([key, name]) => {
           const t = state.themeColors[key];
           return `<div class="theme-preview-frame">
@@ -2243,7 +1972,7 @@
               <div style="font-size:0.55rem;letter-spacing:0.3em;text-transform:uppercase;color:${t.muted};margin-bottom:0.5rem">Fashion Designer · Miami</div>
               <div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.8rem;font-weight:300;line-height:1;color:${t.text};margin-bottom:1rem">Gabriela Gamargo</div>
               <div style="display:flex;gap:0.5rem;flex-wrap:wrap">
-                ${['Resort', 'Bridal', 'Knits'].map(s => `<span style="padding:2px 8px;border:1px solid ${t.border};border-radius:3px;font-size:0.55rem;color:${t.muted}">${s}</span>`).join('')}
+                ${['Resort','Bridal','Knits'].map(s=>`<span style="padding:2px 8px;border:1px solid ${t.border};border-radius:3px;font-size:0.55rem;color:${t.muted}">${s}</span>`).join('')}
               </div>
               <div style="margin-top:1rem;padding-top:1rem;border-top:1px solid ${t.border}">
                 <span style="color:${t.accent};font-size:0.62rem;letter-spacing:0.2em">Accent Color Sample</span>
@@ -2273,7 +2002,7 @@
         <div class="ctrl-panel-body">
           <div class="ctrl-row">
             <span class="ctrl-label">Full Bleed</span>
-            <input type="checkbox" id="p1-fullbleed" ${state.containerFullBleed ? 'checked' : ''} onchange="setState({containerFullBleed:this.checked})" style="cursor:pointer">
+            <input type="checkbox" id="p1-fullbleed" ${state.containerFullBleed?'checked':''} onchange="setState({containerFullBleed:this.checked})" style="cursor:pointer">
           </div>
           <div class="ctrl-row">
             <span class="ctrl-label">Max Width</span>
@@ -2282,13 +2011,13 @@
           </div>
           <div class="ctrl-divider"></div>
           <div class="ctrl-section-label">Section Heights</div>
-          ${['hero', 'marquee', 'portfolio', 'pullquote', 'about', 'contact'].map(k => `
+          ${['hero','marquee','portfolio','pullquote','about','contact'].map(k=>`
           <div class="ctrl-row">
             <span class="ctrl-label">${k}</span>
             <select id="p1-h-${k}" onchange="setSectionHeight('${k}',this.value)" style="max-width:90px">
-              <option value="auto" ${state.sectionHeights[k] === 'auto' ? 'selected' : ''}>auto</option>
-              <option value="100vh" ${state.sectionHeights[k] === '100vh' ? 'selected' : ''}>100vh</option>
-              <option value="min-height:100vh" ${state.sectionHeights[k] === 'min-height:100vh' ? 'selected' : ''}>min 100vh</option>
+              <option value="auto" ${state.sectionHeights[k]==='auto'?'selected':''}>auto</option>
+              <option value="100vh" ${state.sectionHeights[k]==='100vh'?'selected':''}>100vh</option>
+              <option value="min-height:100vh" ${state.sectionHeights[k]==='min-height:100vh'?'selected':''}>min 100vh</option>
               <option value="50vh">50vh</option>
               <option value="80vh">80vh</option>
             </select>
@@ -2301,63 +2030,63 @@
     }
 
     function buildOrderList() {
-      return state.sectionOrder.map((k, i) => `
+      return state.sectionOrder.map((k,i)=>`
         <div class="order-item" draggable="true" data-oid="${k}"
           ondragstart="onOrderDragStart(event,'${k}')"
           ondragover="event.preventDefault();this.classList.add('drag-over')"
           ondragleave="this.classList.remove('drag-over')"
           ondrop="onOrderDrop(event,'${k}')">
-          <span class="drag-dot">⠿</span> ${i + 1}. ${k}
+          <span class="drag-dot">⠿</span> ${i+1}. ${k}
         </div>`).join('');
     }
 
     let orderDragSrc = null;
-    function onOrderDragStart(e, id) { orderDragSrc = id; }
-    function onOrderDrop(e, targetId) {
+    function onOrderDragStart(e,id){ orderDragSrc=id; }
+    function onOrderDrop(e,targetId){
       e.preventDefault();
-      document.querySelectorAll('.order-item').forEach(el => el.classList.remove('drag-over'));
-      if (!orderDragSrc || orderDragSrc === targetId) return;
-      const order = [...state.sectionOrder];
-      const si = order.indexOf(orderDragSrc), ti = order.indexOf(targetId);
-      if (si < 0 || ti < 0) return;
-      order.splice(si, 1); order.splice(ti, 0, orderDragSrc);
-      setState({ sectionOrder: order });
+      document.querySelectorAll('.order-item').forEach(el=>el.classList.remove('drag-over'));
+      if(!orderDragSrc||orderDragSrc===targetId)return;
+      const order=[...state.sectionOrder];
+      const si=order.indexOf(orderDragSrc),ti=order.indexOf(targetId);
+      if(si<0||ti<0)return;
+      order.splice(si,1);order.splice(ti,0,orderDragSrc);
+      setState({sectionOrder:order});
     }
 
-    function setSectionHeight(k, v) { const h = Object.assign({}, state.sectionHeights); h[k] = v; setState({ sectionHeights: h }); }
+    function setSectionHeight(k,v){ const h=Object.assign({},state.sectionHeights); h[k]=v; setState({sectionHeights:h}); }
 
     function buildPanel2() {
       const pu = state.baseUnit;
-      const scaleSteps = [1, 2, 3, 4, 5, 6, 8, 10, 12, 16];
+      const scaleSteps = [1,2,3,4,5,6,8,10,12,16];
       return `<div class="ctrl-panel" id="panel2">
         <div class="ctrl-panel-header" onclick="toggleCtrlPanel('panel2')">2 · Spacing <span class="chevron">▼</span></div>
         <div class="ctrl-panel-body">
           <div class="ctrl-row">
             <span class="ctrl-label">Base Unit</span>
             <div class="ctrl-btn-group" style="margin:0">
-              <button class="ctrl-btn${pu === 4 ? ' active' : ''}" onclick="setState({baseUnit:4})">4px</button>
-              <button class="ctrl-btn${pu === 8 ? ' active' : ''}" onclick="setState({baseUnit:8})">8px</button>
+              <button class="ctrl-btn${pu===4?' active':''}" onclick="setState({baseUnit:4})">4px</button>
+              <button class="ctrl-btn${pu===8?' active':''}" onclick="setState({baseUnit:8})">8px</button>
             </div>
           </div>
           <div class="ctrl-section-label">Scale Preview</div>
-          <div class="scale-preview">${scaleSteps.map(n => `<div class="scale-bar-row">
-            <div class="scale-bar" style="width:${pu * n}px"></div>
-            <span class="scale-bar-label">×${n} = ${pu * n}px</span>
+          <div class="scale-preview">${scaleSteps.map(n=>`<div class="scale-bar-row">
+            <div class="scale-bar" style="width:${pu*n}px"></div>
+            <span class="scale-bar-label">×${n} = ${pu*n}px</span>
           </div>`).join('')}</div>
           <div class="ctrl-row">
             <span class="ctrl-label">Padding V</span>
             <input type="range" min="1" max="16" step="1" value="${state.sectionPaddingV}" oninput="setState({sectionPaddingV:+this.value})">
-            <span class="ctrl-val">${state.baseUnit * state.sectionPaddingV}px</span>
+            <span class="ctrl-val">${state.baseUnit*state.sectionPaddingV}px</span>
           </div>
           <div class="ctrl-row">
             <span class="ctrl-label">Padding H</span>
             <input type="range" min="1" max="12" step="1" value="${state.sectionPaddingH}" oninput="setState({sectionPaddingH:+this.value})">
-            <span class="ctrl-val">${state.baseUnit * state.sectionPaddingH}px</span>
+            <span class="ctrl-val">${state.baseUnit*state.sectionPaddingH}px</span>
           </div>
           <div class="ctrl-row">
             <span class="ctrl-label">Component Gap</span>
             <input type="range" min="1" max="10" step="1" value="${state.componentGap}" oninput="setState({componentGap:+this.value})">
-            <span class="ctrl-val">${state.baseUnit * state.componentGap}px</span>
+            <span class="ctrl-val">${state.baseUnit*state.componentGap}px</span>
           </div>
         </div>
       </div>`;
@@ -2395,19 +2124,19 @@
         <div class="ctrl-panel-header" onclick="toggleCtrlPanel('panel4')">4 · Theme Editor <span class="chevron">▼</span></div>
         <div class="ctrl-panel-body">
           <div class="theme-tabs">
-            ${[['dark', 'Dark'], ['latte', 'Latte'], ['frappe', 'Frappe'], ['catppuccin', 'Mocha']].map(([k, n]) => `
-            <button class="theme-tab${state.activeTheme === k ? ' active' : ''}" onclick="setState({activeTheme:'${k}'})">${n}</button>`).join('')}
+            ${[['dark','Dark'],['latte','Latte'],['frappe','Frappe'],['catppuccin','Mocha']].map(([k,n])=>`
+            <button class="theme-tab${state.activeTheme===k?' active':''}" onclick="setState({activeTheme:'${k}'})">${n}</button>`).join('')}
           </div>
           <div class="color-grid">
-            ${[['bg', 'Bg'], ['surface', 'Surface'], ['text', 'Text'], ['muted', 'Muted'], ['accent', 'Accent'], ['border', 'Border'], ['cardBg', 'CardBg']].map(([k, n]) => `
+            ${[['bg','Bg'],['surface','Surface'],['text','Text'],['muted','Muted'],['accent','Accent'],['border','Border'],['cardBg','CardBg']].map(([k,n])=>`
             <div class="color-row">
               <label>${n}</label>
-              <input type="color" value="${hexToInputColor(state.themeColors[state.activeTheme][k] || '#888888')}" oninput="setThemeColor('${k}',this.value)">
+              <input type="color" value="${hexToInputColor(state.themeColors[state.activeTheme][k]||'#888888')}" oninput="setThemeColor('${k}',this.value)">
             </div>`).join('')}
           </div>
           <div class="ctrl-divider"></div>
-          <div class="ctrl-row"><span class="ctrl-label">Glow Intensity</span><input type="range" min="0" max="2" step="0.1" value="${state.themeColors[state.activeTheme].glowIntensity || 1}" oninput="setThemeEffect('glowIntensity',+this.value)"><span class="ctrl-val">${state.themeColors[state.activeTheme].glowIntensity || 1}</span></div>
-          <div class="ctrl-row"><span class="ctrl-label">Blur Amount</span><input type="range" min="0" max="24" step="1" value="${state.themeColors[state.activeTheme].blurAmount || 12}" oninput="setThemeEffect('blurAmount',+this.value)"><span class="ctrl-val">${state.themeColors[state.activeTheme].blurAmount || 12}px</span></div>
+          <div class="ctrl-row"><span class="ctrl-label">Glow Intensity</span><input type="range" min="0" max="2" step="0.1" value="${state.themeColors[state.activeTheme].glowIntensity||1}" oninput="setThemeEffect('glowIntensity',+this.value)"><span class="ctrl-val">${state.themeColors[state.activeTheme].glowIntensity||1}</span></div>
+          <div class="ctrl-row"><span class="ctrl-label">Blur Amount</span><input type="range" min="0" max="24" step="1" value="${state.themeColors[state.activeTheme].blurAmount||12}" oninput="setThemeEffect('blurAmount',+this.value)"><span class="ctrl-val">${state.themeColors[state.activeTheme].blurAmount||12}px</span></div>
           <div class="ctrl-divider"></div>
           <button class="ctrl-btn" onclick="toggleAllThemes(true)" style="width:100%">All Themes View ↗</button>
         </div>
@@ -2417,7 +2146,7 @@
     function hexToInputColor(c) {
       if (!c || !c.startsWith('#')) return '#888888';
       if (c.length === 7) return c;
-      if (c.length === 4) return '#' + c[1] + c[1] + c[2] + c[2] + c[3] + c[3];
+      if (c.length === 4) return '#' + c[1]+c[1]+c[2]+c[2]+c[3]+c[3];
       return '#888888';
     }
 
@@ -2436,18 +2165,18 @@
       return `<div class="ctrl-panel" id="panel5">
         <div class="ctrl-panel-header" onclick="toggleCtrlPanel('panel5')">5 · Collection Layout <span class="chevron">▼</span></div>
         <div class="ctrl-panel-body">
-          <div class="ctrl-row"><span class="ctrl-label">Grid Split</span><input type="range" min="30" max="50" step="5" value="${state.gridSplit}" oninput="setState({gridSplit:+this.value})"><span class="ctrl-val">${state.gridSplit}/${100 - state.gridSplit}</span></div>
+          <div class="ctrl-row"><span class="ctrl-label">Grid Split</span><input type="range" min="30" max="50" step="5" value="${state.gridSplit}" oninput="setState({gridSplit:+this.value})"><span class="ctrl-val">${state.gridSplit}/${100-state.gridSplit}</span></div>
           <div class="ctrl-row"><span class="ctrl-label">Carousel H</span><input type="range" min="200" max="500" step="20" value="${state.carouselHeight}" oninput="setState({carouselHeight:+this.value})"><span class="ctrl-val">${state.carouselHeight}px</span></div>
           <div class="ctrl-row"><span class="ctrl-label">Face Width</span><input type="range" min="150" max="300" step="10" value="${state.carouselFaceWidth}" oninput="setState({carouselFaceWidth:+this.value})"><span class="ctrl-val">${state.carouselFaceWidth}px</span></div>
           <div class="ctrl-row">
             <span class="ctrl-label">Header</span>
             <select onchange="setState({headerBehavior:this.value})">
-              <option value="sticky" ${state.headerBehavior === 'sticky' ? 'selected' : ''}>Sticky</option>
-              <option value="scroll-away" ${state.headerBehavior === 'scroll-away' ? 'selected' : ''}>Scroll Away</option>
-              <option value="fixed-offset" ${state.headerBehavior === 'fixed-offset' ? 'selected' : ''}>Fixed Offset</option>
+              <option value="sticky" ${state.headerBehavior==='sticky'?'selected':''}>Sticky</option>
+              <option value="scroll-away" ${state.headerBehavior==='scroll-away'?'selected':''}>Scroll Away</option>
+              <option value="fixed-offset" ${state.headerBehavior==='fixed-offset'?'selected':''}>Fixed Offset</option>
             </select>
           </div>
-          <div class="ctrl-row"><span class="ctrl-label">Sections</span><input type="range" min="1" max="3" step="1" value="${state.collectionSectionCount}" oninput="setState({collectionSectionCount:+this.value})"><span class="ctrl-val">${state.collectionSectionCount}</span></div>
+          <div class="ctrl-row"><span class="ctrl-label">Sections</span><input type="range" min="1" max="7" step="1" value="${state.collectionSectionCount}" oninput="setState({collectionSectionCount:+this.value})"><span class="ctrl-val">${state.collectionSectionCount}</span></div>
         </div>
       </div>`;
     }
@@ -2457,11 +2186,11 @@
         <div class="ctrl-panel-header" onclick="toggleCtrlPanel('panel6')">6 · Component Variants <span class="chevron">▼</span></div>
         <div class="ctrl-panel-body">
           <div class="ctrl-section-label">Accordion / Portfolio</div>
-          <div class="ctrl-btn-group">${['accordion', 'cards', 'strip', 'tabs'].map(v => `<button class="ctrl-btn${state.accordionVariant === v ? ' active' : ''}" onclick="setState({accordionVariant:'${v}'})">${v}</button>`).join('')}</div>
+          <div class="ctrl-btn-group">${['accordion','cards','strip','tabs'].map(v=>`<button class="ctrl-btn${state.accordionVariant===v?' active':''}" onclick="setState({accordionVariant:'${v}'})">${v}</button>`).join('')}</div>
           <div class="ctrl-section-label">PullQuote</div>
-          <div class="ctrl-btn-group">${['centered', 'left-accent', 'edge-bleed', 'hidden'].map(v => `<button class="ctrl-btn${state.pullQuoteVariant === v ? ' active' : ''}" onclick="setState({pullQuoteVariant:'${v}'})">${v}</button>`).join('')}</div>
+          <div class="ctrl-btn-group">${['centered','left-accent','edge-bleed','hidden'].map(v=>`<button class="ctrl-btn${state.pullQuoteVariant===v?' active':''}" onclick="setState({pullQuoteVariant:'${v}'})">${v}</button>`).join('')}</div>
           <div class="ctrl-section-label">Hero Style</div>
-          <div class="ctrl-btn-group">${['scroll-expand', 'static', 'split', 'minimal'].map(v => `<button class="ctrl-btn${state.heroVariant === v ? ' active' : ''}" onclick="setState({heroVariant:'${v}'})">${v}</button>`).join('')}</div>
+          <div class="ctrl-btn-group">${['scroll-expand','static','split','minimal'].map(v=>`<button class="ctrl-btn${state.heroVariant===v?' active':''}" onclick="setState({heroVariant:'${v}'})">${v}</button>`).join('')}</div>
         </div>
       </div>`;
     }
@@ -2471,17 +2200,17 @@
         <div class="ctrl-panel-header" onclick="toggleCtrlPanel('panel7')">7 · Navigation <span class="chevron">▼</span></div>
         <div class="ctrl-panel-body">
           <div class="ctrl-section-label">Navbar Style</div>
-          <div class="ctrl-btn-group">${['hamburger', 'persistent', 'sidebar', 'bottom'].map(v => `<button class="ctrl-btn${state.navbarVariant === v ? ' active' : ''}" onclick="setState({navbarVariant:'${v}'})">${v}</button>`).join('')}</div>
+          <div class="ctrl-btn-group">${['hamburger','persistent','sidebar','bottom'].map(v=>`<button class="ctrl-btn${state.navbarVariant===v?' active':''}" onclick="setState({navbarVariant:'${v}'})">${v}</button>`).join('')}</div>
           <div class="ctrl-row">
             <span class="ctrl-label">Scroll Indicator</span>
             <select onchange="setState({scrollIndicator:this.value})">
-              ${['progress', 'dots', 'breadcrumb', 'none'].map(v => `<option value="${v}" ${state.scrollIndicator === v ? 'selected' : ''}>${v}</option>`).join('')}
+              ${['progress','dots','breadcrumb','none'].map(v=>`<option value="${v}" ${state.scrollIndicator===v?'selected':''}>${v}</option>`).join('')}
             </select>
           </div>
           <div class="ctrl-row">
             <span class="ctrl-label">Transition</span>
             <select onchange="setState({sectionTransition:this.value})">
-              ${['hard', 'fade', 'gradient-blend'].map(v => `<option value="${v}" ${state.sectionTransition === v ? 'selected' : ''}>${v}</option>`).join('')}
+              ${['hard','fade','gradient-blend'].map(v=>`<option value="${v}" ${state.sectionTransition===v?'selected':''}>${v}</option>`).join('')}
             </select>
           </div>
         </div>
@@ -2493,19 +2222,19 @@
         <div class="ctrl-panel-header" onclick="toggleCtrlPanel('panel8')">8 · Motion &amp; Effects <span class="chevron">▼</span></div>
         <div class="ctrl-panel-body">
           <div class="ctrl-section-label">Cursor</div>
-          <div class="ctrl-btn-group">${['custom', 'system', 'contextual'].map(v => `<button class="ctrl-btn${state.cursorVariant === v ? ' active' : ''}" onclick="setState({cursorVariant:'${v}'})">${v}</button>`).join('')}</div>
+          <div class="ctrl-btn-group">${['custom','system','contextual'].map(v=>`<button class="ctrl-btn${state.cursorVariant===v?' active':''}" onclick="setState({cursorVariant:'${v}'})">${v}</button>`).join('')}</div>
           <div class="ctrl-row"><span class="ctrl-label">Glow Intensity</span><input type="range" min="0" max="2" step="0.1" value="${state.glowIntensity}" oninput="setState({glowIntensity:+this.value})"><span class="ctrl-val">${state.glowIntensity}</span></div>
           <div class="ctrl-row"><span class="ctrl-label">Liquid Blur</span><input type="range" min="0" max="24" step="1" value="${state.liquidBlur}" oninput="setState({liquidBlur:+this.value})"><span class="ctrl-val">${state.liquidBlur}px</span></div>
           <div class="ctrl-row"><span class="ctrl-label">Accent Glow</span><input type="range" min="0" max="40" step="2" value="${state.accentGlow}" oninput="setState({accentGlow:+this.value})"><span class="ctrl-val">${state.accentGlow}px</span></div>
           <div class="ctrl-row">
             <span class="ctrl-label">Scroll</span>
             <select onchange="setState({scrollBehavior:this.value})">
-              ${['smooth', 'snap', 'free'].map(v => `<option value="${v}" ${state.scrollBehavior === v ? 'selected' : ''}>${v}</option>`).join('')}
+              ${['smooth','snap','free'].map(v=>`<option value="${v}" ${state.scrollBehavior===v?'selected':''}>${v}</option>`).join('')}
             </select>
           </div>
           <div class="ctrl-row">
             <span class="ctrl-label">Preloader</span>
-            <input type="checkbox" ${state.preloaderEnabled ? 'checked' : ''} onchange="setState({preloaderEnabled:this.checked})" style="cursor:pointer">
+            <input type="checkbox" ${state.preloaderEnabled?'checked':''} onchange="setState({preloaderEnabled:this.checked})" style="cursor:pointer">
           </div>
           <div class="ctrl-row"><span class="ctrl-label">Duration</span><input type="range" min="0.5" max="4" step="0.25" value="${state.preloaderDuration}" oninput="setState({preloaderDuration:+this.value})"><span class="ctrl-val">${state.preloaderDuration}s</span></div>
         </div>
@@ -2519,27 +2248,27 @@
           <div class="ctrl-row">
             <span class="ctrl-label">Lightbox AR</span>
             <select onchange="setState({lightboxAspect:this.value})">
-              ${['3/4', '16/9', '1/1', '4/5', 'source'].map(v => `<option value="${v}" ${state.lightboxAspect === v ? 'selected' : ''}>${v}</option>`).join('')}
+              ${['3/4','16/9','1/1','4/5','source'].map(v=>`<option value="${v}" ${state.lightboxAspect===v?'selected':''}>${v}</option>`).join('')}
             </select>
           </div>
           <button class="ctrl-btn" onclick="openLightbox()" style="width:100%;margin-bottom:0.45rem">Preview Lightbox ↗</button>
           <div class="ctrl-section-label">Collection Image Layout</div>
-          <div class="ctrl-btn-group">${['carousel', 'masonry', 'filmstrip', 'tiled'].map(v => `<button class="ctrl-btn${state.imageLayout === v ? ' active' : ''}" onclick="setState({imageLayout:'${v}'})">${v}</button>`).join('')}</div>
+          <div class="ctrl-btn-group">${['carousel','masonry','filmstrip','tiled'].map(v=>`<button class="ctrl-btn${state.imageLayout===v?' active':''}" onclick="setState({imageLayout:'${v}'})">${v}</button>`).join('')}</div>
           <div class="ctrl-section-label">Mobile Image</div>
-          <div class="ctrl-btn-group">${['strip', 'vertical', 'swipe-cards'].map(v => `<button class="ctrl-btn${state.mobileImageLayout === v ? ' active' : ''}" onclick="setState({mobileImageLayout:'${v}'})">${v}</button>`).join('')}</div>
+          <div class="ctrl-btn-group">${['strip','vertical','swipe-cards'].map(v=>`<button class="ctrl-btn${state.mobileImageLayout===v?' active':''}" onclick="setState({mobileImageLayout:'${v}'})">${v}</button>`).join('')}</div>
         </div>
       </div>`;
     }
 
     function buildPanel10() {
-      const devices = [[0, 'Full'], [375, 'Phone'], [768, 'Tablet'], [1280, 'Laptop'], [1440, 'Desktop'], [2560, '4K']];
+      const devices = [[0,'Full'],[375,'Phone'],[768,'Tablet'],[1280,'Laptop'],[1440,'Desktop'],[2560,'4K']];
       return `<div class="ctrl-panel" id="panel10">
         <div class="ctrl-panel-header" onclick="toggleCtrlPanel('panel10')">10 · Responsive <span class="chevron">▼</span></div>
         <div class="ctrl-panel-body">
-          <div class="ctrl-btn-group">${devices.map(([w, n]) => `<button class="ctrl-btn${state.deviceWidth === w ? ' active' : ''}" onclick="setState({deviceWidth:${w}})">${n}${w > 0 ? ' (' + w + ')' : ''}</button>`).join('')}</div>
+          <div class="ctrl-btn-group">${devices.map(([w,n])=>`<button class="ctrl-btn${state.deviceWidth===w?' active':''}" onclick="setState({deviceWidth:${w}})">${n}${w>0?' ('+w+')':''}</button>`).join('')}</div>
           <div class="ctrl-row" style="margin-top:0.45rem">
             <span class="ctrl-label">Side by Side</span>
-            <input type="checkbox" ${state.sideBySide ? 'checked' : ''} onchange="setState({sideBySide:this.checked})" style="cursor:pointer">
+            <input type="checkbox" ${state.sideBySide?'checked':''} onchange="setState({sideBySide:this.checked})" style="cursor:pointer">
           </div>
         </div>
       </div>`;
@@ -2547,7 +2276,7 @@
 
     function buildPanel11() {
       let snapshots = {};
-      try { snapshots = JSON.parse(localStorage.getItem('gaby-playground-snapshots') || '{}'); } catch (e) { }
+      try { snapshots = JSON.parse(localStorage.getItem('gaby-playground-snapshots') || '{}'); } catch(e) {}
       const snapshotKeys = Object.keys(snapshots);
       return `<div class="ctrl-panel" id="panel11">
         <div class="ctrl-panel-header" onclick="toggleCtrlPanel('panel11')">11 · Snapshot &amp; Export <span class="chevron">▼</span></div>
@@ -2556,12 +2285,11 @@
             <input type="text" id="snap-name" placeholder="layout-v1" style="flex:1">
             <button class="ctrl-btn" onclick="saveSnapshot()">Save</button>
           </div>
-          ${snapshotKeys.length > 0 ? `<div class="snapshot-list">${snapshotKeys.map(k => `
+          ${snapshotKeys.length > 0 ? `<div class="snapshot-list">${snapshotKeys.map(k=>`
             <div class="snapshot-item">
               <span>${k}</span>
               <div class="snap-actions">
                 <button class="snap-btn" onclick="loadSnapshot('${k}')" title="Load">↩</button>
-                <button class="snap-btn" onclick="compareSnapshot('${k}')" title="Compare">⇄</button>
                 <button class="snap-btn" onclick="deleteSnapshot('${k}')" title="Delete">×</button>
               </div>
             </div>`).join('')}</div>` : '<div style="font-size:10px;color:var(--ui-muted);margin-bottom:0.45rem">No saved snapshots</div>'}
@@ -2580,7 +2308,7 @@
         const snaps = JSON.parse(localStorage.getItem('gaby-playground-snapshots') || '{}');
         snaps[name] = JSON.parse(JSON.stringify(state));
         localStorage.setItem('gaby-playground-snapshots', JSON.stringify(snaps));
-      } catch (e) { alert('Could not save snapshot: ' + e.message); return; }
+      } catch(e) { alert('Could not save snapshot: ' + e.message); return; }
       nameEl.value = '';
       buildPanels();
       applyState();
@@ -2590,7 +2318,7 @@
       try {
         const snaps = JSON.parse(localStorage.getItem('gaby-playground-snapshots') || '{}');
         if (snaps[name]) { state = Object.assign({}, DEFAULT_STATE, snaps[name]); applyState(); buildPanels(); }
-      } catch (e) { }
+      } catch(e) {}
     }
 
     function deleteSnapshot(name) {
@@ -2599,47 +2327,7 @@
         delete snaps[name];
         localStorage.setItem('gaby-playground-snapshots', JSON.stringify(snaps));
         buildPanels(); applyState();
-      } catch (e) { }
-    }
-
-    function compareSnapshot(name) {
-      let snaps = {};
-      try { snaps = JSON.parse(localStorage.getItem('gaby-playground-snapshots') || '{}'); } catch (e) { }
-      if (!snaps[name]) return;
-      const snap = snaps[name];
-      const overlay = document.getElementById('all-themes-overlay');
-      const grid = document.getElementById('all-themes-grid');
-
-      // Temporarily repurpose all-themes overlay for snapshot comparison
-      document.querySelector('.all-themes-title').textContent = `Comparing: current vs "${name}"`;
-
-      const currentTheme = state.themeColors[state.activeTheme];
-      const snapTheme = (snap.themeColors || {})[snap.activeTheme || 'dark'] || currentTheme;
-      const currentT = state.activeTheme;
-      const snapT = snap.activeTheme || 'dark';
-
-      const renderPreview = (s, label, t) => `
-        <div class="theme-preview-frame">
-          <div class="theme-preview-label">${label}</div>
-          <div style="background:${t.bg};color:${t.text};padding:1.5rem;font-family:'Manrope',sans-serif;font-size:11px;">
-            <div style="font-size:9px;letter-spacing:0.15em;text-transform:uppercase;color:${t.muted};margin-bottom:6px">Layout · ${s.accordionVariant || 'accordion'} · ${s.heroVariant || 'scroll-expand'}</div>
-            <div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.5rem;font-weight:300;color:${t.text};margin-bottom:8px">Gabriela Gamargo</div>
-            <div style="display:flex;gap:4px;flex-wrap:wrap;margin-bottom:8px">
-              ${['Resort', 'Bridal', 'Knits'].map(sk => `<span style="padding:2px 6px;border:1px solid ${t.border};border-radius:3px;font-size:9px;color:${t.muted}">${sk}</span>`).join('')}
-            </div>
-            <div style="font-size:9px;color:${t.muted}">
-              Container: ${s.containerFullBleed ? 'Full Bleed' : (s.containerWidth || 1440) + 'px'} ·
-              Spacing: ${s.baseUnit || 8}px base ·
-              PullQuote: ${s.pullQuoteVariant || 'centered'}
-            </div>
-            <div style="margin-top:8px;padding-top:8px;border-top:1px solid ${t.border}">
-              <span style="color:${t.accent};font-size:9px;letter-spacing:0.15em">Theme: ${s.activeTheme || 'dark'}</span>
-            </div>
-          </div>
-        </div>`;
-
-      grid.innerHTML = renderPreview(state, 'Current', currentTheme) + renderPreview(snap, `Snapshot: ${name}`, snapTheme);
-      overlay.classList.add('open');
+      } catch(e) {}
     }
 
     function exportConfig() {
@@ -2720,13 +2408,14 @@
     }
 
     // ─── updatePanelUI (sync sliders/buttons after setState) ─────
-    let _rebuildTimer = null;
     function updatePanelUI() {
-      clearTimeout(_rebuildTimer);
-      _rebuildTimer = setTimeout(() => {
-        buildPanels();
-        _rebuildTimer = null;
-      }, 150);
+      // Rebuild panels if key structural things changed (theme, snapshots)
+      // For live sliders, the oninput handlers already call setState
+      // Re-building panels ensures labels/values stay in sync
+      buildPanels();
+      // Rebuild order list
+      const ol = document.getElementById('order-list');
+      if (ol) ol.innerHTML = buildOrderList();
     }
 
     // ─── Boot ─────────────────────────────────────────────────────
@@ -2734,5 +2423,170 @@
     applyState();
   </script>
 </body>
-
 </html>
+```
+
+- [ ] **Step 2: Verify shell opens in browser**
+
+Open `playground/index.html` directly in Chrome (no server needed):
+```bash
+open ~/Documents/Tech/gaby-portfolio/playground/index.html
+```
+
+Expected:
+- Three-panel layout visible (left sidebar, center canvas, right inspector)
+- "Homepage" and "Collection" tabs in top bar
+- Left sidebar shows all 11 numbered control panels
+- Canvas shows Gaby portfolio blocks (Navbar, Hero, Marquee, Portfolio, PullQuote, About, Contact, Footer)
+- Right panel shows "Inspector — Click a block to inspect"
+- Dark theme active (near-black background)
+- Cormorant Garamond serif font in canvas headings
+
+- [ ] **Step 3: Commit**
+
+```bash
+cd ~/Documents/Tech/gaby-portfolio
+git add playground/index.html
+git commit -m "feat: add layout playground — single-file design tool with 11 control panels"
+```
+
+---
+
+## Task 2: Smoke Test All Controls
+
+This task verifies every panel and interaction works before declaring done.
+
+**Files:**
+- Verify: `playground/index.html`
+
+- [ ] **Step 1: Test Panel 1 — Layout Grid**
+
+Open `playground/index.html`. In Panel 1:
+- Uncheck "Full Bleed" → canvas frame should shrink to 1440px max and center
+- Drag the Max Width slider to 900px → canvas should narrow further
+- Change Hero height dropdown to `auto` → Hero block should shrink to content height
+- Drag "portfolio" above "hero" in the Order List → canvas reorders instantly
+
+Expected: All four behaviors work, canvas updates without page reload.
+
+- [ ] **Step 2: Test Panel 2 — Spacing**
+
+- Click "4px" base unit → Scale preview bars shrink (4×6=24px, vs 8×6=48px)
+- Drag "Padding V" slider → Hero and other sections' top/bottom padding changes
+- Drag "Padding H" slider → sections get wider/narrower horizontal padding
+
+Expected: Canvas blocks update padding visually on every slider move.
+
+- [ ] **Step 3: Test Panel 3 — Typography**
+
+- Drag "Min" heading slider → type specimen preview `h1` changes size
+- Drag "vw factor" → same
+- Drag "Body Size" → specimen body text changes size
+- Drag "Label Track" → specimen eyebrow label letter-spacing changes
+
+Expected: Type specimen updates instantly; actual canvas headings also update.
+
+- [ ] **Step 4: Test Panel 4 — Theme Editor**
+
+- Click "Latte" theme tab → canvas switches to light purple theme
+- Click color picker next to "Accent" → pick a different color → accent updates live in canvas
+- Click "Frappe" tab → switches to blue-gray theme
+- Click "All Themes View ↗" → full-screen 2×2 grid shows all 4 themes
+- Click "Close ×" → returns to canvas
+
+Expected: Theme switching works, color pickers work, all-themes grid shows 4 variants.
+
+- [ ] **Step 5: Test Panel 5 — Collection Layout**
+
+Switch to Collection tab. Then:
+- Drag "Grid Split" slider from 40 to 50 → left/right columns equalize
+- Drag "Carousel H" slider → carousel placeholder changes height
+- Change "Sections" slider to 5 → 5 grid sections appear in canvas
+- Change "Header" to "Fixed Offset" → header position in canvas changes
+
+Expected: All collection controls update the collection canvas live.
+
+- [ ] **Step 6: Test Panel 6 — Component Variants**
+
+Switch back to Homepage. In Panel 6:
+- Click "cards" accordion variant → Portfolio section re-renders as 2×2 card grid
+- Click "left-accent" pullquote variant → PullQuote gets left border accent treatment
+- Click "split" hero variant → Hero becomes side-by-side layout
+- Click "scroll-expand" to restore → hero returns to default
+
+Expected: Each variant button swaps the rendered component layout immediately.
+
+- [ ] **Step 7: Test Panels 7–9**
+
+- Panel 7: Change Navbar to "persistent" → navbar shows text links, hamburger disappears
+- Panel 7: Change Scroll Indicator to "dots" → dots appear on right side of canvas
+- Panel 8: Toggle Cursor to "system" → canvas cursor should be normal arrow
+- Panel 9: Click "Preview Lightbox ↗" → lightbox overlay opens showing image placeholder
+- Panel 9: Change lightbox AR to "16/9" → close and re-open lightbox; image is now wider
+- Panel 9: Change image layout to "masonry" → switch to Collection, carousel placeholders become masonry grids
+
+Expected: All behaviors respond correctly.
+
+- [ ] **Step 8: Test Panel 10 — Responsive Preview**
+
+- Click "Phone (375)" → canvas frame shrinks to 375px wide, centers in viewport
+- Click "Tablet (768)" → frame widens to 768px
+- Click "Full" → frame returns to full width
+- Check "Side by Side" → not yet fully implemented (canvas shows message or attempts dual render)
+
+Expected: Device buttons change frame width visibly. Device label in top bar updates.
+
+- [ ] **Step 9: Test Panel 11 — Snapshot & Export**
+
+- Type "test-layout-1" in the snapshot name field
+- Click "Save" → snapshot appears in the list below
+- Reload the page → snapshot still in the list (persisted to localStorage)
+- Click "↩" (load) next to the snapshot → state restores
+- Click "Export design-tokens.json ↓" → browser downloads a JSON file
+- Open the downloaded file → verify it contains layout, spacing, typography, themes keys
+- Click "Reset to Defaults" → confirm dialog, settings reset to defaults
+
+Expected: Save/load/delete/export all work. JSON file is valid and contains all token categories.
+
+- [ ] **Step 10: Test Drag-and-Drop**
+
+- In Homepage mode, hover over the Hero block → drag handle (⠿ HERO) appears at top
+- Grab the handle and drag Hero below the Marquee → canvas re-renders with new order
+- Open Panel 1 → Order List reflects the new order
+- Drag in Order List to restore Hero to top → canvas updates
+
+Expected: Canvas drag-and-drop and Panel 1 order list stay in sync.
+
+- [ ] **Step 11: Test Inspector**
+
+- Click on the Portfolio block → it gets an accent border, Inspector panel shows "PORTFOLIO"
+- Inspector shows variant buttons (accordion/cards/strip/tabs) — current one highlighted
+- Click "cards" → Portfolio re-renders as cards; variant button in Inspector updates
+- Type a note in the Notes field → reload page; note persists
+
+Expected: Inspector shows per-block controls, variant changes apply immediately.
+
+- [ ] **Step 12: Commit smoke-tested version**
+
+```bash
+cd ~/Documents/Tech/gaby-portfolio
+git add playground/index.html
+git commit -m "test: smoke test all playground controls — all 11 panels verified"
+```
+
+---
+
+## Spec Verification Checklist
+
+| # | Spec Requirement | Task |
+|---|-----------------|------|
+| 1 | Open index.html in Chrome, no server | Task 1 Step 2 |
+| 2 | Drag block to reorder, canvas updates instantly | Task 2 Step 10 |
+| 3 | Container width slider — all sections update uniformly | Task 2 Step 1 |
+| 4 | Switch themes — canvas re-renders with correct colors | Task 2 Step 4 |
+| 5 | All-themes 2×2 grid | Task 2 Step 4 |
+| 6 | Accordion → card grid variant | Task 2 Step 6 |
+| 7 | Collection mode, grid split slider works | Task 2 Step 5 |
+| 8 | Save snapshot, reload, persists | Task 2 Step 9 |
+| 9 | Export config downloads valid JSON | Task 2 Step 9 |
+| 10 | Device selector changes frame width | Task 2 Step 8 |
